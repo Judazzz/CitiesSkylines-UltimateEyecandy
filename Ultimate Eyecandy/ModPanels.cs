@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using ColossalFramework;
 using UnityEngine;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
@@ -275,16 +276,29 @@ namespace UltimateEyecandy
     {
         //private UILabel _titleLabel;
 
+        private UILabel _enableWeatherLabel;
         private UICheckBox _enableWeatherCheckbox;
 
+        private UILabel _rainIntensityLabel;
         private UISlider _rainIntensitySlider;
+        //private UILabel _groundwetnessLabel;
+        //private UISlider _groundwetnessSlider;
+        private UILabel _rainMotionblurLabel;
         private UICheckBox _rainMotionblurCheckbox;
+
+        private UILabel _rainIsSnowLabel;
         private UICheckBox _rainIsSnowCheckBox;
 
+        private UILabel _snowIntensityLabel;
         private UISlider _snowIntensitySlider;
 
+        private UILabel _fogIntensityLabel;
         private UISlider _fogIntensitySlider;
+
+        //private UILabel _rainbowLabel;
         //private UISlider _rainbowIntensitySlider;
+
+        private UILabel _northernlightIntensityLabel;
         private UISlider _northernlightIntensitySlider;
 
         //private UISlider _timeOfDaySlider;
@@ -315,7 +329,9 @@ namespace UltimateEyecandy
             //_titleLabel.padding = new RectOffset(0, 0, 10, 0);
 
             //  Rain motion blur:
-            AddUIComponent<UILabel>().text = "Enable weather";
+            _enableWeatherLabel = AddUIComponent<UILabel>();
+            _enableWeatherLabel.text = "Enable weather";
+
             _enableWeatherCheckbox = UIUtils.CreateCheckBox(this);
             _enableWeatherCheckbox.name = "enableWeatherCheckbox";
             _enableWeatherCheckbox.isChecked = WeatherManager.instance.enabled;
@@ -324,7 +340,9 @@ namespace UltimateEyecandy
             if (LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter")
             {
                 //  Snow intensity (Snowfall-Only):
-                AddUIComponent<UILabel>().text = "Snowfall intensity";
+                _snowIntensityLabel = AddUIComponent<UILabel>();
+                _snowIntensityLabel.text = "Snowfall intensity";
+
                 _snowIntensitySlider = UIUtils.CreateSlider(this, 0, 10f);
                 _snowIntensitySlider.name = "snowIntensitySlider";
                 _snowIntensitySlider.stepSize = 0.25f;
@@ -333,21 +351,39 @@ namespace UltimateEyecandy
             else
             {
                 //  Rain intensity:
-                AddUIComponent<UILabel>().text = "Rain intensity";
+                _rainIntensityLabel = AddUIComponent<UILabel>();
+                _rainIntensityLabel.text = "Rain intensity";
+
                 _rainIntensitySlider = UIUtils.CreateSlider(this, 0, 10f);
                 _rainIntensitySlider.name = "rainIntensitySlider";
                 _rainIntensitySlider.stepSize = 0.25f;
+                _rainIntensitySlider.tooltip = "Move the slider to the right to increase rain intensity.\nNote: Dynamic Weather will be enabled if disabled.";
                 _rainIntensitySlider.eventValueChanged += SliderChanged;
                 //  Rain motion blur:
-                AddUIComponent<UILabel>().text = "Rain motion blur";
+                _rainMotionblurLabel = AddUIComponent<UILabel>();
+                _rainMotionblurLabel.text = "Rain motion blur";
+
                 _rainMotionblurCheckbox = UIUtils.CreateCheckBox(this);
                 _rainMotionblurCheckbox.name = "rainMotionblurCheckbox";
                 _rainMotionblurCheckbox.eventCheckChanged += CheckboxChanged;
+
+                //  Rain ground wetness:
+                //_groundwetnessLabel = AddUIComponent<UILabel>();
+                //_groundwetnessLabel.text = "ground wetness";
+
+                //_groundwetnessSlider = UIUtils.CreateSlider(this, -1f, 1f);
+                //_groundwetnessSlider.name = "groundwetnessSlider";
+                //_groundwetnessSlider.stepSize = 0.1f;
+                ////_groundwetnessSlider.tooltip = "Move the slider to the right to increase rain intensity.\nNote: Dynamic Weather will be enabled if disabled.";
+                //_groundwetnessSlider.eventValueChanged += SliderChanged;
+
                 //  Turn rain into snow (Snowfall-Only):
                 if (SteamHelper.IsDLCOwned(SteamHelper.DLC.SnowFallDLC))
                 {
                     //  Rain = snow:
-                    AddUIComponent<UILabel>().text = "Rain is snow";
+                    _rainIsSnowLabel = AddUIComponent<UILabel>();
+                    _rainIsSnowLabel.text = "Rain is snow";
+
                     _rainIsSnowCheckBox = UIUtils.CreateCheckBox(this);
                     _rainIsSnowCheckBox.name = "rainIsSnowCheckBox ";
                     _rainIsSnowCheckBox.eventCheckChanged += CheckboxChanged;
@@ -355,14 +391,19 @@ namespace UltimateEyecandy
             }
 
             //  Fog intensity:
-            AddUIComponent<UILabel>().text = "Fog";
+            _fogIntensityLabel = AddUIComponent<UILabel>();
+            _fogIntensityLabel.text = "Fog";
+
             _fogIntensitySlider = UIUtils.CreateSlider(this, 0, 3.5f);
             _fogIntensitySlider.name = "fogIntensitySlider";
             _fogIntensitySlider.stepSize = 0.25f;
+            _rainIntensitySlider.tooltip = "Move the slider to the right to increase fog density.\nNote: Dynamic Weather will be enabled if disabled.";
             _fogIntensitySlider.eventValueChanged += SliderChanged;
 
             //  Rainbow intensity:
-            //AddUIComponent<UILabel>().text = "Rainbow";
+            //_rainbowLabel = AddUIComponent<UILabel>();
+            //_rainbowLabel.text = "Rainbow";
+
             //_rainbowIntensitySlider = UIUtils.CreateSlider(this, 0, 10f);
             //_rainbowIntensitySlider.name = "rainbowIntensitySlider";
             //_rainbowIntensitySlider.stepSize = 0.25f;
@@ -372,7 +413,9 @@ namespace UltimateEyecandy
             //  Northern Light intensity (Snowfall-Only):
             if (LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter")
             {
-                AddUIComponent<UILabel>().text = "Northern Light";
+                _northernlightIntensityLabel = AddUIComponent<UILabel>();
+                _northernlightIntensityLabel.text = "Northern Light";
+
                 _northernlightIntensitySlider = UIUtils.CreateSlider(this, 0, 10f);
                 _northernlightIntensitySlider.name = "northernlightIntensitySlider";
                 _northernlightIntensitySlider.stepSize = 0.25f;
@@ -390,15 +433,31 @@ namespace UltimateEyecandy
             if (trigger == _rainIntensitySlider)
             {
                 WeatherManager.instance.m_currentRain = value;
+                //  Enable dynamic weather if disabled (required for rainfall):
+                if (!WeatherManager.instance.m_enableWeather)
+                {
+                    WeatherManager.instance.m_enableWeather = true;
+                    _enableWeatherCheckbox.isChecked = true;
+                }
             }
+            //else if (trigger == _groundwetnessSlider)
+            //{
+            //    WeatherManager.instance.m_groundWetness = value;
+            //}
             //  
-            if (trigger == _snowIntensitySlider)
+            else if (trigger == _snowIntensitySlider)
             {
                 WeatherManager.instance.m_currentRain = value;
             }
             else if (trigger == _fogIntensitySlider)
             {
                 WeatherManager.instance.m_currentFog = value;
+                //  Enable dynamic weather if disabled (required for rainfall):
+                if (!WeatherManager.instance.m_enableWeather)
+                {
+                    WeatherManager.instance.m_enableWeather = true;
+                    _enableWeatherCheckbox.isChecked = true;
+                }
             }
             //else if (trigger == _rainbowIntensitySlider)
             //{
@@ -422,23 +481,23 @@ namespace UltimateEyecandy
             {
                 WeatherManager.instance.m_enableWeather = isChecked;
                 //  Update sliders state:
-                var sliders = WeatherPanel.Instance.GetComponents<UISlider>().ToList();
-                if (isChecked)
-                {
-                    _rainIntensitySlider.Enable();
-                    _rainMotionblurCheckbox.Enable();
-                    _fogIntensitySlider.Enable();
-                }
-                else
-                {
-                    _rainIntensitySlider.Disable();
-                    _rainMotionblurCheckbox.Disable();
-                    _fogIntensitySlider.Disable();
-                }
+                //var sliders = WeatherPanel.Instance.GetComponents<UISlider>().ToList();
+                //if (isChecked)
+                //{
+                //    _rainIntensitySlider.Enable();
+                //    _rainMotionblurCheckbox.Enable();
+                //    _fogIntensitySlider.Enable();
+                //}
+                //else
+                //{
+                //    _rainIntensitySlider.Disable();
+                //    _rainMotionblurCheckbox.Disable();
+                //    _fogIntensitySlider.Disable();
+                //}
             }
             else if (trigger == _rainMotionblurCheckbox)
             {
-                RainParticleProperties rrp = new RainParticleProperties();
+                var rrp = GameObject.FindObjectOfType<RainParticleProperties>();
                 rrp.ForceRainMotionBlur = isChecked;
                 //var rpp = WeatherManager.instance.GetComponent<RainParticleProperties>();
                 //rpp.ForceRainMotionBlur = isChecked;
