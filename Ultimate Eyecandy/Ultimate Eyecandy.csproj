@@ -55,15 +55,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data.cs" />
-    <Compile Include="Input.cs" />
-    <Compile Include="LightManager.cs" />
+    <Compile Include="DebugUtils.cs" />
+    <Compile Include="GUI\AmbientPanel.cs" />
+    <Compile Include="GUI\ColorManagementPanel.cs" />
+    <Compile Include="GUI\PresetsPanel.cs" />
+    <Compile Include="GUI\UIFastList.cs" />
+    <Compile Include="GUI\UIPresetItem.cs" />
+    <Compile Include="GUI\WeatherPanel.cs" />
+    <Compile Include="GUI\UINewPresetModal.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Loading.cs" />
-    <Compile Include="Mod.cs" />
-    <Compile Include="ModPanels.cs" />
+    <Compile Include="UltimateEyecandy.cs" />
+    <Compile Include="GUI\MainPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UItitlebar.cs" />
-    <Compile Include="UIutils.cs" />
+    <Compile Include="GUI\UItitlebar.cs" />
+    <Compile Include="GUI\UIutils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Modules\Engine\Bordered Skylines\" />

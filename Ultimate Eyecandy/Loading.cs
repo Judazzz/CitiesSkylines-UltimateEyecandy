@@ -4,6 +4,7 @@ using System;
 using ColossalFramework;
 using UnityEngine;
 using ColossalFramework.UI;
+using UltimateEyecandy.GUI;
 
 namespace UltimateEyecandy
 {
@@ -14,7 +15,7 @@ namespace UltimateEyecandy
         {
             base.OnLevelLoaded(mode);
 
-            ModPanels.Initialize();
+            GUI.MainPanel.Initialize();
             AddGuiToggle();
         }
 
@@ -23,7 +24,7 @@ namespace UltimateEyecandy
 
             UIMultiStateButton zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
             UIComponent bottomBar = zoomButton.parent;
-            UIButton toggle = UIUtils.CreateButton(bottomBar);
+            UIButton toggle = GUI.UIUtils.CreateButton(bottomBar);
 
             toggle.area = new Vector4(108, 24, 38, 38);
             toggle.playAudioEvents = true;
@@ -37,9 +38,9 @@ namespace UltimateEyecandy
 
             toggle.eventClicked += (UIComponent component, UIMouseEventParameter eventParam) =>
             {
-                ModPanels.instance.Toggle();
+                GUI.MainPanel.instance.Toggle();
             };
-           
+
         }
 
     }
