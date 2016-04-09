@@ -71,11 +71,7 @@
     <Compile Include="GUI\UItitlebar.cs" />
     <Compile Include="GUI\UIutils.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Engine\Bordered Skylines\" />
-    <Folder Include="Modules\Engine\Dynamic Resolution\" />
-    <Folder Include="Modules\Engine\SSAO\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\Mod Development\$(ProjectName)"
