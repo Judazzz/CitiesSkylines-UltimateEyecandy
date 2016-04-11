@@ -53,7 +53,11 @@ namespace UltimateEyecandy.GUI
                 _lutDropdown.AddItem(lut);
             }
             _lutDropdown.selectedIndex = ColorCorrectionManager.instance.lastSelection;
-            _lutDropdown.eventSelectedIndexChanged += (c, i) => ColorCorrectionManager.instance.currentSelection = i;
+            _lutDropdown.eventSelectedIndexChanged += (c, i) =>
+            {
+                ColorCorrectionManager.instance.currentSelection = i;
+                UltimateEyeCandy.currentSettings.color_selectedlut = i;
+            };
 
             //  Reset button:
             var bottomContainer = UIUtils.CreateFormElement(this, "bottom");
@@ -70,6 +74,7 @@ namespace UltimateEyecandy.GUI
                 }
                 //  
                 _lutDropdown.selectedIndex = 0;
+                UltimateEyeCandy.currentSettings.color_selectedlut = 0;
             };
         }
     }

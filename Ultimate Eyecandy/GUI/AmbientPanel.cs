@@ -140,21 +140,25 @@ namespace UltimateEyecandy.GUI
             if (trigger == _heightSlider)
             {
                 DayNightProperties.instance.m_Latitude = value;
+                UltimateEyeCandy.currentSettings.ambient_height = value;
             }
 
             if (trigger == _rotationSlider)
             {
                 DayNightProperties.instance.m_Longitude = value;
-            }
-
-            if (trigger == _ambientSlider)
-            {
-                DayNightProperties.instance.m_Exposure = value;
+                UltimateEyeCandy.currentSettings.ambient_rotation = value;
             }
 
             if (trigger == _intensitySlider)
             {
                 DayNightProperties.instance.m_SunIntensity = value;
+                UltimateEyeCandy.currentSettings.ambient_intensity = value;
+            }
+
+            if (trigger == _ambientSlider)
+            {
+                DayNightProperties.instance.m_Exposure = value;
+                UltimateEyeCandy.currentSettings.ambient_ambient = value;
             }
         }
     }

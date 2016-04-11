@@ -169,6 +169,7 @@ namespace UltimateEyecandy.GUI
             if (trigger == _rainIntensitySlider)
             {
                 WeatherManager.instance.m_currentRain = value;
+                UltimateEyeCandy.currentSettings.weather_rainintensity = value;
                 //  Enable dynamic weather if disabled (required for rainfall):
                 if (!WeatherManager.instance.m_enableWeather)
                 {
@@ -180,10 +181,12 @@ namespace UltimateEyecandy.GUI
             else if (trigger == _snowIntensitySlider)
             {
                 WeatherManager.instance.m_currentRain = value;
+                //UltimateEyeCandy.currentSettings.weather_snowintensity = value;
             }
             else if (trigger == _fogIntensitySlider)
             {
                 WeatherManager.instance.m_currentFog = value;
+                UltimateEyeCandy.currentSettings.weather_fogintensity = value;
                 //  Enable dynamic weather if disabled (required for rainfall):
                 if (!WeatherManager.instance.m_enableWeather)
                 {
@@ -203,6 +206,7 @@ namespace UltimateEyecandy.GUI
             if (trigger == _enableWeatherCheckbox)
             {
                 WeatherManager.instance.m_enableWeather = isChecked;
+                UltimateEyeCandy.currentSettings.weather = isChecked;
                 //  Re-apply current weather settings:
                 if (isChecked)
                 {
@@ -216,6 +220,7 @@ namespace UltimateEyecandy.GUI
             {
                 var rrp = GameObject.FindObjectOfType<RainParticleProperties>();
                 rrp.ForceRainMotionBlur = isChecked;
+                UltimateEyeCandy.currentSettings.weather_rainmotionblur = isChecked;
             }
         }
     }

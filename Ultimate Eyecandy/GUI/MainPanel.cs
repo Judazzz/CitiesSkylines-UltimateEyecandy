@@ -48,9 +48,8 @@ namespace UltimateEyecandy.GUI
         {
             base.Start();
             
-            //backgroundSprite = "PoliciesBubble";
             backgroundSprite = "UnlockingPanel2";
-            isVisible = true;
+            isVisible = false;
             canFocus = true;
             isInteractive = true;
             padding = new RectOffset(10, 10, 4, 4);
@@ -178,6 +177,29 @@ namespace UltimateEyecandy.GUI
             {
                 Show(true);
             }
+        }
+
+        public void AddGuiToggle()
+        {
+            UIMultiStateButton zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
+            UIComponent bottomBar = zoomButton.parent;
+            UIButton toggle = GUI.UIUtils.CreateButton(bottomBar);
+
+            toggle.area = new Vector4(108, 24, 38, 38);
+            toggle.playAudioEvents = true;
+            toggle.normalBgSprite = "OptionBase";
+            toggle.focusedBgSprite = "OptionBaseFocus";
+            toggle.hoveredBgSprite = "OptionBaseHover";
+            toggle.pressedBgSprite = "OptionBasePressed";
+            toggle.tooltip = "Light Control";
+            toggle.normalFgSprite = "InfoIconEntertainmentDisabled";
+            toggle.scaleFactor = 0.75f;
+
+            toggle.eventClicked += (c, e) =>
+            {
+                Toggle();
+            };
+
         }
     }
 }

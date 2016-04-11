@@ -165,7 +165,8 @@ namespace UltimateEyecandy.GUI
         protected void OnSelectedItemChanged(UIComponent component, int i)
         {
             _selectedPreset = _presetFastlist.rowsData[i] as Configuration.Preset;
-            /// 
+            UltimateEyeCandy.currentSettings = _selectedPreset;
+            //  
             if (UltimateEyeCandy.config.outputDebug)
             {
                 DebugUtils.Log($"PresetsPanel: FastListItem selected: preset '{_selectedPreset.name}'.");

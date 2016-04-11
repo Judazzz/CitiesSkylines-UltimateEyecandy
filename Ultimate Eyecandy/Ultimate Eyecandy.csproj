@@ -64,7 +64,6 @@
     <Compile Include="GUI\WeatherPanel.cs" />
     <Compile Include="GUI\UINewPresetModal.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="Loading.cs" />
     <Compile Include="UltimateEyecandy.cs" />
     <Compile Include="GUI\MainPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -34,34 +34,40 @@ namespace UltimateEyecandy
             try
             {
                 UltimateEyeCandy.LoadConfig();
-                Debug.Log($"Ultimate Eyecandy: configuration {UltimateEyeCandy.config.version} loaded");
+                Debug.Log($"OnSettingsUI: configuration {UltimateEyeCandy.config.version} loaded");
                 
                 //UICheckBox checkBox;
-                //UIHelperBase group = helper.AddGroup(Name);
-
-                //checkBox = (UICheckBox)group.AddCheckbox("Hide the user interface", AdvancedVehicleOptions.config.hideGUI, (b) =>
-                //{
-                //    if (AdvancedVehicleOptions.config.hideGUI != b)
-                //    {
-                //        AdvancedVehicleOptions.hideGUI = b;
-                //        AdvancedVehicleOptions.SaveConfig();
-                //    }
-                //});
-                //checkBox.tooltip = "Hide the UI completely if you feel like you are done with it\nand want to save the little bit of memory it takes\nEverything else will still be functional";
-
-                //checkBox = (UICheckBox)group.AddCheckbox("Disable warning at map loading", !AdvancedVehicleOptions.config.onLoadCheck, (b) =>
-                //{
-                //    if (AdvancedVehicleOptions.config.onLoadCheck == b)
-                //    {
-                //        AdvancedVehicleOptions.config.onLoadCheck = !b;
-                //        AdvancedVehicleOptions.SaveConfig();
-                //    }
-                //});
-                //checkBox.tooltip = "Disable service vehicle availability check at the loading of a map";
+                UIHelperBase group = helper.AddGroup(Name);
+                group.AddSpace(10);
+                //  
+                UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Output to debug log. ", UltimateEyeCandy.config.outputDebug,
+                    b =>
+                    {
+                        if (UltimateEyeCandy.config.outputDebug != b)
+                        {
+                            UltimateEyeCandy.config.outputDebug = b;
+                            UltimateEyeCandy.SaveConfig(false);
+                        }
+                    });
+                debugCheckBox.tooltip = "Output messages to debug log. This may be useful when experiencing issues with this mod.";
+                group.AddSpace(20);
+                //  
+                UICheckBox advancedCheckBox = (UICheckBox)group.AddCheckbox("Enable advanced mod settings (not yet implemented).", UltimateEyeCandy.config.enableAdvanced,
+                    b =>
+                    {
+                        if (UltimateEyeCandy.config.enableAdvanced != b)
+                        {
+                            UltimateEyeCandy.config.enableAdvanced = b;
+                            UltimateEyeCandy.SaveConfig(false);
+                        }
+                    });
+                advancedCheckBox.tooltip = "Enable advanced mod settings (not yet implemented).";
+                group.AddSpace(10);
+                group.AddGroup("WARNING: playing with the advanced settings may result in unexpected behavior of\nthe game's simulation, so it is strongly recommended to only use these settings on a\nbacked up save game and to NOT save the game afterwards.\nTL;DR: use these settings at your own risk, you have been warned!");
             }
             catch (Exception e)
             {
-                DebugUtils.Log("OnSettingsUI failed");
+                //DebugUtils.Log("OnSettingsUI failed");
                 DebugUtils.LogException(e);
             }
         }
@@ -77,23 +83,22 @@ namespace UltimateEyecandy
         private const string FileName = "CSL_UltimateEyecandy.xml";
 
         public static Configuration config = new Configuration();
+        public static Configuration.Preset currentSettings = new Configuration.Preset();
+
         public static bool isGameLoaded = false;
 
         #region LoadingExtensionBase overrides
         public override void OnCreated(ILoading loading)
         {
-            //try
-            //{
-            //    // Storing default values ASAP (before any mods have the time to change values)
-            //    DefaultOptions.StoreAll();
-
-            //    // Creating a backup
-            //    SaveBackup();
-            //}
-            //catch (Exception e)
-            //{
-            //    DebugUtils.LogException(e);
-            //}
+            try
+            {
+                // Create backup:
+                SaveBackup();
+            }
+            catch (Exception e)
+            {
+                DebugUtils.LogException(e);
+            }
         }
 
         /// <summary>
@@ -109,9 +114,8 @@ namespace UltimateEyecandy
                     //DefaultOptions.Clear();
                     return;
                 }
-
+                //  
                 isGameLoaded = true;
-
                 // Creating GUI
                 UIView view = UIView.GetAView();
                 _gameObject = new GameObject("UltimateEyecandy");
@@ -121,19 +125,20 @@ namespace UltimateEyecandy
                 {
                     //VehicleOptions.Clear();
                     _mainPanel = _gameObject.AddComponent<MainPanel>();
-                    DebugUtils.Log("UIMainPanel created");
+                    _mainPanel.AddGuiToggle();
+                    if (config.outputDebug)
+                    {
+                        DebugUtils.Log("MainPanel created");
+                    }
                 }
-                catch
+                catch (Exception e)
                 {
-                    DebugUtils.Log("Could not create UIMainPanel");
-
+                    DebugUtils.LogException(e);
+                    //  
                     if (_gameObject != null)
                         GameObject.Destroy(_gameObject);
-
                     return;
                 }
-
-                //new EnumerableActionThread(BrokenAssetsFix);
             }
             catch (Exception e)
             {
@@ -150,8 +155,9 @@ namespace UltimateEyecandy
         {
             try
             {
-                //SaveConfig();
-
+                //  Delete current settings:
+                currentSettings = null;
+                //  
                 GUI.UIUtils.DestroyDeeply(_mainPanel);
                 if (_gameObject != null)
                     GameObject.Destroy(_gameObject);
@@ -179,36 +185,29 @@ namespace UltimateEyecandy
         }
         #endregion
 
+        public static void RestoreBackup()
+        {
+            if (!File.Exists(FileName + ".bak")) return;
 
-        //  Config-related (keep here?):
-        //private Configuration config;
+            File.Copy(FileName + ".bak", FileName, true);
+            //  
+            if (config.outputDebug)
+            {
+                DebugUtils.Log("Backup configuration file restored.");
+            }
+        }
 
-        //private Configuration Configuration
-        //{
-        //    get
-        //    {
-        //        if (config == null)
-        //        {
-        //            try
-        //            {
-        //                config = Configuration.Deserialize(FileName);
-        //                Debug.Log("Ultimate Eyecandy: Preset loaded.");
+        public static void SaveBackup()
+        {
+            if (!File.Exists(FileName)) return;
 
-        //                if (config == null)
-        //                {
-        //                    config = new Configuration();
-        //                    SaveConfig();
-        //                }
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Debug.Log($"Retrieving Ultimate Eyecandy config failed: {e}");
-        //            }
-        //        }
-
-        //        return config;
-        //    }
-        //}
+            File.Copy(FileName, FileName + ".bak", true);
+            //  
+            if (config.outputDebug)
+            {
+                DebugUtils.Log("Backup configuration file created.");
+            }
+        }
 
         public static void LoadConfig()
         {
@@ -220,42 +219,52 @@ namespace UltimateEyecandy
                 }
                 return;
             }
-
-            // Store modded values
-            //DefaultOptions.StoreAllModded();
-
+            //  Load config:
             if (!File.Exists(FileName))
             {
-                DebugUtils.Log("Configuration file not found. Creating new configuration file.");
-
+                //  No config:
+                if (config.outputDebug)
+                {
+                    DebugUtils.Log("Configuration file not found. Creating new configuration file.");
+                }
+                //  Create and save new config:
                 config = new Configuration();
                 SaveConfig();
+                //  Create temporary preset for current settings:
+                CreateTemporaryPreset();
                 return;
             }
-
+            //  
             config = Configuration.Deserialize(FileName);
+            //  Create temporary preset for current settings:
+            CreateTemporaryPreset();
         }
 
-        public static void SaveConfig()
+        public static void SaveConfig(bool reloadUI = true)
         {
             try
             {
                 var xmlSerializer = new XmlSerializer(typeof(Configuration));
                 using (var streamWriter = new StreamWriter(FileName))
                 {
-                    config.version = config.version + 1;
-                    //  Todo: read from mod config:
-                    config.outputDebug = true;
-                    config.applyAtStart = false;
-
+                    config.version = ModInfo.version;
+                    config.config_version = config.config_version + 1;
+                    //  
                     xmlSerializer.Serialize(streamWriter, config);
-                    PresetsPanel.instance.PopulateList();
+                    if (reloadUI)
+                    {
+                        PresetsPanel.instance.PopulateList();
+                    }
+                    //  
+                    if (config.outputDebug)
+                    {
+                        DebugUtils.Log("Configuration saved.");
+                    }
                 }
             }
             catch (Exception e)
             {
-                Debug.LogErrorFormat("Unexpected {0} while saving options: {1}\n{2}\n\nInnerException:\n{3}",
-                    e.GetType().Name, e.Message, e.StackTrace, e.InnerException.Message);
+                DebugUtils.LogException(e);
             }
         }
 
@@ -263,7 +272,7 @@ namespace UltimateEyecandy
         {
             return config.presets;
         }
-
+        
         public static Configuration.Preset GetPresetByName(string presetName)
         {
             return config.presets.FirstOrDefault(preset => preset.name == presetName);
@@ -276,19 +285,46 @@ namespace UltimateEyecandy
             var newPreset = new Configuration.Preset()
             {
                 name = presetName,
-                ambient_height = AmbientPanel.instance.ambientSlider.value,
-                ambient_rotation = AmbientPanel.instance.rotationSlider.value,
-                ambient_intensity = AmbientPanel.instance.intensitySlider.value,
-                ambient_ambient = AmbientPanel.instance.ambientSlider.value,
-                weather = WeatherPanel.instance.enableWeatherCheckbox.isChecked,
-                weather_rainintensity = WeatherPanel.instance.rainintensitySlider.value,
-                weather_rainmotionblur = WeatherPanel.instance.rainMotionblurCheckbox,
-                weather_fogintensity = WeatherPanel.instance.fogIntensitySlider.value,
-                color_selectedlut = ColorManagamentPanel.instance.lutDropdown.selectedIndex
+                ambient_height = currentSettings.ambient_height,
+                ambient_rotation = currentSettings.ambient_rotation,
+                ambient_intensity = currentSettings.ambient_intensity,
+                ambient_ambient = currentSettings.ambient_ambient,
+                weather = currentSettings.weather,
+                weather_rainintensity = currentSettings.weather_rainintensity,
+                weather_rainmotionblur = currentSettings.weather_rainmotionblur,
+                weather_fogintensity = currentSettings.weather_fogintensity,
+                color_selectedlut = currentSettings.color_selectedlut
             };
             config.presets.Add(newPreset);
             //  
+            if (config.outputDebug)
+            {
+                DebugUtils.Log($"Preset '{presetName}' created.");
+            }
+            //  
             SaveConfig();
+        }
+
+        public static void CreateTemporaryPreset()
+        {
+            currentSettings = new Configuration.Preset() {
+                name = "TEMP",
+                ambient_height = 0f,
+                ambient_rotation = 0f,
+                ambient_intensity = 5f,
+                ambient_ambient = 1f,
+                weather = false,
+                weather_rainintensity = 0f,
+                weather_rainmotionblur = false,
+                weather_fogintensity = 0f,
+                color_selectedlut = ColorCorrectionManager.instance.lastSelection
+            };
+            //  
+            if (config.outputDebug)
+            {
+                DebugUtils.Log("Temporary preset created.");
+                //DebugUtils.Log($"New temporary preset created: {currentSettings.ambient_height} / {currentSettings.ambient_intensity} / {currentSettings.ambient_rotation} / {currentSettings.color_selectedlut} / {currentSettings.weather} / {currentSettings.weather_rainintensity}.");
+            }
         }
 
         public static void DeletePreset(Configuration.Preset preset)
@@ -297,8 +333,7 @@ namespace UltimateEyecandy
             //  
             SaveConfig();
         }
-
-        //  From FastList
+        
         public static void LoadPreset(string presetName)
         {
             //  
@@ -338,6 +373,8 @@ namespace UltimateEyecandy
 
         public static void ResetAll()
         {
+            CreateTemporaryPreset();
+            //  
             AmbientPanel.instance.heightSlider.value = 0;
             AmbientPanel.instance.rotationSlider.value = 0;
             AmbientPanel.instance.intensitySlider.value = 5f;
