@@ -56,8 +56,11 @@ namespace UltimateEyecandy
             [XmlElement("weather_fogintensity")]
             public double weather_fogintensity;
 
+            [XmlElement("weather_snowintensity")]
+            public double weather_snowintensity;
+
             [XmlElement("color_selectedlut")]
-            public double color_selectedlut;
+            public string color_selectedlut;
 
             public Preset(string name)
             {
@@ -126,6 +129,7 @@ namespace UltimateEyecandy
                             weather_rainintensity = preset.weather_rainintensity,
                             weather_rainmotionblur = preset.weather_rainmotionblur,
                             weather_fogintensity = preset.weather_fogintensity,
+                            weather_snowintensity = preset.weather_snowintensity,
                             color_selectedlut = preset.color_selectedlut
                         };
                         presetsCopy.presets.Add(newPreset);

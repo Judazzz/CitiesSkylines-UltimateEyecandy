@@ -1,18 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using ColossalFramework.UI;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace UltimateEyecandy.GUI
 {
     public class ColorManagamentPanel : UIPanel
     {
         private UILabel _lutLabel;
-        private UIDropDown _lutDropdown;
+        //private UIDropDown _lutDropdown;
+        public UIFastList _lutFastlist;
+        public LutList.Lut _selectedLut;
+        public UIButton _loadLutButton;
+
         private UIButton _resetColorManagementButton;
 
-        public UIDropDown lutDropdown
-        {
-            get { return _lutDropdown; }
-        }
+        //public UIDropDown lutDropdown
+        //{
+        //    get { return _lutDropdown; }
+        //}
 
         private static ColorManagamentPanel _instance;
         public static ColorManagamentPanel instance
@@ -28,6 +35,8 @@ namespace UltimateEyecandy.GUI
             isInteractive = true;
             //  
             SetupControls();
+
+            PopulateLutList();
         }
 
         private void SetupControls()
@@ -40,23 +49,50 @@ namespace UltimateEyecandy.GUI
             _lutLabel.textScale = 0.9f;
             _lutLabel.padding = new RectOffset(0, 0, 0, 5);
 
-            _lutDropdown = UIUtils.CreateDropDown(topContainer);
-            _lutDropdown.tooltip = "Select a different LUT (LookUp Table).";
-            _lutDropdown.width = 245;
-            foreach (var lut in ColorCorrectionManager.instance.items)
+
+
+            // FastList
+            _lutFastlist = UIFastList.Create<UILutItem>(topContainer);
+            _lutFastlist.backgroundSprite = "UnlockingPanel";
+            _lutFastlist.width = 245;
+            _lutFastlist.height = 150;
+            _lutFastlist.canSelect = true;
+            _lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
+            _lutFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
+
+            //  Load lut:
+            var loadContainer = UIUtils.CreateFormElement(this, "center");
+            loadContainer.name = "loadDeleteContainer";
+            loadContainer.relativePosition = new Vector3(0, 190);
+            loadContainer.autoLayout = false;
+            loadContainer.isVisible = true;
+
+            _loadLutButton = UIUtils.CreateButton(loadContainer);
+            _loadLutButton.width = 100f;
+            _loadLutButton.opacity = 0.25f;
+            _loadLutButton.isEnabled = false;
+            _loadLutButton.relativePosition = new Vector3(10, 10);
+            _loadLutButton.name = "loadLutButton";
+            _loadLutButton.text = "Load lut";
+            _loadLutButton.tooltip = "Load lut selected in list.";
+            _loadLutButton.eventClicked += (c, e) =>
             {
-                if (UltimateEyeCandy.config.outputDebug)
+                try
                 {
-                    DebugUtils.Log($"ColorPanel: LUT selected: {lut}");
+                    DebugUtils.Log($"ColorManagementPanel: 'Load lut' clicked: {_selectedLut.name} ({_selectedLut.internal_name} / {_selectedLut.index}).");
+                    UltimateEyeCandy.currentSettings.color_selectedlut = _selectedLut.internal_name;
+                    ColorCorrectionManager.instance.currentSelection = _selectedLut.index;
                 }
-                //  
-                _lutDropdown.AddItem(lut);
-            }
-            _lutDropdown.selectedIndex = ColorCorrectionManager.instance.lastSelection;
-            _lutDropdown.eventSelectedIndexChanged += (c, i) =>
-            {
-                ColorCorrectionManager.instance.currentSelection = i;
-                UltimateEyeCandy.currentSettings.color_selectedlut = i;
+                catch (Exception ex)
+                {
+                    if (UltimateEyeCandy.config.outputDebug)
+                    {
+                        DebugUtils.Log($"ColorManagementPanel: 'Load lut' clicked: lut {_selectedLut.name} not found, resetting to default.");
+                    }
+                    DebugUtils.LogException(ex);
+                    _lutFastlist.DisplayAt(0);
+                    ColorCorrectionManager.instance.currentSelection = 0;
+                }
             };
 
             //  Reset button:
@@ -73,9 +109,133 @@ namespace UltimateEyecandy.GUI
                     DebugUtils.Log($"ColorPanel: 'Reset' clicked.");
                 }
                 //  
-                _lutDropdown.selectedIndex = 0;
-                UltimateEyeCandy.currentSettings.color_selectedlut = 0;
+                _lutFastlist.DisplayAt(0);
+                UltimateEyeCandy.currentSettings.color_selectedlut = "None";
+                ColorCorrectionManager.instance.currentSelection = 0;
             };
+            _lutFastlist.rowsData.Clear();
+            _lutFastlist.selectedIndex = -1;
+            //  
+            var allLuts = LutList.GetLutList();
+
+            DebugUtils.Log($"Number of installed luts: {allLuts.Count}");
+            for (int i = 0; i < allLuts.Count; i++)
+            {
+                if (allLuts[i] != null)
+                {
+                    _lutFastlist.rowsData.Add(allLuts[i]);
+                }
+            }
+            //  
+            _lutFastlist.rowHeight = 32f;
+            _lutFastlist.DisplayAt(0);
+        }
+
+        public void PopulateLutList()
+        {
+            _lutFastlist.rowsData.Clear();
+            _lutFastlist.selectedIndex = -1;
+            //  
+            var allLuts = LutList.GetLutList();
+            for (int i = 0; i < allLuts.Count; i++)
+            {
+                if (allLuts[i] != null)
+                {
+                    _lutFastlist.rowsData.Add(allLuts[i]);
+                }
+            }
+            //  
+            _lutFastlist.rowHeight = 32f;
+            //_lutFastlist.DisplayAt(0);
+            _lutFastlist.DisplayAt(ColorCorrectionManager.instance.lastSelection);
+        }
+
+        protected void OnSelectedItemChanged(UIComponent component, int i)
+        {
+            _selectedLut = _lutFastlist.rowsData[i] as LutList.Lut;
+            UltimateEyeCandy.currentSettings.color_selectedlut = _selectedLut.internal_name;
+            //  
+            if (UltimateEyeCandy.config.outputDebug)
+            {
+                DebugUtils.Log($"ColorManagementPanel: LutFastList SelectedItemChanged: {_selectedLut.name} selected.");
+            }
+            //  Show buttons 'Load/Delete Preset' buttons:
+            _loadLutButton.isEnabled = true;
+            _loadLutButton.opacity = 1f;
+        }
+
+        protected void OnEnableStateChanged(UIComponent component, bool state)
+        {
+            _lutFastlist.DisplayAt(_lutFastlist.listPosition);
+        }
+    }
+
+    public class LutList
+    {
+        //public List<Lut> lutList = new List<Lut>();
+
+        public static Lut GetLut(string name)
+        {
+            foreach (var lut in GetLutList())
+            {
+                if (lut.internal_name == name) return lut;
+            }
+            return null;
+        }
+
+        public static List<Lut> GetLutList()
+        {
+            var list = new List<Lut>();
+            var i = 0;
+            //  
+            foreach (var lut in ColorCorrectionManager.instance.items)
+            {
+                Lut l = new Lut()
+                {
+                    index = i,
+                    name = GetLutDisplayName(lut), //lut.Contains('.')) ? lut.Remove(0, 10) : lut,
+                    internal_name = lut
+                };
+                list.Add(l);
+                i++;
+            }
+            return list;
+        }
+
+        public static string GetLutDisplayName(string name)
+        {
+            //  Get friendly Workshop Lut name:
+            if (name.Contains('.'))
+            {
+                name.Remove(0, 10);
+            }
+            //  Get friendly Built-In Lut name:
+            else {
+                if (name.ToLower() == "lutsunny")
+                {
+                    name = "Temperate";
+                }
+                if (name.ToLower() == "lutnorth")
+                {
+                    name = "Boreal";
+                }
+                if (name.ToLower() == "luttropical")
+                {
+                    name = "Tropical";
+                }
+                if (name.ToLower() == "luteurope")
+                {
+                    name = "European";
+                }
+            }
+            return name;
+        }
+
+        public class Lut
+        {
+            public int index;
+            public string name;
+            public string internal_name;
         }
     }
 }

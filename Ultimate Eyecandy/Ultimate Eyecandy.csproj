@@ -60,6 +60,7 @@
     <Compile Include="GUI\ColorManagementPanel.cs" />
     <Compile Include="GUI\PresetsPanel.cs" />
     <Compile Include="GUI\UIFastList.cs" />
+    <Compile Include="GUI\UILutItem.cs" />
     <Compile Include="GUI\UIPresetItem.cs" />
     <Compile Include="GUI\WeatherPanel.cs" />
     <Compile Include="GUI\UINewPresetModal.cs" />

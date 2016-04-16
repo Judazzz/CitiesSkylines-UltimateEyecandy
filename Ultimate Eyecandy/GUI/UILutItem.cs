@@ -3,14 +3,13 @@ using ColossalFramework.UI;
 
 namespace UltimateEyecandy.GUI
 {
-    public class UIPresetItem : UIPanel, IUIFastListRow
+    public class UILutItem : UIPanel, IUIFastListRow
     {
         private UILabel m_name;
-        private UILabel m_size;
 
-        private Configuration.Preset m_preset;
-        
-        public Configuration.Preset preset;
+        private LutList.Lut m_lut;
+
+        public LutList.Lut lut;
 
         protected override void OnSizeChanged()
         {
@@ -18,7 +17,7 @@ namespace UltimateEyecandy.GUI
 
             if (m_name == null) return;
 
-            m_size.relativePosition = new Vector3(width - 35f, 5);
+            //m_size.relativePosition = new Vector3(width - 35f, 5);
         }
 
         private void SetupControls()
@@ -34,17 +33,17 @@ namespace UltimateEyecandy.GUI
             m_name.relativePosition = new Vector3(5, 5);
             m_name.textColor = new Color32(170, 170, 170, 255);
 
-            m_size = AddUIComponent<UILabel>();
-            m_size.width = 30;
-            m_size.textAlignment = UIHorizontalAlignment.Center;
-            m_size.textColor = new Color32(170, 170, 170, 255);
-            m_size.relativePosition = new Vector3(width - 35f, 5);
+            //m_size = AddUIComponent<UILabel>();
+            //m_size.width = 30;
+            //m_size.textAlignment = UIHorizontalAlignment.Center;
+            //m_size.textColor = new Color32(170, 170, 170, 255);
+            //m_size.relativePosition = new Vector3(width - 35f, 5);
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)
         {
             p.Use();
-            //UIThemeManager.instance.ChangeUpgradeBuilding(m_preset);
+            //UIThemeManager.instance.ChangeUpgradeBuilding(m_lut);
 
             base.OnMouseDown(p);
         }
@@ -52,7 +51,7 @@ namespace UltimateEyecandy.GUI
         protected override void OnMouseEnter(UIMouseEventParameter p)
         {
             base.OnMouseEnter(p);
-            //UIThemeManager.instance.buildingPreview.Show(m_preset);
+            //UIThemeManager.instance.buildingPreview.Show(m_lut);
         }
 
 
@@ -67,11 +66,11 @@ namespace UltimateEyecandy.GUI
         {
             SetupControls();
 
-            m_preset = data as Configuration.Preset;
-            m_name.text = m_preset.name;
+            m_lut = data as LutList.Lut;
+            m_name.text = m_lut.name;
 
             //UIUtils.TruncateLabel(m_name, width - 40);
-            //m_size.text = m_preset.sizeAsString;
+            //m_size.text = m_lut.sizeAsString;
 
             backgroundSprite = null;
         }

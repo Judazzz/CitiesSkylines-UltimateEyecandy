@@ -82,6 +82,8 @@ namespace UltimateEyecandy
 
         private const string FileName = "CSL_UltimateEyecandy.xml";
 
+        public static bool isWinterMap = false;
+
         public static Configuration config = new Configuration();
         public static Configuration.Preset currentSettings = new Configuration.Preset();
 
@@ -123,7 +125,7 @@ namespace UltimateEyecandy
 
                 try
                 {
-                    //VehicleOptions.Clear();
+                    isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
                     _mainPanel = _gameObject.AddComponent<MainPanel>();
                     _mainPanel.AddGuiToggle();
                     if (config.outputDebug)
@@ -280,26 +282,34 @@ namespace UltimateEyecandy
 
         public static void CreatePreset(string presetName)
         {
-            if (GetPresetByName(presetName) != null) return;
-
-            var newPreset = new Configuration.Preset()
+            Configuration.Preset existingPreset = GetPresetByName(presetName);
+            //  Overwrite existing preset:
+            if (existingPreset != null)
             {
-                name = presetName,
-                ambient_height = currentSettings.ambient_height,
-                ambient_rotation = currentSettings.ambient_rotation,
-                ambient_intensity = currentSettings.ambient_intensity,
-                ambient_ambient = currentSettings.ambient_ambient,
-                weather = currentSettings.weather,
-                weather_rainintensity = currentSettings.weather_rainintensity,
-                weather_rainmotionblur = currentSettings.weather_rainmotionblur,
-                weather_fogintensity = currentSettings.weather_fogintensity,
-                color_selectedlut = currentSettings.color_selectedlut
-            };
-            config.presets.Add(newPreset);
-            //  
-            if (config.outputDebug)
-            {
-                DebugUtils.Log($"Preset '{presetName}' created.");
+                existingPreset = currentSettings;
+            }
+            //  Create new preset:
+            else {
+                var newPreset = new Configuration.Preset()
+                {
+                    name = presetName,
+                    ambient_height = currentSettings.ambient_height,
+                    ambient_rotation = currentSettings.ambient_rotation,
+                    ambient_intensity = currentSettings.ambient_intensity,
+                    ambient_ambient = currentSettings.ambient_ambient,
+                    weather = currentSettings.weather,
+                    weather_rainintensity = currentSettings.weather_rainintensity,
+                    weather_rainmotionblur = currentSettings.weather_rainmotionblur,
+                    weather_fogintensity = currentSettings.weather_fogintensity,
+                    weather_snowintensity = currentSettings.weather_snowintensity,
+                    color_selectedlut = currentSettings.color_selectedlut
+                };
+                config.presets.Add(newPreset);
+                //  
+                if (config.outputDebug)
+                {
+                    DebugUtils.Log($"Preset '{presetName}' created.");
+                }
             }
             //  
             SaveConfig();
@@ -317,13 +327,13 @@ namespace UltimateEyecandy
                 weather_rainintensity = 0f,
                 weather_rainmotionblur = false,
                 weather_fogintensity = 0f,
-                color_selectedlut = ColorCorrectionManager.instance.lastSelection
+                weather_snowintensity = 0f,
+                color_selectedlut = "None"
             };
             //  
             if (config.outputDebug)
             {
                 DebugUtils.Log("Temporary preset created.");
-                //DebugUtils.Log($"New temporary preset created: {currentSettings.ambient_height} / {currentSettings.ambient_intensity} / {currentSettings.ambient_rotation} / {currentSettings.color_selectedlut} / {currentSettings.weather} / {currentSettings.weather_rainintensity}.");
             }
         }
 
@@ -346,14 +356,15 @@ namespace UltimateEyecandy
                         ResetAll();
                         return;
                     }
-                    catch (Exception e)
+                    catch (Exception ex)
                     {
-                        Debug.LogErrorFormat("Ultimate Eyecandy: unexpected {0} while resetting all: {1}\n{2}\n\nInnerException:\n{3}",
-                            e.GetType().Name, e.Message, e.StackTrace, e.InnerException.Message);
+                        DebugUtils.LogException(ex);
                     }
                 }
                 //  
                 var selectedPreset = GetPresetByName(presetName);
+                currentSettings = selectedPreset;
+                //  Apply values to UI Elements:
                 AmbientPanel.instance.heightSlider.value = (float)selectedPreset.ambient_height;
                 AmbientPanel.instance.rotationSlider.value = (float)selectedPreset.ambient_rotation;
                 AmbientPanel.instance.intensitySlider.value = (float)selectedPreset.ambient_intensity;
@@ -362,12 +373,27 @@ namespace UltimateEyecandy
                 WeatherPanel.instance.rainintensitySlider.value = (float)selectedPreset.weather_rainintensity;
                 WeatherPanel.instance.rainMotionblurCheckbox.isChecked = (bool)selectedPreset.weather_rainmotionblur;
                 WeatherPanel.instance.fogIntensitySlider.value = (float)selectedPreset.weather_fogintensity;
-                ColorManagamentPanel.instance.lutDropdown.selectedIndex = (int)selectedPreset.color_selectedlut;
+                WeatherPanel.instance.snowIntensitySlider.value = (float)selectedPreset.weather_snowintensity;
+                LutList.Lut activeLut = LutList.GetLut(selectedPreset.color_selectedlut);
+                try
+                {
+                    ColorManagamentPanel.instance._lutFastlist.DisplayAt(activeLut.index);
+                    ColorCorrectionManager.instance.currentSelection = activeLut.index;
+                }
+                catch (Exception ex)
+                {
+                    if (config.outputDebug)
+                    {
+                        DebugUtils.Log($"Load preset: lut {activeLut} not found, resetting to default.");
+                    }
+                    DebugUtils.LogException(ex);
+                    ColorManagamentPanel.instance._lutFastlist.DisplayAt(0);
+                    ColorCorrectionManager.instance.currentSelection = 0;
+                }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Debug.LogErrorFormat("Ultimate Eyecandy: unexpected {0} while applying preset: {1}\n{2}\n\nInnerException:\n{3}",
-                    e.GetType().Name, e.Message, e.StackTrace, e.InnerException.Message);
+                DebugUtils.LogException(ex);
             }
         }
 
@@ -383,8 +409,8 @@ namespace UltimateEyecandy
             WeatherPanel.instance.rainintensitySlider.value = 0f;
             WeatherPanel.instance.rainMotionblurCheckbox.isChecked = false;
             WeatherPanel.instance.fogIntensitySlider.value = 0f;
-            //  
-            ColorManagamentPanel.instance.lutDropdown.selectedIndex = 0;
+            WeatherPanel.instance.snowIntensitySlider.value = 0f;
+            ColorManagamentPanel.instance._lutFastlist.DisplayAt(0);
             ColorCorrectionManager.instance.currentSelection = 0;
         }
     }

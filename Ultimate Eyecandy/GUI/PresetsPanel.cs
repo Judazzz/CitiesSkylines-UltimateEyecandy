@@ -8,7 +8,6 @@ namespace UltimateEyecandy.GUI
     public class PresetsPanel : UIPanel
     {
         private UILabel _presetLabel;
-        public UIDropDown _presetDropdown;
         public UIFastList _presetFastlist;
         public Configuration.Preset _selectedPreset;
 
@@ -16,6 +15,7 @@ namespace UltimateEyecandy.GUI
         public UIButton _deletePresetButton;
 
         public UIButton _savePresetButton;
+        public UIButton _overwritePresetButton;
 
         public UIButton _resetAllButton;
 
@@ -104,16 +104,19 @@ namespace UltimateEyecandy.GUI
                 PopulateList();
             };
 
-            //  Save preset:
-            var saveContainer = UIUtils.CreateFormElement(this, "center");
-            saveContainer.relativePosition = new Vector3(0, 250);
+            //  Save/overwrite preset:
+            var saveOverwriteContainer = UIUtils.CreateFormElement(this, "center");
+            saveOverwriteContainer.relativePosition = new Vector3(0, 240);
+            saveOverwriteContainer.autoLayout = false;
+            saveOverwriteContainer.isVisible = true;
 
-            _savePresetButton = UIUtils.CreateButton(saveContainer);
-            _savePresetButton.width = 245f;
+            _savePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
+            _savePresetButton.width = 100f;
+            _savePresetButton.relativePosition = new Vector3(10, 10);
             _savePresetButton.name = "savePresetButton";
-            _savePresetButton.text = "Save current settings as a preset";
+            _savePresetButton.text = "Save as new";
             //  Todo: add all settings to tooltip(?)
-            _savePresetButton.tooltip = "Save current settings as a preset.";
+            _savePresetButton.tooltip = "Save current settings as a new preset (create new preset).";
             _savePresetButton.eventClicked += (c, e) =>
             {
                 if (UltimateEyeCandy.config.outputDebug)
@@ -123,6 +126,23 @@ namespace UltimateEyecandy.GUI
                 //  Open 'Preset name' modal:
                 UIView.PushModal(UINewPresetModal.instance);
                 UINewPresetModal.instance.Show(true);
+            };
+
+            _overwritePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
+            _overwritePresetButton.width = 100f;
+            _overwritePresetButton.opacity = 0.25f;
+            _overwritePresetButton.isEnabled = false;
+            _overwritePresetButton.relativePosition = new Vector3(150, 10);
+            _overwritePresetButton.name = "overwritePresetButton";
+            _overwritePresetButton.text = "Overwrite";
+            _overwritePresetButton.tooltip = "Save current settings as the preset selected in the list (overwrite existing preset).";
+            _overwritePresetButton.eventClicked += (c, e) =>
+            {
+                if (UltimateEyeCandy.config.outputDebug)
+                {
+                    DebugUtils.Log($"PresetsPanel: 'Overwrite preset' clicked: preset '{_selectedPreset.name}'.");
+                }
+                UltimateEyeCandy.CreatePreset(_selectedPreset.name);
             };
 
             //  Reset all:
@@ -148,22 +168,31 @@ namespace UltimateEyecandy.GUI
             _presetFastlist.selectedIndex = -1;
             //  
             List<Configuration.Preset> allPresets = UltimateEyeCandy.config.presets;
-            for (int i = 0; i < allPresets.Count; i++)
+            if (allPresets.Count > 0)
             {
-                if (allPresets[i] != null)
+                for (int i = 0; i < allPresets.Count; i++)
                 {
-                    _presetFastlist.rowsData.Add(allPresets[i]);
+                    if (allPresets[i] != null)
+                    {
+                        _presetFastlist.rowsData.Add(allPresets[i]);
+                    }
                 }
+                //  
+                _presetFastlist.rowHeight = 32f;
+                _presetFastlist.DisplayAt(0);
             }
-            //  
-            _presetFastlist.rowHeight = 32f;
-            _presetFastlist.DisplayAt(0);
             //  Set active preset on load:
             //_presetFastlist.selectedIndex = 0;
         }
 
         protected void OnSelectedItemChanged(UIComponent component, int i)
         {
+            if (i >= 0)
+            {
+                _overwritePresetButton.opacity = 1f;
+                _overwritePresetButton.isEnabled = true;
+            }
+            //  
             _selectedPreset = _presetFastlist.rowsData[i] as Configuration.Preset;
             UltimateEyeCandy.currentSettings = _selectedPreset;
             //  
