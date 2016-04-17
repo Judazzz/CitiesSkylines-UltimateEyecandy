@@ -40,7 +40,7 @@ namespace UltimateEyecandy
                 UIHelperBase group = helper.AddGroup(Name);
                 group.AddSpace(10);
                 //  
-                UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Output to debug log. ", UltimateEyeCandy.config.outputDebug,
+                UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Write data to debug log (it's going to be a lot!).", UltimateEyeCandy.config.outputDebug,
                     b =>
                     {
                         if (UltimateEyeCandy.config.outputDebug != b)
@@ -51,6 +51,20 @@ namespace UltimateEyecandy
                     });
                 debugCheckBox.tooltip = "Output messages to debug log. This may be useful when experiencing issues with this mod.";
                 group.AddSpace(20);
+
+                //  
+                UICheckBox loadLastPresetOnStartCheckBox = (UICheckBox)group.AddCheckbox("Load last active preset on start.", UltimateEyeCandy.config.loadLastPresetOnStart,
+                    b =>
+                    {
+                        if (UltimateEyeCandy.config.loadLastPresetOnStart != b)
+                        {
+                            UltimateEyeCandy.config.loadLastPresetOnStart = b;
+                            UltimateEyeCandy.SaveConfig(false);
+                        }
+                    });
+                loadLastPresetOnStartCheckBox.tooltip = "Load last active preset on start.";
+                group.AddSpace(20);
+
                 //  
                 UICheckBox advancedCheckBox = (UICheckBox)group.AddCheckbox("Enable advanced mod settings (not yet implemented).", UltimateEyeCandy.config.enableAdvanced,
                     b =>
@@ -67,7 +81,6 @@ namespace UltimateEyecandy
             }
             catch (Exception e)
             {
-                //DebugUtils.Log("OnSettingsUI failed");
                 DebugUtils.LogException(e);
             }
         }
@@ -89,6 +102,8 @@ namespace UltimateEyecandy
 
         public static bool isGameLoaded = false;
 
+        public static OptionsGameplayPanel optionsGameplayPanel = new OptionsGameplayPanel();
+
         #region LoadingExtensionBase overrides
         public override void OnCreated(ILoading loading)
         {
@@ -103,9 +118,6 @@ namespace UltimateEyecandy
             }
         }
 
-        /// <summary>
-        /// Called when the level (game, map editor, asset editor) is loaded
-        /// </summary>
         public override void OnLevelLoaded(LoadMode mode)
         {
             try
@@ -125,6 +137,8 @@ namespace UltimateEyecandy
 
                 try
                 {
+                    optionsGameplayPanel = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<OptionsGameplayPanel>().gameObject).GetComponent<OptionsGameplayPanel>();
+                    //  
                     isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
                     _mainPanel = _gameObject.AddComponent<MainPanel>();
                     _mainPanel.AddGuiToggle();
@@ -150,9 +164,6 @@ namespace UltimateEyecandy
             }
         }
 
-        /// <summary>
-        /// Called when the level is unloaded
-        /// </summary>
         public override void OnLevelUnloading()
         {
             try
@@ -238,8 +249,6 @@ namespace UltimateEyecandy
             }
             //  
             config = Configuration.Deserialize(FileName);
-            //  Create temporary preset for current settings:
-            CreateTemporaryPreset();
         }
 
         public static void SaveConfig(bool reloadUI = true)
@@ -250,12 +259,11 @@ namespace UltimateEyecandy
                 using (var streamWriter = new StreamWriter(FileName))
                 {
                     config.version = ModInfo.version;
-                    config.config_version = config.config_version + 1;
                     //  
                     xmlSerializer.Serialize(streamWriter, config);
                     if (reloadUI)
                     {
-                        PresetsPanel.instance.PopulateList();
+                        PresetsPanel.instance.PopulatePresetsFastList();
                     }
                     //  
                     if (config.outputDebug)
@@ -280,13 +288,18 @@ namespace UltimateEyecandy
             return config.presets.FirstOrDefault(preset => preset.name == presetName);
         }
 
-        public static void CreatePreset(string presetName)
+        public static void CreatePreset(string presetName, bool overWriteExisting)
         {
-            Configuration.Preset existingPreset = GetPresetByName(presetName);
             //  Overwrite existing preset:
-            if (existingPreset != null)
+            if (overWriteExisting)
             {
+                Configuration.Preset existingPreset = GetPresetByName(presetName);
                 existingPreset = currentSettings;
+                //  
+                if (config.outputDebug)
+                {
+                    DebugUtils.Log($"Preset '{presetName}' overwritten.");
+                }
             }
             //  Create new preset:
             else {
@@ -312,12 +325,15 @@ namespace UltimateEyecandy
                 }
             }
             //  
+            config.lastPreset = presetName;
             SaveConfig();
         }
 
+        //  In-Memory Preset solely for handling current settings:
         public static void CreateTemporaryPreset()
         {
-            currentSettings = new Configuration.Preset() {
+            currentSettings = new Configuration.Preset()
+            {
                 name = "TEMP",
                 ambient_height = 0f,
                 ambient_rotation = 0f,
@@ -325,7 +341,7 @@ namespace UltimateEyecandy
                 ambient_ambient = 1f,
                 weather = false,
                 weather_rainintensity = 0f,
-                weather_rainmotionblur = false,
+                weather_rainmotionblur = optionsGameplayPanel.enableWeather,
                 weather_fogintensity = 0f,
                 weather_snowintensity = 0f,
                 color_selectedlut = "None"
@@ -333,7 +349,7 @@ namespace UltimateEyecandy
             //  
             if (config.outputDebug)
             {
-                DebugUtils.Log("Temporary preset created.");
+                DebugUtils.Log("Temporary preset created from scratch.");
             }
         }
 
@@ -349,47 +365,47 @@ namespace UltimateEyecandy
             //  
             try
             {
-                if (presetName == "Default settings")
-                {
-                    try
-                    {
-                        ResetAll();
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        DebugUtils.LogException(ex);
-                    }
-                }
-                //  
                 var selectedPreset = GetPresetByName(presetName);
                 currentSettings = selectedPreset;
                 //  Apply values to UI Elements:
-                AmbientPanel.instance.heightSlider.value = (float)selectedPreset.ambient_height;
-                AmbientPanel.instance.rotationSlider.value = (float)selectedPreset.ambient_rotation;
-                AmbientPanel.instance.intensitySlider.value = (float)selectedPreset.ambient_intensity;
-                AmbientPanel.instance.ambientSlider.value = (float)selectedPreset.ambient_ambient;
-                WeatherPanel.instance.enableWeatherCheckbox.isChecked = (bool)selectedPreset.weather;
-                WeatherPanel.instance.rainintensitySlider.value = (float)selectedPreset.weather_rainintensity;
-                WeatherPanel.instance.rainMotionblurCheckbox.isChecked = (bool)selectedPreset.weather_rainmotionblur;
-                WeatherPanel.instance.fogIntensitySlider.value = (float)selectedPreset.weather_fogintensity;
-                WeatherPanel.instance.snowIntensitySlider.value = (float)selectedPreset.weather_snowintensity;
-                LutList.Lut activeLut = LutList.GetLut(selectedPreset.color_selectedlut);
-                try
+                //  Ambient values:
+                AmbientPanel.instance.heightSlider.value = (float)currentSettings.ambient_height;
+                AmbientPanel.instance.rotationSlider.value = (float)currentSettings.ambient_rotation;
+                AmbientPanel.instance.intensitySlider.value = (float)currentSettings.ambient_intensity;
+                AmbientPanel.instance.ambientSlider.value = (float)currentSettings.ambient_ambient;
+                //  Weather vales:
+                WeatherPanel.instance.enableWeatherCheckbox.isChecked = currentSettings.weather;
+                if (isWinterMap)
                 {
-                    ColorManagamentPanel.instance._lutFastlist.DisplayAt(activeLut.index);
-                    ColorCorrectionManager.instance.currentSelection = activeLut.index;
+                    WeatherPanel.instance.snowIntensitySlider.value = (float)currentSettings.weather_snowintensity;
                 }
-                catch (Exception ex)
+                else
+                {
+                    WeatherPanel.instance.rainintensitySlider.value = (float)currentSettings.weather_rainintensity;
+                    WeatherPanel.instance.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
+                }
+                WeatherPanel.instance.fogIntensitySlider.value = (float)currentSettings.weather_fogintensity;
+                //  ColorManagement values:
+                LutList.Lut activeLut = LutList.GetLut(currentSettings.color_selectedlut);
+                if (activeLut == null)
                 {
                     if (config.outputDebug)
                     {
-                        DebugUtils.Log($"Load preset: lut {activeLut} not found, resetting to default.");
+                        DebugUtils.Log($"Load preset: lut {activeLut} not found, applying default Lut for current biome ({LoadingManager.instance.m_loadedEnvironment}).");
                     }
-                    DebugUtils.LogException(ex);
-                    ColorManagamentPanel.instance._lutFastlist.DisplayAt(0);
+                    ColorManagamentPanel.instance.lutFastlist.DisplayAt(0);
+                    ColorManagamentPanel.instance.lutFastlist.selectedIndex = 0;
                     ColorCorrectionManager.instance.currentSelection = 0;
                 }
+                else
+                {
+                    ColorManagamentPanel.instance.lutFastlist.DisplayAt(activeLut.index);
+                    ColorManagamentPanel.instance.lutFastlist.selectedIndex = activeLut.index;
+                    ColorCorrectionManager.instance.currentSelection = activeLut.index;
+                }
+                //  
+                config.lastPreset = presetName;
+                SaveConfig();
             }
             catch (Exception ex)
             {
@@ -401,16 +417,23 @@ namespace UltimateEyecandy
         {
             CreateTemporaryPreset();
             //  
-            AmbientPanel.instance.heightSlider.value = 0;
-            AmbientPanel.instance.rotationSlider.value = 0;
-            AmbientPanel.instance.intensitySlider.value = 5f;
-            AmbientPanel.instance.ambientSlider.value = 1f;
-            WeatherPanel.instance.enableWeatherCheckbox.isChecked = false;
-            WeatherPanel.instance.rainintensitySlider.value = 0f;
-            WeatherPanel.instance.rainMotionblurCheckbox.isChecked = false;
-            WeatherPanel.instance.fogIntensitySlider.value = 0f;
-            WeatherPanel.instance.snowIntensitySlider.value = 0f;
-            ColorManagamentPanel.instance._lutFastlist.DisplayAt(0);
+            AmbientPanel.instance.heightSlider.value = (float)currentSettings.ambient_height;
+            AmbientPanel.instance.rotationSlider.value = (float)currentSettings.ambient_rotation;
+            AmbientPanel.instance.intensitySlider.value = (float)currentSettings.ambient_intensity;
+            AmbientPanel.instance.ambientSlider.value = (float)currentSettings.ambient_ambient;
+            if (isWinterMap)
+            {
+                WeatherPanel.instance.snowIntensitySlider.value = (float)currentSettings.weather_snowintensity;
+            }
+            else
+            {
+                WeatherPanel.instance.rainintensitySlider.value = (float)currentSettings.weather_rainintensity;
+                WeatherPanel.instance.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
+            }   
+            WeatherPanel.instance.fogIntensitySlider.value = (float)currentSettings.weather_fogintensity;
+            WeatherPanel.instance.enableWeatherCheckbox.isChecked = currentSettings.weather;
+            ColorManagamentPanel.instance.lutFastlist.DisplayAt(0);
+            ColorManagamentPanel.instance.lutFastlist.selectedIndex = 0;
             ColorCorrectionManager.instance.currentSelection = 0;
         }
     }

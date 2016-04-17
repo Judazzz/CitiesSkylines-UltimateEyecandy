@@ -350,7 +350,7 @@ namespace UltimateEyecandy.GUI
             //UIColorField colorField = parent.AddUIComponent<UIColorField>();
             // Creating a ColorField from scratch is tricky. Cloning an existing one instead.
             // Probably doesn't work when on main menu screen and such as no ColorField exists.
-            UIColorField colorField = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<UIColorField>().gameObject).GetComponent<UIColorField>();
+            UIColorField colorField = Object.Instantiate<GameObject>(Object.FindObjectOfType<UIColorField>().gameObject).GetComponent<UIColorField>();
             parent.AttachUIComponent(colorField.gameObject);
 
             // Reset most everything

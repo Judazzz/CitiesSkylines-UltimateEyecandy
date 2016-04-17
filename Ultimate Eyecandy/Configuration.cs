@@ -10,9 +10,10 @@ namespace UltimateEyecandy
     public class Configuration
     {
         public string version;
-        public int config_version = 0;
         public bool outputDebug;
         public bool enableAdvanced;
+        public bool loadLastPresetOnStart;
+        public string lastPreset;
 
         [XmlArray(ElementName = "Presets")]
         [XmlArrayItem(ElementName = "Preset")]
@@ -115,6 +116,9 @@ namespace UltimateEyecandy
                     var presetsCopy = new Configuration();
                     presetsCopy.version = configuration.version;
                     presetsCopy.outputDebug = configuration.outputDebug;
+                    presetsCopy.enableAdvanced = configuration.enableAdvanced;
+                    presetsCopy.loadLastPresetOnStart = configuration.loadLastPresetOnStart;
+                    presetsCopy.lastPreset = configuration.lastPreset;
 
                     foreach (var preset in configuration.presets)
                     {

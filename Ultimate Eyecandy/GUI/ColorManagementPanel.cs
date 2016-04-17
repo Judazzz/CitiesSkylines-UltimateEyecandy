@@ -9,17 +9,16 @@ namespace UltimateEyecandy.GUI
     public class ColorManagamentPanel : UIPanel
     {
         private UILabel _lutLabel;
-        //private UIDropDown _lutDropdown;
         public UIFastList _lutFastlist;
         public LutList.Lut _selectedLut;
         public UIButton _loadLutButton;
 
         private UIButton _resetColorManagementButton;
 
-        //public UIDropDown lutDropdown
-        //{
-        //    get { return _lutDropdown; }
-        //}
+        public UIFastList lutFastlist
+        {
+            get { return _lutFastlist; }
+        }
 
         private static ColorManagamentPanel _instance;
         public static ColorManagamentPanel instance
@@ -36,7 +35,7 @@ namespace UltimateEyecandy.GUI
             //  
             SetupControls();
 
-            PopulateLutList();
+            PopulateLutFastList();
         }
 
         private void SetupControls()
@@ -49,15 +48,12 @@ namespace UltimateEyecandy.GUI
             _lutLabel.textScale = 0.9f;
             _lutLabel.padding = new RectOffset(0, 0, 0, 5);
 
-
-
             // FastList
             _lutFastlist = UIFastList.Create<UILutItem>(topContainer);
             _lutFastlist.backgroundSprite = "UnlockingPanel";
             _lutFastlist.width = 245;
             _lutFastlist.height = 150;
             _lutFastlist.canSelect = true;
-            _lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
             _lutFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
 
             //  Load lut:
@@ -87,7 +83,7 @@ namespace UltimateEyecandy.GUI
                 {
                     if (UltimateEyeCandy.config.outputDebug)
                     {
-                        DebugUtils.Log($"ColorManagementPanel: 'Load lut' clicked: lut {_selectedLut.name} not found, resetting to default.");
+                        DebugUtils.Log($"ColorManagementPanel: 'Load lut' clicked: lut {_selectedLut.name} not found, applying default Lut for current biome ({LoadingManager.instance.m_loadedEnvironment}).");
                     }
                     DebugUtils.LogException(ex);
                     _lutFastlist.DisplayAt(0);
@@ -110,31 +106,15 @@ namespace UltimateEyecandy.GUI
                 }
                 //  
                 _lutFastlist.DisplayAt(0);
+                _lutFastlist.selectedIndex = 0;
                 UltimateEyeCandy.currentSettings.color_selectedlut = "None";
                 ColorCorrectionManager.instance.currentSelection = 0;
             };
-            _lutFastlist.rowsData.Clear();
-            _lutFastlist.selectedIndex = -1;
-            //  
-            var allLuts = LutList.GetLutList();
-
-            DebugUtils.Log($"Number of installed luts: {allLuts.Count}");
-            for (int i = 0; i < allLuts.Count; i++)
-            {
-                if (allLuts[i] != null)
-                {
-                    _lutFastlist.rowsData.Add(allLuts[i]);
-                }
-            }
-            //  
-            _lutFastlist.rowHeight = 32f;
-            _lutFastlist.DisplayAt(0);
         }
 
-        public void PopulateLutList()
+        public void PopulateLutFastList()
         {
             _lutFastlist.rowsData.Clear();
-            _lutFastlist.selectedIndex = -1;
             //  
             var allLuts = LutList.GetLutList();
             for (int i = 0; i < allLuts.Count; i++)
@@ -146,8 +126,8 @@ namespace UltimateEyecandy.GUI
             }
             //  
             _lutFastlist.rowHeight = 32f;
-            //_lutFastlist.DisplayAt(0);
             _lutFastlist.DisplayAt(ColorCorrectionManager.instance.lastSelection);
+            _lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
         }
 
         protected void OnSelectedItemChanged(UIComponent component, int i)
@@ -172,8 +152,6 @@ namespace UltimateEyecandy.GUI
 
     public class LutList
     {
-        //public List<Lut> lutList = new List<Lut>();
-
         public static Lut GetLut(string name)
         {
             foreach (var lut in GetLutList())
@@ -193,7 +171,7 @@ namespace UltimateEyecandy.GUI
                 Lut l = new Lut()
                 {
                     index = i,
-                    name = GetLutDisplayName(lut), //lut.Contains('.')) ? lut.Remove(0, 10) : lut,
+                    name = GetLutDisplayName(lut),
                     internal_name = lut
                 };
                 list.Add(l);
@@ -207,7 +185,7 @@ namespace UltimateEyecandy.GUI
             //  Get friendly Workshop Lut name:
             if (name.Contains('.'))
             {
-                name.Remove(0, 10);
+                name = name.Remove(0, 10);
             }
             //  Get friendly Built-In Lut name:
             else {

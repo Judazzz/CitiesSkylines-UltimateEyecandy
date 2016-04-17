@@ -40,8 +40,23 @@ namespace UltimateEyecandy.GUI
             isInteractive = true;
             //  
             SetupControls();
-
-            PopulateList();
+            PopulatePresetsFastList();
+            //  Create temporary preset for current settings:
+            if (UltimateEyeCandy.config.loadLastPresetOnStart && !string.IsNullOrEmpty(UltimateEyeCandy.config.lastPreset))
+            {
+                //  Create temporary preset based on last active preset:
+                UltimateEyeCandy.LoadPreset(UltimateEyeCandy.config.lastPreset);
+                //  
+                if (UltimateEyeCandy.config.outputDebug)
+                {
+                    DebugUtils.Log($"Temporary preset created based on last active preset '{UltimateEyeCandy.config.lastPreset}'.");
+                }
+            }
+            else
+            {
+                //  Create temporary preset from scratch:
+                UltimateEyeCandy.CreateTemporaryPreset();
+            }
         }
 
         private void SetupControls()
@@ -101,7 +116,7 @@ namespace UltimateEyecandy.GUI
                     DebugUtils.Log($"PresetsPanel: 'Delete preset' clicked: preset '{_selectedPreset.name}'.");
                 }
                 UltimateEyeCandy.DeletePreset(_selectedPreset);
-                PopulateList();
+                PopulatePresetsFastList();
             };
 
             //  Save/overwrite preset:
@@ -142,7 +157,7 @@ namespace UltimateEyecandy.GUI
                 {
                     DebugUtils.Log($"PresetsPanel: 'Overwrite preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyeCandy.CreatePreset(_selectedPreset.name);
+                UltimateEyeCandy.CreatePreset(_selectedPreset.name, true);
             };
 
             //  Reset all:
@@ -162,7 +177,7 @@ namespace UltimateEyecandy.GUI
             };
         }
 
-        public void PopulateList()
+        public void PopulatePresetsFastList()
         {
             _presetFastlist.rowsData.Clear();
             _presetFastlist.selectedIndex = -1;
@@ -181,8 +196,6 @@ namespace UltimateEyecandy.GUI
                 _presetFastlist.rowHeight = 32f;
                 _presetFastlist.DisplayAt(0);
             }
-            //  Set active preset on load:
-            //_presetFastlist.selectedIndex = 0;
         }
 
         protected void OnSelectedItemChanged(UIComponent component, int i)

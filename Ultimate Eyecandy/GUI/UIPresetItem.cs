@@ -44,7 +44,6 @@ namespace UltimateEyecandy.GUI
         protected override void OnMouseDown(UIMouseEventParameter p)
         {
             p.Use();
-            //UIThemeManager.instance.ChangeUpgradeBuilding(m_preset);
 
             base.OnMouseDown(p);
         }
@@ -52,14 +51,11 @@ namespace UltimateEyecandy.GUI
         protected override void OnMouseEnter(UIMouseEventParameter p)
         {
             base.OnMouseEnter(p);
-            //UIThemeManager.instance.buildingPreview.Show(m_preset);
         }
-
 
         protected override void OnMouseLeave(UIMouseEventParameter p)
         {
             base.OnMouseLeave(p);
-            //UIThemeManager.instance.buildingPreview.Show(UIThemeManager.instance.selectedBuilding);
         }
 
         #region IUIFastListRow implementation
@@ -69,10 +65,6 @@ namespace UltimateEyecandy.GUI
 
             m_preset = data as Configuration.Preset;
             m_name.text = m_preset.name;
-
-            //UIUtils.TruncateLabel(m_name, width - 40);
-            //m_size.text = m_preset.sizeAsString;
-
             backgroundSprite = null;
         }
 

@@ -75,20 +75,13 @@ namespace UltimateEyecandy.GUI
             _enableWeatherCheckbox.isChecked = WeatherManager.instance.m_enableWeather;
             _enableWeatherCheckbox.eventCheckChanged += CheckboxChanged;
 
-            //  Weatyer settings:
+            //  Weather settings:
             var precipitationContainer = UIUtils.CreateFormElement(this, "center");
             precipitationContainer.relativePosition = new Vector3(0, 68);
-            //if (LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter")
-            if (UltimateEyeCandy.config.outputDebug)
-            {
-                DebugUtils.Log($"Winter map detected: {UltimateEyeCandy.isWinterMap}.");
-            }
+            //  Winter map:
             if (UltimateEyeCandy.isWinterMap)
             {
-                //  Snow intensity (Snowfall-Only):
-                //var snowContainer = UIUtils.CreateFormElement(this, "center");
-                //snowContainer.relativePosition = new Vector3(0, 68);
-
+                //  Snow intensity:
                 _snowIntensityLabel = precipitationContainer.AddUIComponent<UILabel>();
                 _snowIntensityLabel.text = "Snowfall intensity";
                 _snowIntensityLabel.textScale = 0.9f;
@@ -100,12 +93,10 @@ namespace UltimateEyecandy.GUI
                 _snowIntensitySlider.stepSize = 0.25f;
                 _snowIntensitySlider.eventValueChanged += SliderChanged;
             }
+            //  Non-winter map:
             else
             {
                 //  Rain intensity:
-                //var rainContainer = UIUtils.CreateFormElement(this, "center");
-                //rainContainer.relativePosition = new Vector3(0, 68);
-
                 _rainIntensityLabel = precipitationContainer.AddUIComponent<UILabel>();
                 _rainIntensityLabel.text = "Rain intensity";
                 _rainIntensityLabel.textScale = 0.9f;
@@ -186,14 +177,22 @@ namespace UltimateEyecandy.GUI
                 if (!WeatherManager.instance.m_enableWeather)
                 {
                     WeatherManager.instance.m_enableWeather = true;
+                    UltimateEyeCandy.currentSettings.weather = true;
                     _enableWeatherCheckbox.isChecked = true;
                 }
             }
             //  
             else if (trigger == _snowIntensitySlider)
             {
-                WeatherManager.instance.m_currentRain = value;
-                //UltimateEyeCandy.currentSettings.weather_snowintensity = value;
+                //WeatherManager.instance.m_currentRain = value;
+                UltimateEyeCandy.currentSettings.weather_snowintensity = value;
+                //  Enable dynamic weather if disabled (required for rainfall):
+                if (!WeatherManager.instance.m_enableWeather)
+                {
+                    WeatherManager.instance.m_enableWeather = true;
+                    UltimateEyeCandy.currentSettings.weather = true;
+                    _enableWeatherCheckbox.isChecked = true;
+                }
             }
             else if (trigger == _fogIntensitySlider)
             {
@@ -203,6 +202,7 @@ namespace UltimateEyecandy.GUI
                 if (!WeatherManager.instance.m_enableWeather)
                 {
                     WeatherManager.instance.m_enableWeather = true;
+                    UltimateEyeCandy.currentSettings.weather = true;
                     _enableWeatherCheckbox.isChecked = true;
                 }
             }
@@ -219,18 +219,32 @@ namespace UltimateEyecandy.GUI
             {
                 WeatherManager.instance.m_enableWeather = isChecked;
                 UltimateEyeCandy.currentSettings.weather = isChecked;
-                //  Re-apply current weather settings:
-                if (isChecked)
-                {
-                    WeatherManager.instance.m_currentRain = _rainIntensitySlider.value;
-                    var rrp = GameObject.FindObjectOfType<RainParticleProperties>();
-                    rrp.ForceRainMotionBlur = _rainMotionblurCheckbox.isChecked;
-                    WeatherManager.instance.m_currentFog = _fogIntensitySlider.value;
-                }
+                //  
+                //var optionsGameplayPanel = FindObjectOfType<OptionsGameplayPanel>();
+                UltimateEyeCandy.optionsGameplayPanel.enableWeather = isChecked;
+                //  Re-apply current weather settings - To-do: only re-apply when checking box manually (not when triggered by LoadPreset()):
+                //if (isChecked)
+                //{
+                //    if (UltimateEyeCandy.isWinterMap)
+                //    {
+                //        //WeatherManager.instance.m_currentRain = _snowIntensitySlider.value;
+                //        UltimateEyeCandy.currentSettings.weather_snowintensity = _snowIntensitySlider.value;
+                //    }
+                //    else
+                //    {
+                //        WeatherManager.instance.m_currentRain = _rainIntensitySlider.value;
+                //        UltimateEyeCandy.currentSettings.weather_rainintensity = _rainIntensitySlider.value;
+                //        var rrp = FindObjectOfType<RainParticleProperties>();
+                //        rrp.ForceRainMotionBlur = _rainMotionblurCheckbox.isChecked;
+                //        UltimateEyeCandy.currentSettings.weather_rainmotionblur = _rainMotionblurCheckbox.isChecked;
+                //    }
+                //    WeatherManager.instance.m_currentFog = _fogIntensitySlider.value;
+                //    UltimateEyeCandy.currentSettings.weather_fogintensity = _fogIntensitySlider.value;
+                //}
             }
             else if (trigger == _rainMotionblurCheckbox)
             {
-                var rrp = GameObject.FindObjectOfType<RainParticleProperties>();
+                var rrp = FindObjectOfType<RainParticleProperties>();
                 rrp.ForceRainMotionBlur = isChecked;
                 UltimateEyeCandy.currentSettings.weather_rainmotionblur = isChecked;
             }

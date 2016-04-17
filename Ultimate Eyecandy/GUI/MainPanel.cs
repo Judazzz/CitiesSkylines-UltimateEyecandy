@@ -55,8 +55,9 @@ namespace UltimateEyecandy.GUI
             padding = new RectOffset(10, 10, 4, 4);
             width = SPACING + WIDTH;
             height = TITLE_HEIGHT + HEIGHT + TABS_HEIGHT + SPACING;
-            relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width)/2),
-                Mathf.Floor((GetUIView().fixedHeight - height)/2));
+            relativePosition = new Vector3(10, 60);
+            //relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width)/2),
+            //    Mathf.Floor((GetUIView().fixedHeight - height)/2));
 
             SetupControls();
         }
@@ -191,7 +192,7 @@ namespace UltimateEyecandy.GUI
             toggle.focusedBgSprite = "OptionBaseFocus";
             toggle.hoveredBgSprite = "OptionBaseHover";
             toggle.pressedBgSprite = "OptionBasePressed";
-            toggle.tooltip = "Light Control";
+            toggle.tooltip = "Ultimate Eyecandy";
             toggle.normalFgSprite = "InfoIconEntertainmentDisabled";
             toggle.scaleFactor = 0.75f;
 

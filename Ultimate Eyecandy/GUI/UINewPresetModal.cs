@@ -42,7 +42,6 @@ namespace UltimateEyecandy.GUI
             // Title Bar
             m_title = AddUIComponent<UITitleBar>();
             m_title.title = "Create New Preset";
-            //m_title.iconSprite = "ToolbarIconZoomOutCity";
             m_title.isModal = true;
 
             // Name
@@ -78,7 +77,7 @@ namespace UltimateEyecandy.GUI
 
             m_ok.eventClick += (c, p) =>
             {
-                UltimateEyeCandy.CreatePreset(m_name.text);
+                UltimateEyeCandy.CreatePreset(m_name.text, false);
                 UIView.PopModal();
                 Hide();
             };

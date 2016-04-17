@@ -61,6 +61,7 @@ namespace UltimateEyecandy.GUI
             _heightLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _heightSlider = UIUtils.CreateSlider(topContainer, -80f, 80f);
+            _heightSlider.name = "heightSlider";
             _heightSlider.tooltip = "Move this slider to change the sun's vertical position.";
             _heightSlider.value = 0;
             _heightSlider.eventValueChanged += ValueChanged;
@@ -75,6 +76,7 @@ namespace UltimateEyecandy.GUI
             _rotationLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _rotationSlider = UIUtils.CreateSlider(sunContainer, -180f, 180f);
+            _rotationSlider.name = "rotationSlider";
             _rotationSlider.tooltip = "Move this slider to change the sun's horizontal position.";
             _rotationSlider.value = 0;
             _rotationSlider.eventValueChanged += ValueChanged;
@@ -89,6 +91,7 @@ namespace UltimateEyecandy.GUI
             _intensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _intensitySlider = UIUtils.CreateSlider(globalContainer, 0f, 10f);
+            _intensitySlider.name = "intensitySlider";
             _intensitySlider.tooltip = "Move this slider to change the intensity of the sun light.";
             _intensitySlider.value = 5f;
             _intensitySlider.eventValueChanged += ValueChanged;
@@ -104,6 +107,7 @@ namespace UltimateEyecandy.GUI
             _ambientLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _ambientSlider = UIUtils.CreateSlider(ambientContainer, 0f, 2f);
+            _ambientSlider.name = "ambientSlider";
             _ambientSlider.tooltip = "Move this slider to change the intensity of the ambient light.";
             _ambientSlider.value = 1f;
             _ambientSlider.eventValueChanged += ValueChanged;
