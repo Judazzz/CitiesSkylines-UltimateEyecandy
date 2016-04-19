@@ -11,7 +11,7 @@ namespace UltimateEyecandy.GUI
 
     class MainPanel : UIPanel
     {
-        public UITitleBar m_title;
+        public UIMainTitleBar m_title;
 
         public AmbientPanel ambientPanel;
         public WeatherPanel weatherPanel;
@@ -78,7 +78,7 @@ namespace UltimateEyecandy.GUI
         public void SetupControls()
         {
             //  Title Bar:
-            m_title = AddUIComponent<UITitleBar>();
+            m_title = AddUIComponent<UIMainTitleBar>();
             m_title.title = "Ultimate Eyecandy";
             //  Tabs:
             panelTabs = AddUIComponent<UITabstrip>();

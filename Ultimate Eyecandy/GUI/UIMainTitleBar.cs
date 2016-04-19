@@ -3,7 +3,7 @@ using ColossalFramework.UI;
 
 namespace UltimateEyecandy.GUI
 {
-    public class UITitleBar : UIPanel
+    public class UIMainTitleBar : UIPanel
     {
         private UISprite m_icon;
         private UILabel m_title;
@@ -64,7 +64,7 @@ namespace UltimateEyecandy.GUI
             //m_icon.isInteractive = false;
 
             m_title = AddUIComponent<UILabel>();
-            m_title.relativePosition = new Vector3(80, 13);
+            m_title.relativePosition = new Vector3(70, 13);
             m_title.text = title;
             m_title.isInteractive = false;
 

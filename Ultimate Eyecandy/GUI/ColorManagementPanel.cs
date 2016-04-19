@@ -161,6 +161,15 @@ namespace UltimateEyecandy.GUI
             return null;
         }
 
+        public static string GetLutNameByIndex(int index)
+        {
+            foreach (var lut in GetLutList())
+            {
+                if (lut.index == index) return lut.name;
+            }
+            return "None";
+        }
+
         public static List<Lut> GetLutList()
         {
             var list = new List<Lut>();

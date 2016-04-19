@@ -61,6 +61,7 @@
     <Compile Include="GUI\PresetsPanel.cs" />
     <Compile Include="GUI\UIFastList.cs" />
     <Compile Include="GUI\UILutItem.cs" />
+    <Compile Include="GUI\UIModalTitleBar.cs" />
     <Compile Include="GUI\UIPresetItem.cs" />
     <Compile Include="GUI\WeatherPanel.cs" />
     <Compile Include="GUI\UINewPresetModal.cs" />
@@ -68,7 +69,7 @@
     <Compile Include="UltimateEyecandy.cs" />
     <Compile Include="GUI\MainPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GUI\UItitlebar.cs" />
+    <Compile Include="GUI\UIMainTitleBar.cs" />
     <Compile Include="GUI\UIutils.cs" />
   </ItemGroup>
   <ItemGroup />

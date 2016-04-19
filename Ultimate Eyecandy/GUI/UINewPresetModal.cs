@@ -10,7 +10,7 @@ namespace UltimateEyecandy.GUI
 {
     public class UINewPresetModal : UIPanel
     {
-        private UITitleBar m_title;
+        private UIModalTitleBar m_title;
         private UITextField m_name;
         private UIButton m_ok;
         private UIButton m_cancel;
@@ -40,9 +40,10 @@ namespace UltimateEyecandy.GUI
             width = 250;
 
             // Title Bar
-            m_title = AddUIComponent<UITitleBar>();
+            m_title = AddUIComponent<UIModalTitleBar>();
             m_title.title = "Create New Preset";
             m_title.isModal = true;
+            m_title.relativePosition = new Vector3(10, 5);
 
             // Name
             UILabel name = AddUIComponent<UILabel>();

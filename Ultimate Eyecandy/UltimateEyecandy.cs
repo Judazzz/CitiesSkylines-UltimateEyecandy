@@ -1,4 +1,5 @@
 ﻿using ColossalFramework.UI;
+using ColossalFramework.Plugins;
 using ICities;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace UltimateEyecandy
                 UIHelperBase group = helper.AddGroup(Name);
                 group.AddSpace(10);
                 //  
-                UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Write data to debug log (it's going to be a lot!).", UltimateEyeCandy.config.outputDebug,
+                UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Write data to debug log (it's going to be a lot!)", UltimateEyeCandy.config.outputDebug,
                     b =>
                     {
                         if (UltimateEyeCandy.config.outputDebug != b)
@@ -94,6 +95,7 @@ namespace UltimateEyecandy
         private static MainPanel _mainPanel;
 
         private const string FileName = "CSL_UltimateEyecandy.xml";
+        private const string FileNameLocal = "CSL_UltimateEyecandy_local.xml";
 
         public static bool isWinterMap = false;
 
@@ -200,9 +202,10 @@ namespace UltimateEyecandy
 
         public static void RestoreBackup()
         {
-            if (!File.Exists(FileName + ".bak")) return;
+            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
+            if (!File.Exists(fileName + ".bak")) return;
 
-            File.Copy(FileName + ".bak", FileName, true);
+            File.Copy(fileName + ".bak", fileName, true);
             //  
             if (config.outputDebug)
             {
@@ -212,9 +215,10 @@ namespace UltimateEyecandy
 
         public static void SaveBackup()
         {
-            if (!File.Exists(FileName)) return;
+            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
+            if (!File.Exists(fileName)) return;
 
-            File.Copy(FileName, FileName + ".bak", true);
+            File.Copy(fileName, fileName + ".bak", true);
             //  
             if (config.outputDebug)
             {
@@ -224,16 +228,17 @@ namespace UltimateEyecandy
 
         public static void LoadConfig()
         {
+            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
             if (!isGameLoaded)
             {
-                if (File.Exists(FileName))
+                if (File.Exists(fileName))
                 {
-                    config = Configuration.Deserialize(FileName);
+                    config = Configuration.Deserialize(fileName);
                 }
                 return;
             }
             //  Load config:
-            if (!File.Exists(FileName))
+            if (!File.Exists(fileName))
             {
                 //  No config:
                 if (config.outputDebug)
@@ -242,21 +247,22 @@ namespace UltimateEyecandy
                 }
                 //  Create and save new config:
                 config = new Configuration();
-                SaveConfig();
+                SaveConfig(false);
                 //  Create temporary preset for current settings:
                 CreateTemporaryPreset();
                 return;
             }
             //  
-            config = Configuration.Deserialize(FileName);
+            config = Configuration.Deserialize(fileName);
         }
 
         public static void SaveConfig(bool reloadUI = true)
         {
+            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
             try
             {
                 var xmlSerializer = new XmlSerializer(typeof(Configuration));
-                using (var streamWriter = new StreamWriter(FileName))
+                using (var streamWriter = new StreamWriter(fileName))
                 {
                     config.version = ModInfo.version;
                     //  
@@ -344,7 +350,7 @@ namespace UltimateEyecandy
                 weather_rainmotionblur = optionsGameplayPanel.enableWeather,
                 weather_fogintensity = 0f,
                 weather_snowintensity = 0f,
-                color_selectedlut = "None"
+                color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection) //"None"
             };
             //  
             if (config.outputDebug)

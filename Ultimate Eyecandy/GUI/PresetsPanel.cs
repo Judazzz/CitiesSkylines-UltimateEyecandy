@@ -45,11 +45,17 @@ namespace UltimateEyecandy.GUI
             if (UltimateEyeCandy.config.loadLastPresetOnStart && !string.IsNullOrEmpty(UltimateEyeCandy.config.lastPreset))
             {
                 //  Create temporary preset based on last active preset:
-                UltimateEyeCandy.LoadPreset(UltimateEyeCandy.config.lastPreset);
-                //  
-                if (UltimateEyeCandy.config.outputDebug)
+                try {
+                    UltimateEyeCandy.LoadPreset(UltimateEyeCandy.config.lastPreset);
+                    if (UltimateEyeCandy.config.outputDebug)
+                    {
+                        DebugUtils.Log($"Temporary preset created based on last active preset '{UltimateEyeCandy.config.lastPreset}'.");
+                    }
+                }
+                catch
                 {
-                    DebugUtils.Log($"Temporary preset created based on last active preset '{UltimateEyeCandy.config.lastPreset}'.");
+                    //  Latest preset not found: create temporary preset from scratch:
+                    UltimateEyeCandy.CreateTemporaryPreset();
                 }
             }
             else
