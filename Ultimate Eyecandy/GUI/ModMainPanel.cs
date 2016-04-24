@@ -2,6 +2,8 @@
 using System.Reflection;
 using ColossalFramework.UI;
 using UnityEngine;
+using ColossalFramework.Plugins;
+using System.Linq;
 
 namespace UltimateEyecandy.GUI
 {
@@ -171,11 +173,20 @@ namespace UltimateEyecandy.GUI
         public void AddGuiToggle()
         {
             const int size = 36;
-            //  Position button to the left of Freecamera Button:
+            //  Positioned relative to Happinesspanel:
+            //var happinessSprite = UIView.GetAView().FindUIComponent<UIButton>("PopulationPanel");
+            //toggleUltimateEyecandyButton = UIView.GetAView().FindUIComponent<UIPanel>("InfoPanel").AddUIComponent<UIButton>();
+            //toggleUltimateEyecandyButton.relativePosition = new Vector3(happinessSprite.absolutePosition.x + 285, happinessSprite.relativePosition.y - 5);
+
+            //  Positioned relative to Freecamera Button:
             var freeCameraButton = UIView.GetAView().FindUIComponent<UIButton>("Freecamera");
             toggleUltimateEyecandyButton = UIView.GetAView().FindUIComponent<UIPanel>("InfoPanel").AddUIComponent<UIButton>();
             toggleUltimateEyecandyButton.verticalAlignment = UIVerticalAlignment.Middle;
-            toggleUltimateEyecandyButton.relativePosition = new Vector3(freeCameraButton.absolutePosition.x - 42, freeCameraButton.relativePosition.y);
+            toggleUltimateEyecandyButton.relativePosition = toggleButtonPositionConflicted()
+                //  Enhanced Mouse Light mod detected (position button more to left to prevent overlapping):
+                ? new Vector3(freeCameraButton.absolutePosition.x - 76, freeCameraButton.relativePosition.y)
+                //  Enhanced Mouse Light mod not detected (position button in default position):
+                : new Vector3(freeCameraButton.absolutePosition.x - 42, freeCameraButton.relativePosition.y);
             //  
             toggleUltimateEyecandyButton.size = new Vector2(36f, 36f);
             toggleUltimateEyecandyButton.playAudioEvents = true;
@@ -199,7 +210,6 @@ namespace UltimateEyecandy.GUI
             //  Apply custom sprite:
             toggleUltimateEyecandyButton.atlas = toggleUltimateEyecandyButtonAtlas;
             toggleUltimateEyecandyButton.normalFgSprite = "EyecandyNormalBg";
-            //toggleUltimateEyecandyButton.normalBgSprite = "EyecandyNormalFg";
             toggleUltimateEyecandyButton.normalBgSprite = null;
             toggleUltimateEyecandyButton.hoveredFgSprite = "EyecandyHoveredBg";
             toggleUltimateEyecandyButton.hoveredBgSprite = "EyecandyHoveredFg";
@@ -256,6 +266,15 @@ namespace UltimateEyecandy.GUI
                 atlas.AddSprite(sprite);
             }
             return atlas;
+        }
+
+        private static bool toggleButtonPositionConflicted()
+        {
+            if (PluginManager.instance.GetPluginsInfo().Any(mod => (mod.publishedFileID.AsUInt64 == 527036685 && mod.isEnabled)))
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

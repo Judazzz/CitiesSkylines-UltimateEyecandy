@@ -345,42 +345,42 @@ namespace UltimateEyecandy.GUI
             return panel;
         }
 
-        public static UIColorField CreateColorField(UIComponent parent)
-        {
-            //UIColorField colorField = parent.AddUIComponent<UIColorField>();
-            // Creating a ColorField from scratch is tricky. Cloning an existing one instead.
-            // Probably doesn't work when on main menu screen and such as no ColorField exists.
-            UIColorField colorField = Object.Instantiate<GameObject>(Object.FindObjectOfType<UIColorField>().gameObject).GetComponent<UIColorField>();
-            parent.AttachUIComponent(colorField.gameObject);
+        //public static UIColorField CreateColorField(UIComponent parent)
+        //{
+        //    //UIColorField colorField = parent.AddUIComponent<UIColorField>();
+        //    // Creating a ColorField from scratch is tricky. Cloning an existing one instead.
+        //    // Probably doesn't work when on main menu screen and such as no ColorField exists.
+        //    UIColorField colorField = Object.Instantiate<GameObject>(Object.FindObjectOfType<UIColorField>().gameObject).GetComponent<UIColorField>();
+        //    parent.AttachUIComponent(colorField.gameObject);
 
-            // Reset most everything
-            colorField.anchor = UIAnchorStyle.Left | UIAnchorStyle.Top;
-            colorField.arbitraryPivotOffset = new Vector2(0, 0);
-            colorField.autoSize = false;
-            colorField.bringTooltipToFront = true;
-            colorField.builtinKeyNavigation = true;
-            colorField.canFocus = true;
-            colorField.enabled = true;
-            colorField.isEnabled = true;
-            colorField.isInteractive = true;
-            colorField.isLocalized = false;
-            colorField.isTooltipLocalized = false;
-            colorField.isVisible = true;
-            colorField.pivot = UIPivotPoint.TopLeft;
-            colorField.useDropShadow = false;
-            colorField.useGradient = false;
-            colorField.useGUILayout = true;
-            colorField.useOutline = false;
-            colorField.verticalAlignment = UIVerticalAlignment.Top;
+        //    // Reset most everything
+        //    colorField.anchor = UIAnchorStyle.Left | UIAnchorStyle.Top;
+        //    colorField.arbitraryPivotOffset = new Vector2(0, 0);
+        //    colorField.autoSize = false;
+        //    colorField.bringTooltipToFront = true;
+        //    colorField.builtinKeyNavigation = true;
+        //    colorField.canFocus = true;
+        //    colorField.enabled = true;
+        //    colorField.isEnabled = true;
+        //    colorField.isInteractive = true;
+        //    colorField.isLocalized = false;
+        //    colorField.isTooltipLocalized = false;
+        //    colorField.isVisible = true;
+        //    colorField.pivot = UIPivotPoint.TopLeft;
+        //    colorField.useDropShadow = false;
+        //    colorField.useGradient = false;
+        //    colorField.useGUILayout = true;
+        //    colorField.useOutline = false;
+        //    colorField.verticalAlignment = UIVerticalAlignment.Top;
 
-            colorField.size = new Vector2(40f, 26f);
-            colorField.normalBgSprite = "ColorPickerOutline";
-            colorField.hoveredBgSprite = "ColorPickerOutlineHovered";
-            colorField.selectedColor = Color.black;
-            colorField.pickerPosition = UIColorField.ColorPickerPosition.RightAbove;
+        //    colorField.size = new Vector2(40f, 26f);
+        //    colorField.normalBgSprite = "ColorPickerOutline";
+        //    colorField.hoveredBgSprite = "ColorPickerOutlineHovered";
+        //    colorField.selectedColor = Color.black;
+        //    colorField.pickerPosition = UIColorField.ColorPickerPosition.RightAbove;
 
-            return colorField;
-        }
+        //    return colorField;
+        //}
 
 
         public static void DestroyDeeply(UIComponent component)

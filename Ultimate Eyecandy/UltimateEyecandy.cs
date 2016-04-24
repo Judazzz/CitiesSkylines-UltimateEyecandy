@@ -384,11 +384,11 @@ namespace UltimateEyecandy
                 WeatherPanel.instance.enableWeatherCheckbox.isChecked = currentSettings.weather;
                 if (isWinterMap)
                 {
-                    WeatherPanel.instance.snowIntensitySlider.value = (float)currentSettings.weather_snowintensity;
+                    WeatherPanel.instance.precipitationSlider.value = (float)currentSettings.weather_snowintensity;
                 }
                 else
                 {
-                    WeatherPanel.instance.rainintensitySlider.value = (float)currentSettings.weather_rainintensity;
+                    WeatherPanel.instance.precipitationSlider.value = (float)currentSettings.weather_rainintensity;
                     WeatherPanel.instance.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
                 }
                 WeatherPanel.instance.fogIntensitySlider.value = (float)currentSettings.weather_fogintensity;
@@ -430,13 +430,13 @@ namespace UltimateEyecandy
             AmbientPanel.instance.ambientSlider.value = (float)currentSettings.ambient_ambient;
             if (isWinterMap)
             {
-                WeatherPanel.instance.snowIntensitySlider.value = (float)currentSettings.weather_snowintensity;
+                WeatherPanel.instance.precipitationSlider.value = (float)currentSettings.weather_snowintensity;
             }
             else
             {
-                WeatherPanel.instance.rainintensitySlider.value = (float)currentSettings.weather_rainintensity;
+                WeatherPanel.instance.precipitationSlider.value = (float)currentSettings.weather_rainintensity;
                 WeatherPanel.instance.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
-            }   
+            }
             WeatherPanel.instance.fogIntensitySlider.value = (float)currentSettings.weather_fogintensity;
             WeatherPanel.instance.enableWeatherCheckbox.isChecked = currentSettings.weather;
             ColorManagamentPanel.instance.lutFastlist.DisplayAt(0);
