@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
-using System.Xml.Serialization;
-using System.Text;
+﻿using ColossalFramework.UI;
+using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
@@ -65,7 +63,7 @@ namespace UltimateEyecandy.GUI
 
             _enableWeatherLabel = topContainer.AddUIComponent<UILabel>();
             _enableWeatherLabel.text = "Enable weather";
-            _enableWeatherLabel.tooltip = "Check this box to enable dynamic weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
+            _enableWeatherLabel.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
             _enableWeatherLabel.textScale = 0.9f;
             _enableWeatherLabel.relativePosition = new Vector3(36, 22);
 
@@ -87,10 +85,10 @@ namespace UltimateEyecandy.GUI
                 _snowIntensityLabel.textScale = 0.9f;
                 _snowIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
-                _snowIntensitySlider = UIUtils.CreateSlider(precipitationContainer, 0, 10f);
+                _snowIntensitySlider = UIUtils.CreateSlider(precipitationContainer, 0, 2.5f);
                 _snowIntensitySlider.name = "snowIntensitySlider";
-                _rainIntensitySlider.tooltip = "Move this slider to the right to increase snow intensity.\nIf disabled, dynamic Weather will be enabled.";
-                _snowIntensitySlider.stepSize = 0.25f;
+                _rainIntensitySlider.tooltip = "Move this slider to the right to increase Snow Intensity.\nDynamic Weather will be enabled if necessary.";
+                _snowIntensitySlider.stepSize = 0.05f;
                 _snowIntensitySlider.eventValueChanged += SliderChanged;
             }
             //  Non-winter map:
@@ -102,10 +100,10 @@ namespace UltimateEyecandy.GUI
                 _rainIntensityLabel.textScale = 0.9f;
                 _rainIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
-                _rainIntensitySlider = UIUtils.CreateSlider(precipitationContainer, 0, 10f);
+                _rainIntensitySlider = UIUtils.CreateSlider(precipitationContainer, 0, 2.5f);
                 _rainIntensitySlider.name = "rainIntensitySlider";
-                _rainIntensitySlider.stepSize = 0.25f;
-                _rainIntensitySlider.tooltip = "Move this slider to the right to increase rain intensity.\nIf disabled, dynamic Weather will be enabled.";
+                _rainIntensitySlider.stepSize = 0.05f;
+                _rainIntensitySlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
                 _rainIntensitySlider.eventValueChanged += SliderChanged;
 
                 //  Rain motion blur:
@@ -120,7 +118,7 @@ namespace UltimateEyecandy.GUI
 
                 _rainMotionblurCheckbox = UIUtils.CreateCheckBox(rainMotionblurContainer);
                 _rainMotionblurCheckbox.name = "rainMotionblurCheckbox";
-                _rainMotionblurCheckbox.tooltip = "Check this box to enable the rain motion blur effect. This setting is mainly visible when the game is paused.";
+                _rainMotionblurCheckbox.tooltip = "Check this box to enable the Rain Motion Blur Effect. This setting is mainly visible when the game is paused.";
                 _rainMotionblurCheckbox.relativePosition = new Vector3(10, 23);
                 _rainMotionblurCheckbox.eventCheckChanged += CheckboxChanged;
             }
@@ -134,10 +132,10 @@ namespace UltimateEyecandy.GUI
             _fogIntensityLabel.textScale = 0.9f;
             _fogIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
-            _fogIntensitySlider = UIUtils.CreateSlider(fogContainer, 0, 3.5f);
+            _fogIntensitySlider = UIUtils.CreateSlider(fogContainer, 0, 1f);
             _fogIntensitySlider.name = "fogIntensitySlider";
-            _fogIntensitySlider.stepSize = 0.25f;
-            _rainIntensitySlider.tooltip = "Move this slider to the right to increase fog density.\nIf disabled, dynamic Weather will be enabled.";
+            _fogIntensitySlider.stepSize = 0.02f;
+            _rainIntensitySlider.tooltip = "Move this slider to the right to increase Fog Density.\nDynamic Weather will be enabled if necessary.";
             _fogIntensitySlider.eventValueChanged += SliderChanged;
 
             //  Reset button:
@@ -220,7 +218,6 @@ namespace UltimateEyecandy.GUI
                 WeatherManager.instance.m_enableWeather = isChecked;
                 UltimateEyeCandy.currentSettings.weather = isChecked;
                 //  
-                //var optionsGameplayPanel = FindObjectOfType<OptionsGameplayPanel>();
                 UltimateEyeCandy.optionsGameplayPanel.enableWeather = isChecked;
                 //  Re-apply current weather settings - To-do: only re-apply when checking box manually (not when triggered by LoadPreset()):
                 //if (isChecked)

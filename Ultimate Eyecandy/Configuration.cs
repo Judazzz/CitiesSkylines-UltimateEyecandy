@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -11,7 +10,7 @@ namespace UltimateEyecandy
     {
         public string version;
         public bool outputDebug;
-        public bool enableAdvanced;
+        public bool enableAdvanced = false;
         public bool loadLastPresetOnStart;
         public string lastPreset;
 

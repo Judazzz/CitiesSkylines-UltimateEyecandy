@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
@@ -97,7 +96,7 @@ namespace UltimateEyecandy.GUI
             _loadPresetButton.relativePosition = new Vector3(10, 10);
             _loadPresetButton.name = "loadPresetButton";
             _loadPresetButton.text = "Load preset";
-            _loadPresetButton.tooltip = "Load preset selected in list.";
+            _loadPresetButton.tooltip = "Load Preset selected in list.";
             _loadPresetButton.eventClicked += (c, e) =>
             {
                 if (UltimateEyeCandy.config.outputDebug)
@@ -114,7 +113,7 @@ namespace UltimateEyecandy.GUI
             _deletePresetButton.relativePosition = new Vector3(150, 10);
             _deletePresetButton.name = "deletePresetButton";
             _deletePresetButton.text = "Delete preset";
-            _deletePresetButton.tooltip = "Delete preset selected in list.";
+            _deletePresetButton.tooltip = "Delete Preset selected in list.";
             _deletePresetButton.eventClicked += (c, e) =>
             {
                 if (UltimateEyeCandy.config.outputDebug)
@@ -137,7 +136,7 @@ namespace UltimateEyecandy.GUI
             _savePresetButton.name = "savePresetButton";
             _savePresetButton.text = "Save as new";
             //  Todo: add all settings to tooltip(?)
-            _savePresetButton.tooltip = "Save current settings as a new preset (create new preset).";
+            _savePresetButton.tooltip = "Save current settings as a new Preset (create New Preset).";
             _savePresetButton.eventClicked += (c, e) =>
             {
                 if (UltimateEyeCandy.config.outputDebug)
@@ -156,7 +155,7 @@ namespace UltimateEyecandy.GUI
             _overwritePresetButton.relativePosition = new Vector3(150, 10);
             _overwritePresetButton.name = "overwritePresetButton";
             _overwritePresetButton.text = "Overwrite";
-            _overwritePresetButton.tooltip = "Save current settings as the preset selected in the list (overwrite existing preset).";
+            _overwritePresetButton.tooltip = "Save current settings as the Preset selected in the list (overwrite Existing Preset).";
             _overwritePresetButton.eventClicked += (c, e) =>
             {
                 if (UltimateEyeCandy.config.outputDebug)

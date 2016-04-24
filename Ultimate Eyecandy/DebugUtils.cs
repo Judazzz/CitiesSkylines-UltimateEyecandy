@@ -1,7 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
 using ColossalFramework.Plugins;
-
-using System;
+using UnityEngine;
 
 namespace UltimateEyecandy
 {
@@ -44,8 +43,6 @@ namespace UltimateEyecandy
         {
             var message = $"{modPrefix}Unexpected {e.GetType().Name}: {e.Message}\n{e.StackTrace}\n\nInnerException:\n{e.InnerException.Message}";
             Log(message);
-            //Log("Intercepted exception (not game breaking):");
-            //Debug.LogException(e);
         }
 
         private static string m_lastLog;

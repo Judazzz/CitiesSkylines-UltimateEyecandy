@@ -1,13 +1,13 @@
-﻿using ColossalFramework.UI;
-using ColossalFramework.Plugins;
-using ICities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using UltimateEyecandy.GUI;
+using ColossalFramework.UI;
+using ColossalFramework.Plugins;
+using ICities;
 using UnityEngine;
+using UltimateEyecandy.GUI;
 
 namespace UltimateEyecandy
 {
@@ -40,7 +40,8 @@ namespace UltimateEyecandy
                 //UICheckBox checkBox;
                 UIHelperBase group = helper.AddGroup(Name);
                 group.AddSpace(10);
-                //  
+
+                //  Output Debug Data:
                 UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Write data to debug log (it's going to be a lot!)", UltimateEyeCandy.config.outputDebug,
                     b =>
                     {
@@ -53,7 +54,7 @@ namespace UltimateEyecandy
                 debugCheckBox.tooltip = "Output messages to debug log. This may be useful when experiencing issues with this mod.";
                 group.AddSpace(20);
 
-                //  
+                //  Auto-Load Last Preset:
                 UICheckBox loadLastPresetOnStartCheckBox = (UICheckBox)group.AddCheckbox("Load last active preset on start.", UltimateEyeCandy.config.loadLastPresetOnStart,
                     b =>
                     {
@@ -66,19 +67,19 @@ namespace UltimateEyecandy
                 loadLastPresetOnStartCheckBox.tooltip = "Load last active preset on start.";
                 group.AddSpace(20);
 
-                //  
-                UICheckBox advancedCheckBox = (UICheckBox)group.AddCheckbox("Enable advanced mod settings (not yet implemented).", UltimateEyeCandy.config.enableAdvanced,
-                    b =>
-                    {
-                        if (UltimateEyeCandy.config.enableAdvanced != b)
-                        {
-                            UltimateEyeCandy.config.enableAdvanced = b;
-                            UltimateEyeCandy.SaveConfig(false);
-                        }
-                    });
-                advancedCheckBox.tooltip = "Enable advanced mod settings (not yet implemented).";
-                group.AddSpace(10);
-                group.AddGroup("WARNING: playing with the advanced settings may result in unexpected behavior of\nthe game's simulation, so it is strongly recommended to only use these settings on a\nbacked up save game and to NOT save the game afterwards.\nTL;DR: use these settings at your own risk, you have been warned!");
+                //  Advanced Options (disabled for now):
+                //UICheckBox advancedCheckBox = (UICheckBox)group.AddCheckbox("Enable advanced mod settings (not yet implemented).", UltimateEyeCandy.config.enableAdvanced,
+                //    b =>
+                //    {
+                //        if (UltimateEyeCandy.config.enableAdvanced != b)
+                //        {
+                //            UltimateEyeCandy.config.enableAdvanced = b;
+                //            UltimateEyeCandy.SaveConfig(false);
+                //        }
+                //    });
+                //advancedCheckBox.tooltip = "Enable advanced mod settings (not yet implemented).";
+                //group.AddSpace(10);
+                //group.AddGroup("WARNING: playing with the advanced settings may result in unexpected behavior of\nthe game's simulation, so it is strongly recommended to only use these settings on a\nbacked up save game and to NOT save the game afterwards.\nTL;DR: use these settings at your own risk, you have been warned!");
             }
             catch (Exception e)
             {
@@ -92,7 +93,7 @@ namespace UltimateEyecandy
     public class UltimateEyeCandy : LoadingExtensionBase
     {
         private static GameObject _gameObject;
-        private static MainPanel _mainPanel;
+        private static ModMainPanel _modMainPanel;
 
         private const string FileName = "CSL_UltimateEyecandy.xml";
         private const string FileNameLocal = "CSL_UltimateEyecandy_local.xml";
@@ -142,8 +143,8 @@ namespace UltimateEyecandy
                     optionsGameplayPanel = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<OptionsGameplayPanel>().gameObject).GetComponent<OptionsGameplayPanel>();
                     //  
                     isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
-                    _mainPanel = _gameObject.AddComponent<MainPanel>();
-                    _mainPanel.AddGuiToggle();
+                    _modMainPanel = _gameObject.AddComponent<ModMainPanel>();
+                    _modMainPanel.AddGuiToggle();
                     if (config.outputDebug)
                     {
                         DebugUtils.Log("MainPanel created");
@@ -173,7 +174,7 @@ namespace UltimateEyecandy
                 //  Delete current settings:
                 currentSettings = null;
                 //  
-                GUI.UIUtils.DestroyDeeply(_mainPanel);
+                GUI.UIUtils.DestroyDeeply(_modMainPanel);
                 if (_gameObject != null)
                     GameObject.Destroy(_gameObject);
 
@@ -350,7 +351,7 @@ namespace UltimateEyecandy
                 weather_rainmotionblur = optionsGameplayPanel.enableWeather,
                 weather_fogintensity = 0f,
                 weather_snowintensity = 0f,
-                color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection) //"None"
+                color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection)
             };
             //  
             if (config.outputDebug)

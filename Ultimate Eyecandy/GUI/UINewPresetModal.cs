@@ -1,9 +1,5 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace UltimateEyecandy.GUI
@@ -55,14 +51,14 @@ namespace UltimateEyecandy.GUI
             m_name.width = width - 10;
             m_name.height = 30;
             m_name.padding = new RectOffset(6, 6, 6, 6);
-            m_name.tooltip = "Please enter a preset name";
+            m_name.tooltip = "Please enter a Preset name";
             m_name.relativePosition = new Vector3(5, name.relativePosition.y + name.height + 5);
 
             m_name.Focus();
             m_name.eventTextChanged += (c, s) =>
             {
                 m_ok.isEnabled = !s.IsNullOrWhiteSpace() && UltimateEyeCandy.GetPresetByName(s) == null;
-                m_name.tooltip = (UltimateEyeCandy.GetPresetByName(s) != null) ? $"Preset '{s}' already exists!" : "Please enter a preset name";
+                m_name.tooltip = (UltimateEyeCandy.GetPresetByName(s) != null) ? $"Preset '{s}' already exists!" : "Please enter a Preset name";
             };
 
             m_name.eventTextSubmitted += (c, s) =>

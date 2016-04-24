@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
@@ -62,9 +62,10 @@ namespace UltimateEyecandy.GUI
 
             _heightSlider = UIUtils.CreateSlider(topContainer, -80f, 80f);
             _heightSlider.name = "heightSlider";
-            _heightSlider.tooltip = "Move this slider to change the sun's vertical position.";
+            _heightSlider.tooltip = "Move this slider to change the sun's Vertical Position.";
             _heightSlider.value = 0;
             _heightSlider.eventValueChanged += ValueChanged;
+            _heightSlider.stepSize = 0.5f;
 
             //  Sun rotation:
             var sunContainer = UIUtils.CreateFormElement(this, "center");
@@ -77,9 +78,10 @@ namespace UltimateEyecandy.GUI
 
             _rotationSlider = UIUtils.CreateSlider(sunContainer, -180f, 180f);
             _rotationSlider.name = "rotationSlider";
-            _rotationSlider.tooltip = "Move this slider to change the sun's horizontal position.";
+            _rotationSlider.tooltip = "Move this slider to change the sun's Horizontal Position.";
             _rotationSlider.value = 0;
             _rotationSlider.eventValueChanged += ValueChanged;
+            _rotationSlider.stepSize = 1f;
 
             //  Global light intensity:
             var globalContainer = UIUtils.CreateFormElement(this, "center");
@@ -92,10 +94,10 @@ namespace UltimateEyecandy.GUI
 
             _intensitySlider = UIUtils.CreateSlider(globalContainer, 0f, 10f);
             _intensitySlider.name = "intensitySlider";
-            _intensitySlider.tooltip = "Move this slider to change the intensity of the sun light.";
+            _intensitySlider.tooltip = "Move this slider to change the Sun Light Intensity.";
             _intensitySlider.value = 5f;
             _intensitySlider.eventValueChanged += ValueChanged;
-            _intensitySlider.stepSize = 0.1f;
+            _intensitySlider.stepSize = 0.2f;
 
             //  Ambient light intensity:
             var ambientContainer = UIUtils.CreateFormElement(this, "center");
@@ -108,10 +110,10 @@ namespace UltimateEyecandy.GUI
 
             _ambientSlider = UIUtils.CreateSlider(ambientContainer, 0f, 2f);
             _ambientSlider.name = "ambientSlider";
-            _ambientSlider.tooltip = "Move this slider to change the intensity of the ambient light.";
+            _ambientSlider.tooltip = "Move this slider to change the Ambient Light Intensity.";
             _ambientSlider.value = 1f;
             _ambientSlider.eventValueChanged += ValueChanged;
-            _ambientSlider.stepSize = 0.1f;
+            _ambientSlider.stepSize = 0.04f;
 
             //  Reset button:
             var resetContainer = UIUtils.CreateFormElement(this, "bottom");

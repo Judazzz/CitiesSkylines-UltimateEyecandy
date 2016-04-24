@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
+using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
@@ -57,11 +57,6 @@ namespace UltimateEyecandy.GUI
             m_drag.height = height;
             m_drag.relativePosition = Vector3.zero;
             m_drag.target = parent;
-
-            //m_icon = AddUIComponent<UISprite>();
-            //m_icon.spriteName = iconSprite;
-            //m_icon.relativePosition = new Vector3(10, 5);
-            //m_icon.isInteractive = false;
 
             m_title = AddUIComponent<UILabel>();
             m_title.relativePosition = new Vector3(-5, 7);

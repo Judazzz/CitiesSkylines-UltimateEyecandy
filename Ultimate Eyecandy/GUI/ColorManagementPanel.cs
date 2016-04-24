@@ -1,8 +1,8 @@
 ﻿using System;
-using UnityEngine;
-using ColossalFramework.UI;
 using System.Collections.Generic;
 using System.Linq;
+using ColossalFramework.UI;
+using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
@@ -70,7 +70,7 @@ namespace UltimateEyecandy.GUI
             _loadLutButton.relativePosition = new Vector3(10, 10);
             _loadLutButton.name = "loadLutButton";
             _loadLutButton.text = "Load lut";
-            _loadLutButton.tooltip = "Load lut selected in list.";
+            _loadLutButton.tooltip = "Load LUT selected in list.";
             _loadLutButton.eventClicked += (c, e) =>
             {
                 try

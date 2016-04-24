@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Linq;
-using UnityEngine;
+using System.Reflection;
 using ColossalFramework.UI;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using System.IO;
+using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
 
-    class MainPanel : UIPanel
+    class ModMainPanel : UIPanel
     {
         public UIMainTitleBar m_title;
 
@@ -25,6 +22,11 @@ namespace UltimateEyecandy.GUI
         public UIButton colormanagementButton;
         public UIButton presetsButton;
 
+
+        public UIButton toggleUltimateEyecandyButton;
+        public static UITextureAtlas toggleUltimateEyecandyButtonAtlas = null;
+        static readonly string UE = "UltimateEyecandy";
+
         private const float WIDTH = 270;
         private const float HEIGHT = 350;
         private const float SPACING = 5;
@@ -33,8 +35,8 @@ namespace UltimateEyecandy.GUI
 
         private static GameObject _gameObject;
 
-        private static MainPanel _instance;
-        public static MainPanel instance
+        private static ModMainPanel _instance;
+        public static ModMainPanel instance
 
         {
             get { return _instance; }
@@ -56,9 +58,7 @@ namespace UltimateEyecandy.GUI
             width = SPACING + WIDTH;
             height = TITLE_HEIGHT + HEIGHT + TABS_HEIGHT + SPACING;
             relativePosition = new Vector3(10, 60);
-            //relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width)/2),
-            //    Mathf.Floor((GetUIView().fixedHeight - height)/2));
-
+            //  
             SetupControls();
         }
 
@@ -86,17 +86,17 @@ namespace UltimateEyecandy.GUI
             panelTabs.size = new Vector2(WIDTH, TABS_HEIGHT);
             panelTabs.padding = new RectOffset(2, 2, 2, 2);
             //  Tab Buttons:
-            ambientButton = GUI.UIUtils.CreateTab(panelTabs, "Ambient");
-            ambientButton.tooltip = "In this section you can change several world-related settings such as sun height and rotation, and light intensity.";
+            ambientButton = UIUtils.CreateTab(panelTabs, "Ambient");
+            ambientButton.tooltip = "In this section you can change several world-related settings such as the sun's horizontal and vertical position and sun and ambient light intensity.";
             ambientButton.textScale = 0.8f;
-            weatherButton = GUI.UIUtils.CreateTab(panelTabs, "Weather");
+            weatherButton = UIUtils.CreateTab(panelTabs, "Weather");
             weatherButton.tooltip = "In this section you can change several weather-related settings such as rain, snow and fog intensity.";
             weatherButton.textScale = 0.8f;
-            colormanagementButton = GUI.UIUtils.CreateTab(panelTabs, "LUT");
+            colormanagementButton = UIUtils.CreateTab(panelTabs, "LUT");
             colormanagementButton.tooltip = "In this section you can quickly change the LUT you want to use.";
             colormanagementButton.textScale = 0.8f;
-            presetsButton = GUI.UIUtils.CreateTab(panelTabs, "Presets");
-            presetsButton.tooltip = "In this section you can save your current settings as a preset, load previously saved presets, or reset everything to default.";
+            presetsButton = UIUtils.CreateTab(panelTabs, "Presets");
+            presetsButton.tooltip = "In this section you can save your current settings as a Preset, load previously saved Presets, or reset everything to default.";
             presetsButton.textScale = 0.8f;
 
             //  Main Panel:
@@ -168,39 +168,94 @@ namespace UltimateEyecandy.GUI
             }
         }
 
-        public void Toggle()
-        {
-            if (isVisible)
-            {
-                Hide();
-            }
-            else
-            {
-                Show(true);
-            }
-        }
-
         public void AddGuiToggle()
         {
-            UIMultiStateButton zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
-            UIComponent bottomBar = zoomButton.parent;
-            UIButton toggle = GUI.UIUtils.CreateButton(bottomBar);
-
-            toggle.area = new Vector4(108, 24, 38, 38);
-            toggle.playAudioEvents = true;
-            toggle.normalBgSprite = "OptionBase";
-            toggle.focusedBgSprite = "OptionBaseFocus";
-            toggle.hoveredBgSprite = "OptionBaseHover";
-            toggle.pressedBgSprite = "OptionBasePressed";
-            toggle.tooltip = "Ultimate Eyecandy";
-            toggle.normalFgSprite = "InfoIconEntertainmentDisabled";
-            toggle.scaleFactor = 0.75f;
-
-            toggle.eventClicked += (c, e) =>
+            const int size = 36;
+            //  Position button to the left of Freecamera Button:
+            var freeCameraButton = UIView.GetAView().FindUIComponent<UIButton>("Freecamera");
+            toggleUltimateEyecandyButton = UIView.GetAView().FindUIComponent<UIPanel>("InfoPanel").AddUIComponent<UIButton>();
+            toggleUltimateEyecandyButton.verticalAlignment = UIVerticalAlignment.Middle;
+            toggleUltimateEyecandyButton.relativePosition = new Vector3(freeCameraButton.absolutePosition.x - 42, freeCameraButton.relativePosition.y);
+            //  
+            toggleUltimateEyecandyButton.size = new Vector2(36f, 36f);
+            toggleUltimateEyecandyButton.playAudioEvents = true;
+            toggleUltimateEyecandyButton.tooltip = "Ultimate Eyecandy " + ModInfo.version;
+            //  Create custom atlas:
+            if (toggleUltimateEyecandyButtonAtlas == null)
             {
-                Toggle();
+                toggleUltimateEyecandyButtonAtlas = CreateAtlas(UE, size, size, "ToolbarIcon.png", new[]
+                                            {
+                                                "EyecandyNormalBg",
+                                                "EyecandyHoveredBg",
+                                                "EyecandyPressedBg",
+                                                "EyecandyNormalFg",
+                                                "EyecandyHoveredFg",
+                                                "EyecandyPressedFg",
+                                                "EyecandyUnlockBg",
+                                                "EyecandyLogo",
+                                                "EyecandyInfoTextBg",
+                                            });
+            }
+            //  Apply custom sprite:
+            toggleUltimateEyecandyButton.atlas = toggleUltimateEyecandyButtonAtlas;
+            toggleUltimateEyecandyButton.normalFgSprite = "EyecandyNormalBg";
+            //toggleUltimateEyecandyButton.normalBgSprite = "EyecandyNormalFg";
+            toggleUltimateEyecandyButton.normalBgSprite = null;
+            toggleUltimateEyecandyButton.hoveredFgSprite = "EyecandyHoveredBg";
+            toggleUltimateEyecandyButton.hoveredBgSprite = "EyecandyHoveredFg";
+            toggleUltimateEyecandyButton.pressedFgSprite = "EyecandyPressedBg";
+            toggleUltimateEyecandyButton.pressedBgSprite = "EyecandyPressedFg";
+            toggleUltimateEyecandyButton.focusedFgSprite = "EyecandyPressedBg";
+            toggleUltimateEyecandyButton.focusedBgSprite = "EyecandyPressedFg";
+            //  Event handling:
+            toggleUltimateEyecandyButton.eventClicked += (c, e) =>
+            {
+                isVisible = !isVisible;
+                if (!isVisible)
+                {
+                    toggleUltimateEyecandyButton.Unfocus();
+                }
             };
 
+        }
+
+        public static UITextureAtlas CreateAtlas(string name, int width, int height, string file, string[] spriteNames)
+        {
+            var tex = new Texture2D(width, height, TextureFormat.ARGB32, false)
+            {
+                filterMode = FilterMode.Bilinear,
+            };
+
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var textureStream = assembly.GetManifestResourceStream(UE + ".Assets." + file))
+            {
+                var buf = new byte[textureStream.Length];
+                textureStream.Read(buf, 0, buf.Length);
+                tex.LoadImage(buf);
+                tex.Apply(true, false);
+            }
+
+            var atlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+            var material = Instantiate(UIView.Find<UITabstrip>("ToolMode").atlas.material);
+            material.mainTexture = tex;
+
+            atlas.material = material;
+            atlas.name = name;
+
+            for (var i = 0; i < spriteNames.Length; ++i)
+            {
+                var uw = 1.0f / spriteNames.Length;
+
+                var sprite = new UITextureAtlas.SpriteInfo
+                {
+                    name = spriteNames[i],
+                    texture = tex,
+                    region = new Rect(i * uw, 0, uw, 1),
+                };
+
+                atlas.AddSprite(sprite);
+            }
+            return atlas;
         }
     }
 }
