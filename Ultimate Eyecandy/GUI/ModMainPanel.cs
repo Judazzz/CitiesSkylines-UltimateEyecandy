@@ -24,7 +24,6 @@ namespace UltimateEyecandy.GUI
         public UIButton colormanagementButton;
         public UIButton presetsButton;
 
-
         public UIButton toggleUltimateEyecandyButton;
         public static UITextureAtlas toggleUltimateEyecandyButtonAtlas = null;
         static readonly string UE = "UltimateEyecandy";
@@ -61,6 +60,8 @@ namespace UltimateEyecandy.GUI
             height = TITLE_HEIGHT + HEIGHT + TABS_HEIGHT + SPACING;
             relativePosition = new Vector3(10, 60);
             //  
+            DebugUtils.Log($"CURRENT FOV: {Camera.main.fieldOfView}");
+
             SetupControls();
         }
 
@@ -163,9 +164,22 @@ namespace UltimateEyecandy.GUI
             if (trigger == colormanagementButton)
             {
                 colormanagementPanel.isVisible = true;
+                ColorManagamentPanel.instance.lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
+                var isActive = (ColorManagamentPanel.instance._selectedLut.internal_name == UltimateEyeCandy.currentSettings.color_selectedlut);
+                ColorManagamentPanel.instance.loadLutButton.isEnabled = (isActive) ? false : true;
+                ColorManagamentPanel.instance.loadLutButton.opacity = (isActive) ? 0.5f : 1.0f;
+                ColorManagamentPanel.instance.loadLutButton.tooltip = (isActive) ? "LUT selected in list is already active." : "Load LUT selected in list.";
             }
             if (trigger == presetsButton)
             {
+                if (PresetsPanel.instance.presetFastlist.selectedIndex < 0)
+                {
+                    PresetsPanel.instance.updateButtons(true);
+                }
+                else
+                {
+                    PresetsPanel.instance.updateButtons(false);
+                }
                 PresetsPanel.isVisible = true;
             }
         }

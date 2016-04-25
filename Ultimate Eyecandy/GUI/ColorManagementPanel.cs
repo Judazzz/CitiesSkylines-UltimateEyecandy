@@ -9,16 +9,21 @@ namespace UltimateEyecandy.GUI
     public class ColorManagamentPanel : UIPanel
     {
         private UILabel _lutLabel;
-        public UIFastList _lutFastlist;
-        public LutList.Lut _selectedLut;
-        public UIButton _loadLutButton;
-
+        private UIFastList _lutFastlist;
+        private UIButton _loadLutButton;
         private UIButton _resetColorManagementButton;
 
         public UIFastList lutFastlist
         {
             get { return _lutFastlist; }
         }
+
+        public UIButton loadLutButton
+        {
+            get { return _loadLutButton; }
+        }
+
+        public LutList.Lut _selectedLut;
 
         private static ColorManagamentPanel _instance;
         public static ColorManagamentPanel instance
@@ -65,12 +70,12 @@ namespace UltimateEyecandy.GUI
 
             _loadLutButton = UIUtils.CreateButton(loadContainer);
             _loadLutButton.width = 100f;
-            _loadLutButton.opacity = 0.25f;
             _loadLutButton.isEnabled = false;
+            _loadLutButton.opacity = 0.5f;
             _loadLutButton.relativePosition = new Vector3(10, 10);
             _loadLutButton.name = "loadLutButton";
             _loadLutButton.text = "Load lut";
-            _loadLutButton.tooltip = "Load LUT selected in list.";
+            _loadLutButton.tooltip = "LUT selected in list is already active.";
             _loadLutButton.eventClicked += (c, e) =>
             {
                 try
@@ -87,6 +92,7 @@ namespace UltimateEyecandy.GUI
                     }
                     DebugUtils.LogException(ex);
                     _lutFastlist.DisplayAt(0);
+                    UltimateEyeCandy.currentSettings.color_selectedlut = "None";
                     ColorCorrectionManager.instance.currentSelection = 0;
                 }
             };
@@ -133,15 +139,16 @@ namespace UltimateEyecandy.GUI
         protected void OnSelectedItemChanged(UIComponent component, int i)
         {
             _selectedLut = _lutFastlist.rowsData[i] as LutList.Lut;
-            UltimateEyeCandy.currentSettings.color_selectedlut = _selectedLut.internal_name;
             //  
             if (UltimateEyeCandy.config.outputDebug)
             {
                 DebugUtils.Log($"ColorManagementPanel: LutFastList SelectedItemChanged: {_selectedLut.name} selected.");
             }
-            //  Show buttons 'Load/Delete Preset' buttons:
-            _loadLutButton.isEnabled = true;
-            _loadLutButton.opacity = 1f;
+            //  Button appearance:
+            var isActive = (_selectedLut.internal_name == UltimateEyeCandy.currentSettings.color_selectedlut);
+            _loadLutButton.isEnabled = (isActive) ? false : true;
+            _loadLutButton.opacity = (isActive) ? 0.5f : 1.0f;
+            _loadLutButton.tooltip = (isActive) ? "LUT selected in list is already active." : "Load LUT selected in list.";
         }
 
         protected void OnEnableStateChanged(UIComponent component, bool state)

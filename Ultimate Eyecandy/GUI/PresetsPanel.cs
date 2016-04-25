@@ -7,19 +7,33 @@ namespace UltimateEyecandy.GUI
     public class PresetsPanel : UIPanel
     {
         private UILabel _presetLabel;
-        public UIFastList _presetFastlist;
+        private UIFastList _presetFastlist;
+
+        private UIButton _loadPresetButton;
+        private UIButton _deletePresetButton;
+        private UIButton _savePresetButton;
+        private UIButton _overwritePresetButton;
+
+        private UIButton _resetAllButton;
+
+        public UIFastList presetFastlist
+        {
+            get { return _presetFastlist; }
+        }
+        public UIButton loadPresetButton
+        {
+            get { return _loadPresetButton; }
+        }
+        public UIButton deletePresetButton
+        {
+            get { return _deletePresetButton; }
+        }
+        public UIButton overwritePresetButton
+        {
+            get { return _overwritePresetButton; }
+        }
+
         public Configuration.Preset _selectedPreset;
-
-        public UIButton _loadPresetButton;
-        public UIButton _deletePresetButton;
-
-        public UIButton _savePresetButton;
-        public UIButton _overwritePresetButton;
-
-        public UIButton _resetAllButton;
-
-        public UIPanel _presetsContainer;
-        public UIListBox _presetsListbox;
         public string[] _presets;
 
         private static PresetsPanel _instance;
@@ -99,11 +113,14 @@ namespace UltimateEyecandy.GUI
             _loadPresetButton.tooltip = "Load Preset selected in list.";
             _loadPresetButton.eventClicked += (c, e) =>
             {
+                //  
                 if (UltimateEyeCandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Load preset' clicked: preset '{_selectedPreset.name}'.");
                 }
                 UltimateEyeCandy.LoadPreset(_selectedPreset.name);
+                //  Button appearance:
+                updateButtons(true);
             };
 
             _deletePresetButton = UIUtils.CreateButton(loadDeleteContainer);
@@ -116,12 +133,16 @@ namespace UltimateEyecandy.GUI
             _deletePresetButton.tooltip = "Delete Preset selected in list.";
             _deletePresetButton.eventClicked += (c, e) =>
             {
+                //  
                 if (UltimateEyeCandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Delete preset' clicked: preset '{_selectedPreset.name}'.");
                 }
                 UltimateEyeCandy.DeletePreset(_selectedPreset);
+                //  
                 PopulatePresetsFastList();
+                //  Button appearance:
+                updateButtons(true);
             };
 
             //  Save/overwrite preset:
@@ -139,6 +160,7 @@ namespace UltimateEyecandy.GUI
             _savePresetButton.tooltip = "Save current settings as a new Preset (create New Preset).";
             _savePresetButton.eventClicked += (c, e) =>
             {
+                //  
                 if (UltimateEyeCandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Save preset' clicked.");
@@ -146,6 +168,8 @@ namespace UltimateEyecandy.GUI
                 //  Open 'Preset name' modal:
                 UIView.PushModal(UINewPresetModal.instance);
                 UINewPresetModal.instance.Show(true);
+                //  Button appearance:
+                updateButtons(true);
             };
 
             _overwritePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
@@ -158,11 +182,14 @@ namespace UltimateEyecandy.GUI
             _overwritePresetButton.tooltip = "Save current settings as the Preset selected in the list (overwrite Existing Preset).";
             _overwritePresetButton.eventClicked += (c, e) =>
             {
+                //  
                 if (UltimateEyeCandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Overwrite preset' clicked: preset '{_selectedPreset.name}'.");
                 }
                 UltimateEyeCandy.CreatePreset(_selectedPreset.name, true);
+                //  Button appearance:
+                updateButtons(true);
             };
 
             //  Reset all:
@@ -174,11 +201,14 @@ namespace UltimateEyecandy.GUI
             _resetAllButton.tooltip = "Reset all values set in all panels to default values.";
             _resetAllButton.eventClicked += (c, e) =>
             {
+                //  
                 if (UltimateEyeCandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Reset all' clicked.");
                 }
                 UltimateEyeCandy.ResetAll();
+                //  Button appearance:
+                updateButtons(true);
             };
         }
 
@@ -205,29 +235,28 @@ namespace UltimateEyecandy.GUI
 
         protected void OnSelectedItemChanged(UIComponent component, int i)
         {
-            if (i >= 0)
-            {
-                _overwritePresetButton.opacity = 1f;
-                _overwritePresetButton.isEnabled = true;
-            }
-            //  
             _selectedPreset = _presetFastlist.rowsData[i] as Configuration.Preset;
-            UltimateEyeCandy.currentSettings = _selectedPreset;
-            //  
             if (UltimateEyeCandy.config.outputDebug)
             {
                 DebugUtils.Log($"PresetsPanel: FastListItem selected: preset '{_selectedPreset.name}'.");
             }
-            //  Show buttons 'Load/Delete Preset' buttons:
-            _loadPresetButton.isEnabled = true;
-            _loadPresetButton.opacity = 1f;
-            _deletePresetButton.isEnabled = true;
-            _deletePresetButton.opacity = 1f;
+            //  Button appearance:
+            updateButtons(false);
         }
 
         protected void OnEnableStateChanged(UIComponent component, bool state)
         {
             _presetFastlist.DisplayAt(_presetFastlist.listPosition);
+        }
+
+        public void updateButtons(bool disableAll)
+        {
+            _loadPresetButton.opacity = (disableAll) ? 0.25f : 1f;
+            _loadPresetButton.isEnabled = (disableAll) ? false : true;
+            _deletePresetButton.opacity = (disableAll) ? 0.25f : 1f;
+            _deletePresetButton.isEnabled = (disableAll) ? false : true;
+            _overwritePresetButton.opacity = (disableAll) ? 0.25f : 1f;
+            _overwritePresetButton.isEnabled = (disableAll) ? false : true;
         }
     }
 }

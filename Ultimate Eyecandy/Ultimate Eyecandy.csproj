@@ -76,7 +76,9 @@
     <EmbeddedResource Include="Assets\ToolbarIcon.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\WorkshopVisual.jpg" />
+    <Content Include="Assets\Workshop Description.txt" />
+    <Content Include="Assets\Workshop PreviewImage.png" />
+    <Content Include="Assets\Workshop visual.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

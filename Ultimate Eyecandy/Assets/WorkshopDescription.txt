@@ -1,0 +1,47 @@
+Hey all,
+
+I've  been enjoying Cities: Skylines basically since release day, immensely helped by all the awesome stuff the community created. So after so much taking, I figured it was time for a little giving.
+In real life I'm a front-end/C# developer, and in my free time I love travel and photography (preferably combined ;) So it was pretty inevitable that I ended up creating a mod that goes right after the aesthetics. The result: Ultimate Eyecandy.
+
+
+[h1]So, what does this mod do?[/h1]
+[quote]First of all it is important to realize that Ultimate Eyecandy is [i]not a game play mod[/i]: it does not add new or alter existing behavior or game play features, nor does it touch the simulation in any way.
+
+So what [i]does[/i] it do, you may wonder?
+Well, this is a mod that gives you direct control over various settings that impact the game's visuals.
+
+Ultimate Eyecandy allows you to:
+- change the sun's horizontal and vertical position;
+- change sun and ambient light intensity;
+- enable rain, snow and fog instantly and change the intensity;
+- change LUT's in-game, so no more having to exit to the game's Options Panel;
+- save all your settings as a preset;
+- overwrite existing and delete unwanted presets;
+- automatically load the last used preset when restarting the game.[/quote]
+
+
+[h1]For who is this mod?[/h1]
+[quote]- modelers that want to take screenshots of their assets in every imaginable weather/ambient condition;
+- players that like to have control over the environment when making Let's Plays;
+- players that love to have a more artistic/photographic approach to taking screenshots;
+- players that like to watch their city in different conditions without having to wait (for example until the game finally decides to let it rain);
+- anyone else :D[/quote]
+
+
+[h1]Wish list (not to be confused with a to-do list - feasibility needs to be researched)[/h1]
+[quote]- setting to turn on/off building night lights at will, without messing with the actual simulation (based on what I've found so far, the two seem rather intertwined).
+- color picker to change the fog color;
+- color picker to change air pollution color;
+- slider to change the strength of 'ground wetness';
+- slider to change the Field of View (FoV);
+- LUT Creator: apply various settings to a neutral LUT (color channels, brightness, contrast, lightness, etc.) and export/upload the result as a custom LUT;
+- a modular set-up: this mod will be the core, and other graphics-related mods can be integrated as 'plug-ins', each with a menu item/tab of their own. Think (orphaned) mods like Dynamic Resolution, BorderCities and/or Ambient Occlusion;
+- who knows what else I'll come up with (feel free to make suggestions!)[/quote]
+
+
+[h1]Thank you[/h1]
+[quote]- [url=http://steamcommunity.com/id/boformer/myworkshopfiles/?appid=255710]Boformer[/url], [url=http://steamcommunity.com/id/bloody_penguin/myworkshopfiles/?appid=255710]BloodyPenguin[/url] and [url=http://steamcommunity.com/id/samsamts/myworkshopfiles/?appid=255710]SamsamTS[/url] for making their mods publicly available on Github: I've learned an awful lot about C:SL modding simply by studying their mods and experimenting with their code;
+- [url=http://steamcommunity.com/id/AJ3D/myworkshopfiles/?appid=255710]AJ3D[/url] for helping me to get started and taking my first baby steps in the wonderful world of CSL modding![/quote]
+
+
+[b]Source:[/b] [url=https://github.com/Judazzz/CitiesSkylines-UltimateEyecandy]Github[/url]

@@ -25,7 +25,7 @@ namespace UltimateEyecandy
         {
             get
             {
-                return "All visual settings combined in one ultimate mod!";
+                return "A wealth of visual settings at your fingertips!";
             }
         }
 
