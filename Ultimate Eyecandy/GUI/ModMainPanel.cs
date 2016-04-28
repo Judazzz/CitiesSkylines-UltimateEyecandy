@@ -28,12 +28,6 @@ namespace UltimateEyecandy.GUI
         public static UITextureAtlas toggleUltimateEyecandyButtonAtlas = null;
         static readonly string UE = "UltimateEyecandy";
 
-        private const float WIDTH = 270;
-        private const float HEIGHT = 350;
-        private const float SPACING = 5;
-        private const float TITLE_HEIGHT = 36;
-        private const float TABS_HEIGHT = 28;
-
         private static GameObject _gameObject;
 
         private static ModMainPanel _instance;
@@ -51,13 +45,14 @@ namespace UltimateEyecandy.GUI
         {
             base.Start();
             
-            backgroundSprite = "UnlockingPanel2";
+            //backgroundSprite = "UnlockingPanel2";
+            backgroundSprite = "LevelBarBackground";
             isVisible = false;
             canFocus = true;
             isInteractive = true;
             padding = new RectOffset(10, 10, 4, 4);
-            width = SPACING + WIDTH;
-            height = TITLE_HEIGHT + HEIGHT + TABS_HEIGHT + SPACING;
+            width = UltimateEyecandy.SPACING + UltimateEyecandy.WIDTH;
+            height = UltimateEyecandy.TITLE_HEIGHT + UltimateEyecandy.TABS_HEIGHT + UltimateEyecandy.HEIGHT + UltimateEyecandy.SPACING;
             relativePosition = new Vector3(10, 60);
             //  
             DebugUtils.Log($"CURRENT FOV: {Camera.main.fieldOfView}");
@@ -85,11 +80,11 @@ namespace UltimateEyecandy.GUI
             m_title.title = "Ultimate Eyecandy";
             //  Tabs:
             panelTabs = AddUIComponent<UITabstrip>();
-            panelTabs.relativePosition = new Vector2(SPACING, TITLE_HEIGHT + SPACING);
-            panelTabs.size = new Vector2(WIDTH, TABS_HEIGHT);
-            panelTabs.padding = new RectOffset(2, 2, 2, 2);
+            panelTabs.relativePosition = new Vector2(10, UltimateEyecandy.TITLE_HEIGHT + UltimateEyecandy.SPACING);
+            panelTabs.size = new Vector2(UltimateEyecandy.WIDTH - (3 * UltimateEyecandy.SPACING), UltimateEyecandy.TABS_HEIGHT);
+
             //  Tab Buttons:
-            ambientButton = UIUtils.CreateTab(panelTabs, "Ambient");
+            ambientButton = UIUtils.CreateTab(panelTabs, "Ambient", true);
             ambientButton.tooltip = "In this section you can change several world-related settings such as the sun's horizontal and vertical position and sun and ambient light intensity.";
             ambientButton.textScale = 0.8f;
             weatherButton = UIUtils.CreateTab(panelTabs, "Weather");
@@ -104,34 +99,34 @@ namespace UltimateEyecandy.GUI
 
             //  Main Panel:
             UIPanel body = AddUIComponent<UIPanel>();
-            body.width = WIDTH;
-            body.height = HEIGHT;
-            body.relativePosition = new Vector3(SPACING, TITLE_HEIGHT + TABS_HEIGHT + SPACING);
+            body.width = UltimateEyecandy.WIDTH;
+            body.height = UltimateEyecandy.HEIGHT;
+            body.relativePosition = new Vector3(UltimateEyecandy.SPACING, UltimateEyecandy.TITLE_HEIGHT + UltimateEyecandy.TABS_HEIGHT + UltimateEyecandy.SPACING);
 
             //  Section Panels:
             //  Ambient Panel:
             ambientPanel = body.AddUIComponent<AmbientPanel>();
-            ambientPanel.width = WIDTH - SPACING;
-            ambientPanel.height = HEIGHT;
-            ambientPanel.relativePosition = new Vector3(0, 0);
+            ambientPanel.width = UltimateEyecandy.WIDTH - (3 * UltimateEyecandy.SPACING);
+            ambientPanel.height = UltimateEyecandy.HEIGHT;
+            ambientPanel.relativePosition = new Vector3(5, 0);
             ambientPanel.isVisible = true;
             //  Weather Panel:
             weatherPanel = body.AddUIComponent<WeatherPanel>();
-            weatherPanel.width = WIDTH - SPACING;
-            weatherPanel.height = HEIGHT;
-            weatherPanel.relativePosition = new Vector3(0, 0);
+            weatherPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
+            weatherPanel.height = UltimateEyecandy.HEIGHT;
+            weatherPanel.relativePosition = new Vector3(5, 0);
             weatherPanel.isVisible = false;
             //  Color Management Panel:
             colormanagementPanel = body.AddUIComponent<ColorManagamentPanel>();
-            colormanagementPanel.width = WIDTH - SPACING;
-            colormanagementPanel.height = HEIGHT;
-            colormanagementPanel.relativePosition = new Vector3(0, 0);
+            colormanagementPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
+            colormanagementPanel.height = UltimateEyecandy.HEIGHT;
+            colormanagementPanel.relativePosition = new Vector3(5, 0);
             colormanagementPanel.isVisible = false;
             //  Presets Panel:
             PresetsPanel = body.AddUIComponent<PresetsPanel>();
-            PresetsPanel.width = WIDTH - SPACING;
-            PresetsPanel.height = HEIGHT;
-            PresetsPanel.relativePosition = new Vector3(0, 0);
+            PresetsPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
+            PresetsPanel.height = UltimateEyecandy.HEIGHT;
+            PresetsPanel.relativePosition = new Vector3(5, 0);
             PresetsPanel.isVisible = false;
 
             //  Tab Button Events:
@@ -143,7 +138,7 @@ namespace UltimateEyecandy.GUI
 
         private void TabClicked(UIComponent trigger, UIMouseEventParameter e)
         {
-            if (UltimateEyeCandy.config.outputDebug)
+            if (UltimateEyecandy.config.outputDebug)
             {
                 DebugUtils.Log($"MainPanel: Tab '{trigger.name}' clicked");
             }
@@ -165,7 +160,7 @@ namespace UltimateEyecandy.GUI
             {
                 colormanagementPanel.isVisible = true;
                 ColorManagamentPanel.instance.lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
-                var isActive = (ColorManagamentPanel.instance._selectedLut.internal_name == UltimateEyeCandy.currentSettings.color_selectedlut);
+                var isActive = (ColorManagamentPanel.instance._selectedLut.internal_name == UltimateEyecandy.currentSettings.color_selectedlut);
                 ColorManagamentPanel.instance.loadLutButton.isEnabled = (isActive) ? false : true;
                 ColorManagamentPanel.instance.loadLutButton.opacity = (isActive) ? 0.5f : 1.0f;
                 ColorManagamentPanel.instance.loadLutButton.tooltip = (isActive) ? "LUT selected in list is already active." : "Load LUT selected in list.";
@@ -187,10 +182,6 @@ namespace UltimateEyecandy.GUI
         public void AddGuiToggle()
         {
             const int size = 36;
-            //  Positioned relative to Happinesspanel:
-            //var happinessSprite = UIView.GetAView().FindUIComponent<UIButton>("PopulationPanel");
-            //toggleUltimateEyecandyButton = UIView.GetAView().FindUIComponent<UIPanel>("InfoPanel").AddUIComponent<UIButton>();
-            //toggleUltimateEyecandyButton.relativePosition = new Vector3(happinessSprite.absolutePosition.x + 285, happinessSprite.relativePosition.y - 5);
 
             //  Positioned relative to Freecamera Button:
             var freeCameraButton = UIView.GetAView().FindUIComponent<UIButton>("Freecamera");

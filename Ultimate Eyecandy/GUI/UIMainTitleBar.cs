@@ -61,10 +61,12 @@ namespace UltimateEyecandy.GUI
             m_title = AddUIComponent<UILabel>();
             m_title.relativePosition = new Vector3(70, 13);
             m_title.text = title;
+            m_title.textScale = 0.9f;
             m_title.isInteractive = false;
 
             m_close = AddUIComponent<UIButton>();
-            m_close.relativePosition = new Vector3(width - 35, 2);
+            m_close.size = new Vector2(25, 25);
+            m_close.relativePosition = new Vector3(width - 33, 7);
             m_close.normalBgSprite = "buttonclose";
             m_close.hoveredBgSprite = "buttonclosehover";
             m_close.pressedBgSprite = "buttonclosepressed";

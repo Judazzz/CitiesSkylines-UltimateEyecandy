@@ -43,8 +43,8 @@ namespace UltimateEyecandy.GUI
         {
             base.Start();
 
-            UltimateEyeCandy.LoadConfig();
-            if (UltimateEyeCandy.config.outputDebug)
+            UltimateEyecandy.LoadConfig();
+            if (UltimateEyecandy.config.outputDebug)
             {
                 DebugUtils.Log($"Ultimate Eyecandy: configuration loaded");
             }
@@ -55,26 +55,26 @@ namespace UltimateEyecandy.GUI
             SetupControls();
             PopulatePresetsFastList();
             //  Create temporary preset for current settings:
-            if (UltimateEyeCandy.config.loadLastPresetOnStart && !string.IsNullOrEmpty(UltimateEyeCandy.config.lastPreset))
+            if (UltimateEyecandy.config.loadLastPresetOnStart && !string.IsNullOrEmpty(UltimateEyecandy.config.lastPreset))
             {
                 //  Create temporary preset based on last active preset:
                 try {
-                    UltimateEyeCandy.LoadPreset(UltimateEyeCandy.config.lastPreset);
-                    if (UltimateEyeCandy.config.outputDebug)
+                    UltimateEyecandy.LoadPreset(UltimateEyecandy.config.lastPreset);
+                    if (UltimateEyecandy.config.outputDebug)
                     {
-                        DebugUtils.Log($"Temporary preset created based on last active preset '{UltimateEyeCandy.config.lastPreset}'.");
+                        DebugUtils.Log($"Temporary preset created based on last active preset '{UltimateEyecandy.config.lastPreset}'.");
                     }
                 }
                 catch
                 {
                     //  Latest preset not found: create temporary preset from scratch:
-                    UltimateEyeCandy.CreateTemporaryPreset();
+                    UltimateEyecandy.CreateTemporaryPreset();
                 }
             }
             else
             {
                 //  Create temporary preset from scratch:
-                UltimateEyeCandy.CreateTemporaryPreset();
+                UltimateEyecandy.CreateTemporaryPreset();
             }
         }
 
@@ -85,13 +85,13 @@ namespace UltimateEyecandy.GUI
 
             _presetLabel = topContainer.AddUIComponent<UILabel>();
             _presetLabel.text = "Load preset";
-            _presetLabel.textScale = 0.9f;
+            _presetLabel.textScale = 0.8f;
             _presetLabel.padding = new RectOffset(0, 0, 0, 5);
 
             // FastList
             _presetFastlist = UIFastList.Create<UIPresetItem>(topContainer);
             _presetFastlist.backgroundSprite = "UnlockingPanel";
-            _presetFastlist.width = 245;
+            _presetFastlist.width = parent.width - (3 * UltimateEyecandy.SPACING) - 12; // parent.width - (2 * UltimateEyecandy.SPACING);
             _presetFastlist.height = 150;
             _presetFastlist.canSelect = true;
             _presetFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
@@ -107,18 +107,18 @@ namespace UltimateEyecandy.GUI
             _loadPresetButton.width = 100f;
             _loadPresetButton.opacity = 0.25f;
             _loadPresetButton.isEnabled = false;
-            _loadPresetButton.relativePosition = new Vector3(10, 10);
+            _loadPresetButton.relativePosition = new Vector3(5, 10);
             _loadPresetButton.name = "loadPresetButton";
             _loadPresetButton.text = "Load preset";
             _loadPresetButton.tooltip = "Load Preset selected in list.";
             _loadPresetButton.eventClicked += (c, e) =>
             {
                 //  
-                if (UltimateEyeCandy.config.outputDebug)
+                if (UltimateEyecandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Load preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyeCandy.LoadPreset(_selectedPreset.name);
+                UltimateEyecandy.LoadPreset(_selectedPreset.name);
                 //  Button appearance:
                 updateButtons(true);
             };
@@ -134,11 +134,11 @@ namespace UltimateEyecandy.GUI
             _deletePresetButton.eventClicked += (c, e) =>
             {
                 //  
-                if (UltimateEyeCandy.config.outputDebug)
+                if (UltimateEyecandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Delete preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyeCandy.DeletePreset(_selectedPreset);
+                UltimateEyecandy.DeletePreset(_selectedPreset);
                 //  
                 PopulatePresetsFastList();
                 //  Button appearance:
@@ -153,7 +153,7 @@ namespace UltimateEyecandy.GUI
 
             _savePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
             _savePresetButton.width = 100f;
-            _savePresetButton.relativePosition = new Vector3(10, 10);
+            _savePresetButton.relativePosition = new Vector3(5, 10);
             _savePresetButton.name = "savePresetButton";
             _savePresetButton.text = "Save as new";
             //  Todo: add all settings to tooltip(?)
@@ -161,7 +161,7 @@ namespace UltimateEyecandy.GUI
             _savePresetButton.eventClicked += (c, e) =>
             {
                 //  
-                if (UltimateEyeCandy.config.outputDebug)
+                if (UltimateEyecandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Save preset' clicked.");
                 }
@@ -183,11 +183,11 @@ namespace UltimateEyecandy.GUI
             _overwritePresetButton.eventClicked += (c, e) =>
             {
                 //  
-                if (UltimateEyeCandy.config.outputDebug)
+                if (UltimateEyecandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Overwrite preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyeCandy.CreatePreset(_selectedPreset.name, true);
+                UltimateEyecandy.CreatePreset(_selectedPreset.name, true);
                 //  Button appearance:
                 updateButtons(true);
             };
@@ -202,11 +202,11 @@ namespace UltimateEyecandy.GUI
             _resetAllButton.eventClicked += (c, e) =>
             {
                 //  
-                if (UltimateEyeCandy.config.outputDebug)
+                if (UltimateEyecandy.config.outputDebug)
                 {
                     DebugUtils.Log($"PresetsPanel: 'Reset all' clicked.");
                 }
-                UltimateEyeCandy.ResetAll();
+                UltimateEyecandy.ResetAll();
                 //  Button appearance:
                 updateButtons(true);
             };
@@ -217,7 +217,7 @@ namespace UltimateEyecandy.GUI
             _presetFastlist.rowsData.Clear();
             _presetFastlist.selectedIndex = -1;
             //  
-            List<Configuration.Preset> allPresets = UltimateEyeCandy.config.presets;
+            List<Configuration.Preset> allPresets = UltimateEyecandy.config.presets;
             if (allPresets.Count > 0)
             {
                 for (int i = 0; i < allPresets.Count; i++)
@@ -228,7 +228,7 @@ namespace UltimateEyecandy.GUI
                     }
                 }
                 //  
-                _presetFastlist.rowHeight = 32f;
+                _presetFastlist.rowHeight = 26f;
                 _presetFastlist.DisplayAt(0);
             }
         }
@@ -236,7 +236,7 @@ namespace UltimateEyecandy.GUI
         protected void OnSelectedItemChanged(UIComponent component, int i)
         {
             _selectedPreset = _presetFastlist.rowsData[i] as Configuration.Preset;
-            if (UltimateEyeCandy.config.outputDebug)
+            if (UltimateEyecandy.config.outputDebug)
             {
                 DebugUtils.Log($"PresetsPanel: FastListItem selected: preset '{_selectedPreset.name}'.");
             }

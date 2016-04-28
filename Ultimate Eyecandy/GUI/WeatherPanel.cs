@@ -55,24 +55,20 @@ namespace UltimateEyecandy.GUI
             var topContainer = UIUtils.CreateFormElement(this, "top");
             topContainer.autoLayout = false;
 
-            _enableWeatherLabel = topContainer.AddUIComponent<UILabel>();
-            _enableWeatherLabel.text = "Enable weather";
-            _enableWeatherLabel.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
-            _enableWeatherLabel.textScale = 0.9f;
-            _enableWeatherLabel.relativePosition = new Vector3(36, 22);
-
             _enableWeatherCheckbox = UIUtils.CreateCheckBox(topContainer);
             _enableWeatherCheckbox.name = "enableWeatherCheckbox";
-            _enableWeatherCheckbox.relativePosition = new Vector3(10, 21);
+            _enableWeatherCheckbox.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
             _enableWeatherCheckbox.isChecked = WeatherManager.instance.m_enableWeather;
             _enableWeatherCheckbox.eventCheckChanged += CheckboxChanged;
+
+            _enableWeatherCheckbox.label.text = "Enable weather";
 
             //  Precipitation intensity:
             var precipitationContainer = UIUtils.CreateFormElement(this, "center");
             precipitationContainer.relativePosition = new Vector3(0, 68);
 
             _precipitationLabel = precipitationContainer.AddUIComponent<UILabel>();
-            _precipitationLabel.textScale = 0.9f;
+            _precipitationLabel.textScale = 0.8f;
             _precipitationLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _precipitationSlider = UIUtils.CreateSlider(precipitationContainer, 0, 2.5f);
@@ -81,7 +77,7 @@ namespace UltimateEyecandy.GUI
             _precipitationSlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
             _precipitationSlider.eventValueChanged += SliderChanged;
             //  Winter map?
-            if (UltimateEyeCandy.isWinterMap)
+            if (UltimateEyecandy.isWinterMap)
             {
                 //  Snow intensity:
                 _precipitationLabel.text = "Snowfall intensity";
@@ -100,26 +96,21 @@ namespace UltimateEyecandy.GUI
             rainMotionblurContainer.relativePosition = new Vector3(0, 115);
             rainMotionblurContainer.autoLayout = false;
 
-            _rainMotionblurLabel = rainMotionblurContainer.AddUIComponent<UILabel>();
-            _rainMotionblurLabel.text = "Rain motion blur";
-            _rainMotionblurLabel.textScale = 0.9f;
-            _rainMotionblurLabel.relativePosition = new Vector3(36, 24);
-
             _rainMotionblurCheckbox = UIUtils.CreateCheckBox(rainMotionblurContainer);
             _rainMotionblurCheckbox.name = "rainMotionblurCheckbox";
             _rainMotionblurCheckbox.tooltip = "Check this box to enable the Rain Motion Blur Effect. This setting is mainly visible when the game is paused.";
-            _rainMotionblurCheckbox.relativePosition = new Vector3(10, 23);
             _rainMotionblurCheckbox.eventCheckChanged += CheckboxChanged;
+            _rainMotionblurCheckbox.label.text = "Rain motion blur";
             //  Hide on winter maps:
-            rainMotionblurContainer.isVisible = (!UltimateEyeCandy.isWinterMap);
+            rainMotionblurContainer.isVisible = (!UltimateEyecandy.isWinterMap);
 
             //  Fog intensity:
             var fogContainer = UIUtils.CreateFormElement(this, "center");
-            fogContainer.relativePosition = (UltimateEyeCandy.isWinterMap) ? new Vector3(0, 128) : new Vector3(0, 183);
+            fogContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 128) : new Vector3(0, 183);
 
             _fogIntensityLabel = fogContainer.AddUIComponent<UILabel>();
             _fogIntensityLabel.text = "Fog intensity";
-            _fogIntensityLabel.textScale = 0.9f;
+            _fogIntensityLabel.textScale = 0.8f;
             _fogIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _fogIntensitySlider = UIUtils.CreateSlider(fogContainer, 0, 1f);
@@ -137,7 +128,7 @@ namespace UltimateEyecandy.GUI
             _resetWeatherButton.tooltip = "Reset all values set in this panel to default values.";
             _resetWeatherButton.eventClicked += (c, e) =>
             {
-                if (UltimateEyeCandy.config.outputDebug)
+                if (UltimateEyecandy.config.outputDebug)
                 {
                     DebugUtils.Log($"WeatherPanel: 'Reset' clicked.");
                 }
@@ -152,7 +143,7 @@ namespace UltimateEyecandy.GUI
 
         private void SliderChanged(UIComponent trigger, float value)
         {
-            if (UltimateEyeCandy.config.outputDebug)
+            if (UltimateEyecandy.config.outputDebug)
             {
                 DebugUtils.Log($"WeatherPanel: Slider {trigger.name} = {value}");
             }
@@ -160,31 +151,31 @@ namespace UltimateEyecandy.GUI
             if (trigger == _precipitationSlider)
             {
                 WeatherManager.instance.m_currentRain = value;
-                if (UltimateEyeCandy.isWinterMap)
+                if (UltimateEyecandy.isWinterMap)
                 {
-                    UltimateEyeCandy.currentSettings.weather_snowintensity = value;
+                    UltimateEyecandy.currentSettings.weather_snowintensity = value;
                 }
                 else
                 {
-                    UltimateEyeCandy.currentSettings.weather_rainintensity = value;
+                    UltimateEyecandy.currentSettings.weather_rainintensity = value;
                 }
                 //  Enable dynamic weather if disabled (required for rainfall):
                 if (!WeatherManager.instance.m_enableWeather)
                 {
                     WeatherManager.instance.m_enableWeather = true;
-                    UltimateEyeCandy.currentSettings.weather = true;
+                    UltimateEyecandy.currentSettings.weather = true;
                     _enableWeatherCheckbox.isChecked = true;
                 }
             }
             else if (trigger == _fogIntensitySlider)
             {
                 WeatherManager.instance.m_currentFog = value;
-                UltimateEyeCandy.currentSettings.weather_fogintensity = value;
+                UltimateEyecandy.currentSettings.weather_fogintensity = value;
                 //  Enable dynamic weather if disabled (required for rainfall):
                 if (!WeatherManager.instance.m_enableWeather)
                 {
                     WeatherManager.instance.m_enableWeather = true;
-                    UltimateEyeCandy.currentSettings.weather = true;
+                    UltimateEyecandy.currentSettings.weather = true;
                     _enableWeatherCheckbox.isChecked = true;
                 }
             }
@@ -192,7 +183,7 @@ namespace UltimateEyecandy.GUI
 
         private void CheckboxChanged(UIComponent trigger, bool isChecked)
         {
-            if (UltimateEyeCandy.config.outputDebug)
+            if (UltimateEyecandy.config.outputDebug)
             {
                 DebugUtils.Log($"WeatherPanel: Checkbox {trigger.name} = {isChecked}");
             }
@@ -200,34 +191,34 @@ namespace UltimateEyecandy.GUI
             if (trigger == _enableWeatherCheckbox)
             {
                 WeatherManager.instance.m_enableWeather = isChecked;
-                UltimateEyeCandy.currentSettings.weather = isChecked;
+                UltimateEyecandy.currentSettings.weather = isChecked;
                 //  
-                UltimateEyeCandy.optionsGameplayPanel.enableWeather = isChecked;
+                UltimateEyecandy.optionsGameplayPanel.enableWeather = isChecked;
                 //  Re-apply current weather settings - To-do: only re-apply when checking box manually (not when triggered by LoadPreset()):
                 //if (isChecked)
                 //{
-                //    if (UltimateEyeCandy.isWinterMap)
+                //    if (UltimateEyecandy.isWinterMap)
                 //    {
                 //        //WeatherManager.instance.m_currentRain = _snowIntensitySlider.value;
-                //        UltimateEyeCandy.currentSettings.weather_snowintensity = _snowIntensitySlider.value;
+                //        UltimateEyecandy.currentSettings.weather_snowintensity = _snowIntensitySlider.value;
                 //    }
                 //    else
                 //    {
                 //        WeatherManager.instance.m_currentRain = _rainIntensitySlider.value;
-                //        UltimateEyeCandy.currentSettings.weather_rainintensity = _rainIntensitySlider.value;
+                //        UltimateEyecandy.currentSettings.weather_rainintensity = _rainIntensitySlider.value;
                 //        var rrp = FindObjectOfType<RainParticleProperties>();
                 //        rrp.ForceRainMotionBlur = _rainMotionblurCheckbox.isChecked;
-                //        UltimateEyeCandy.currentSettings.weather_rainmotionblur = _rainMotionblurCheckbox.isChecked;
+                //        UltimateEyecandy.currentSettings.weather_rainmotionblur = _rainMotionblurCheckbox.isChecked;
                 //    }
                 //    WeatherManager.instance.m_currentFog = _fogIntensitySlider.value;
-                //    UltimateEyeCandy.currentSettings.weather_fogintensity = _fogIntensitySlider.value;
+                //    UltimateEyecandy.currentSettings.weather_fogintensity = _fogIntensitySlider.value;
                 //}
             }
             else if (trigger == _rainMotionblurCheckbox)
             {
                 var rrp = FindObjectOfType<RainParticleProperties>();
                 rrp.ForceRainMotionBlur = isChecked;
-                UltimateEyeCandy.currentSettings.weather_rainmotionblur = isChecked;
+                UltimateEyecandy.currentSettings.weather_rainmotionblur = isChecked;
             }
         }
     }

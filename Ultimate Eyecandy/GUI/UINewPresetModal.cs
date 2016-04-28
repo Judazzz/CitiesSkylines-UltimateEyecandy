@@ -45,20 +45,25 @@ namespace UltimateEyecandy.GUI
             UILabel name = AddUIComponent<UILabel>();
             name.height = 30;
             name.text = "Preset name:";
-            name.relativePosition = new Vector3(5, m_title.height);
+            name.textScale = 0.85f;
+            name.relativePosition = new Vector3(10, m_title.height);
 
             m_name = UIUtils.CreateTextField(this);
-            m_name.width = width - 10;
-            m_name.height = 30;
+            m_name.width = width - 20;
+            m_name.height = 25;
             m_name.padding = new RectOffset(6, 6, 6, 6);
+            m_name.textScale = 0.85f;
             m_name.tooltip = "Please enter a Preset name";
-            m_name.relativePosition = new Vector3(5, name.relativePosition.y + name.height + 5);
+            m_name.relativePosition = new Vector3(10, name.relativePosition.y + name.height + 5);
 
             m_name.Focus();
             m_name.eventTextChanged += (c, s) =>
             {
-                m_ok.isEnabled = !s.IsNullOrWhiteSpace() && UltimateEyeCandy.GetPresetByName(s) == null;
-                m_name.tooltip = (UltimateEyeCandy.GetPresetByName(s) != null) ? $"Preset '{s}' already exists!" : "Please enter a Preset name";
+                //  Overwrite existing instead of blocking?
+                //m_ok.text = (!s.IsNullOrWhiteSpace() && UltimateEyecandy.GetPresetByName(s) == null) ? "Create" : "Overwrite";
+                //m_name.tooltip = (UltimateEyecandy.GetPresetByName(s) != null) ? $"Preset '{s}' already exists: it will be overwritten!" : "Please enter a Preset name";
+                m_ok.isEnabled = !s.IsNullOrWhiteSpace() && UltimateEyecandy.GetPresetByName(s) == null;
+                m_name.tooltip = (UltimateEyecandy.GetPresetByName(s) != null) ? $"Preset '{s}' already exists!" : "Please enter a Preset name";
             };
 
             m_name.eventTextSubmitted += (c, s) =>
@@ -69,12 +74,14 @@ namespace UltimateEyecandy.GUI
             // Ok
             m_ok = UIUtils.CreateButton(this);
             m_ok.text = "Create";
+            //  Overwrite existing instead of blocking?
+            //m_ok.isEnabled = true;
             m_ok.isEnabled = false;
-            m_ok.relativePosition = new Vector3(5, m_name.relativePosition.y + m_name.height + 5);
+            m_ok.relativePosition = new Vector3(10, m_name.relativePosition.y + m_name.height + 5);
 
             m_ok.eventClick += (c, p) =>
             {
-                UltimateEyeCandy.CreatePreset(m_name.text, false);
+                UltimateEyecandy.CreatePreset(m_name.text, false);
                 UIView.PopModal();
                 Hide();
             };
@@ -82,7 +89,7 @@ namespace UltimateEyecandy.GUI
             // Cancel
             m_cancel = UIUtils.CreateButton(this);
             m_cancel.text = "Cancel";
-            m_cancel.relativePosition = new Vector3(width - m_cancel.width - 5, m_ok.relativePosition.y);
+            m_cancel.relativePosition = new Vector3(width - m_cancel.width - 10, m_ok.relativePosition.y);
 
             m_cancel.eventClick += (c, p) =>
             {

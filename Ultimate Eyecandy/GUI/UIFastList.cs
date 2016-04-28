@@ -532,14 +532,15 @@ namespace UltimateEyecandy.GUI
             m_panel = AddUIComponent<UIPanel>();
             m_panel.width = width - 10f;
             m_panel.height = height;
-            m_panel.backgroundSprite = m_backgroundSprite;
+            m_panel.padding = new RectOffset(2, 2, 2, 2);
+            m_panel.backgroundSprite = "LevelBarBackground";
             m_panel.color = m_color;
             m_panel.clipChildren = true;
             m_panel.relativePosition = Vector2.zero;
 
             // Scrollbar
             m_scrollbar = AddUIComponent<UIScrollbar>();
-            m_scrollbar.width = 20f;
+            m_scrollbar.width = 12f;
             m_scrollbar.height = height;
             m_scrollbar.orientation = UIOrientation.Vertical;
             m_scrollbar.pivot = UIPivotPoint.BottomLeft;
@@ -549,11 +550,11 @@ namespace UltimateEyecandy.GUI
             m_scrollbar.incrementAmount = 50;
 
             UISlicedSprite tracSprite = m_scrollbar.AddUIComponent<UISlicedSprite>();
-            tracSprite.relativePosition = Vector2.zero;
+            tracSprite.relativePosition = new Vector3(2, 0);
             tracSprite.autoSize = true;
             tracSprite.size = tracSprite.parent.size;
             tracSprite.fillDirection = UIFillDirection.Vertical;
-            tracSprite.spriteName = "ScrollbarTrack";
+            tracSprite.spriteName = "LevelBarBackground";
 
             m_scrollbar.trackObject = tracSprite;
 
@@ -561,8 +562,8 @@ namespace UltimateEyecandy.GUI
             thumbSprite.relativePosition = Vector2.zero;
             thumbSprite.fillDirection = UIFillDirection.Vertical;
             thumbSprite.autoSize = true;
-            thumbSprite.width = thumbSprite.parent.width - 8;
-            thumbSprite.spriteName = "ScrollbarThumb";
+            thumbSprite.width = 12f;
+            thumbSprite.spriteName = "LevelBarForeground";
 
             m_scrollbar.thumbObject = thumbSprite;
 

@@ -16,7 +16,7 @@ namespace UltimateEyecandy.GUI
             button.size = new Vector2(90f, 30f);
             button.playAudioEvents = true;
             button.scaleFactor = 0.75f;
-            button.textScale = 0.875f;
+            button.textScale = 0.8f;
             button.normalBgSprite = "ButtonMenu";
             button.hoveredBgSprite = "ButtonMenuHovered";
             button.pressedBgSprite = "ButtonMenuPressed";
@@ -27,17 +27,18 @@ namespace UltimateEyecandy.GUI
             return button;
         }
 
-        public static UIButton CreateTab(UIComponent tabstrip, string text) {
+        public static UIButton CreateTab(UIComponent tabstrip, string text, bool isFirst = false) {
 
             UIButton tab = tabstrip.AddUIComponent<UIButton>();
 
-            tab.size = new Vector2(62f, 28f);
+            tab.size = new Vector2((tabstrip.width / 4), 28f);
             tab.text = text;
-            tab.normalBgSprite = "GenericTab";
-            tab.hoveredBgSprite = "GenericTabHovered";
-            tab.pressedBgSprite = "GenericTabPressed";
-            tab.disabledBgSprite = "GenericTabDisabled";
-            tab.focusedBgSprite = "GenericTabFocused";
+            tab.normalBgSprite = "SubBarButtonBase";
+            tab.hoveredBgSprite = "SubBarButtonBaseHovered";
+            tab.pressedBgSprite = "SubBarButtonBasePressed";
+            tab.disabledBgSprite = "SubBarButtonBaseDisabled";
+            tab.focusedBgSprite = "SubBarButtonBaseFocused"; // "SubBarButtonBasePressed";
+
             tab.tabStrip = true;
             return tab;
         }
@@ -45,23 +46,26 @@ namespace UltimateEyecandy.GUI
         public static UISlider CreateSlider(UIPanel parent, float min, float max)
         {
             UIPanel bg = parent.AddUIComponent<UIPanel>();
-            bg.backgroundSprite = "ChirpScrollbarTrack";
-            bg.size = new Vector2(parent.width - 10, 17);
+            bg.autoLayout = true;
+            bg.padding = new RectOffset(0, 0, 10, 0);
+            bg.size = new Vector2(parent.width - (2 * UltimateEyecandy.SPACING), 20);
 
             UISlider slider = bg.AddUIComponent<UISlider>();
-            slider.area = new Vector4(8, 0, bg.width - 16, 15);
-            slider.height = 17;
             slider.autoSize = false;
-            //slider.backgroundSprite = "ChirpScrollbarTrack";
+            slider.area = new Vector4(8, 0, bg.width, 15);
+            slider.width = bg.width;
+            slider.height = 1;
+            slider.relativePosition = new Vector3(slider.relativePosition.x, slider.relativePosition.y + 10);
+            slider.backgroundSprite = "SubBarButtonBasePressed";
+            slider.fillPadding = new RectOffset(6, 6, 0, 0);
 
             slider.maxValue = max;
             slider.minValue = min;
-            slider.fillPadding = new RectOffset(10, 10, 0, 0);
 
             UISprite thumb = slider.AddUIComponent<UISprite>();
             thumb.size = new Vector2(16, 16);
             thumb.position = new Vector2(0, 0);
-            thumb.spriteName = "ToolbarIconZoomOutGlobeDisabled";
+            thumb.spriteName = "InfoIconBaseHovered";
 
             slider.value = 0.0f;
             slider.thumbObject = thumb;
@@ -74,8 +78,9 @@ namespace UltimateEyecandy.GUI
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
 
-            checkBox.width = parent.width;
+            checkBox.width = parent.width - (2 * UltimateEyecandy.SPACING);
             checkBox.height = 20f;
+            checkBox.relativePosition = new Vector3(5, 21);
             checkBox.clipChildren = true;
 
             UISprite sprite = checkBox.AddUIComponent<UISprite>();
@@ -89,9 +94,12 @@ namespace UltimateEyecandy.GUI
             checkBox.checkedBoxObject.relativePosition = Vector3.zero;
 
             checkBox.label = checkBox.AddUIComponent<UILabel>();
+            checkBox.autoSize = false;
             checkBox.label.text = " ";
-            checkBox.label.textScale = 0.9f;
-            checkBox.label.relativePosition = new Vector3(22f, 2f);
+            checkBox.label.verticalAlignment = UIVerticalAlignment.Middle;
+            checkBox.label.textScale = 0.8f;
+            checkBox.label.width = parent.width - 22;
+            checkBox.label.relativePosition = new Vector3(28, 3);
 
             return checkBox;
         }
@@ -317,17 +325,16 @@ namespace UltimateEyecandy.GUI
         public static UIPanel CreateFormElement(UIComponent parent, string position)
         {
             UIPanel panel = parent.AddUIComponent<UIPanel>();
-
-            panel.width = 260;
+            
             panel.height = 65;
-            panel.padding = new RectOffset(10, 10, 0, 0);
+            panel.width = parent.width;
+            panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 0, 15);
             panel.autoLayout = true;
             panel.autoLayoutDirection = LayoutDirection.Vertical;
-            //panel.autoLayoutPadding.top = 5;
 
             if (position == "top")
             {
-                panel.padding = new RectOffset(10, 10, 20, 0);
+                panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 20, 15);
                 panel.AlignTo(parent, UIAlignAnchor.TopLeft);
                 panel.relativePosition = new Vector3(0, 0);
             }
@@ -335,11 +342,11 @@ namespace UltimateEyecandy.GUI
             {
                 panel.height = 40;
                 panel.AlignTo(parent, UIAlignAnchor.BottomLeft);
-                panel.relativePosition = new Vector3(0, 300);
+                panel.relativePosition = new Vector3(0, 305);
             }
             else
             {
-                panel.padding = new RectOffset(10, 10, 0, 0);
+                panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 0, 0);
             }
 
             return panel;

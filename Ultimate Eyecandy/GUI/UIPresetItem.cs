@@ -5,10 +5,9 @@ namespace UltimateEyecandy.GUI
 {
     public class UIPresetItem : UIPanel, IUIFastListRow
     {
-        private UILabel m_name;
-        private UILabel m_size;
-
-        private Configuration.Preset m_preset;
+        private UILabel _name;
+        //private UILabel _size;
+        private Configuration.Preset _preset;
         
         public Configuration.Preset preset;
 
@@ -16,29 +15,31 @@ namespace UltimateEyecandy.GUI
         {
             base.OnSizeChanged();
 
-            if (m_name == null) return;
-
-            m_size.relativePosition = new Vector3(width - 35f, 5);
+            if (_name == null) return;
+            //_size.relativePosition = new Vector3(width - 35f, 5);
         }
 
         private void SetupControls()
         {
-            if (m_name != null) return;
+            if (_name != null) return;
 
             isVisible = true;
             isInteractive = true;
             width = parent.width;
             height = 30;
+            height = 24;
 
-            m_name = AddUIComponent<UILabel>();
-            m_name.relativePosition = new Vector3(5, 5);
-            m_name.textColor = new Color32(170, 170, 170, 255);
+            _name = AddUIComponent<UILabel>();
+            _name.name = "PresetName";
+            _name.relativePosition = new Vector3(5, 6);
+            _name.textColor = new Color32(238, 238, 238, 255);
+            _name.textScale = 0.8f;
 
-            m_size = AddUIComponent<UILabel>();
-            m_size.width = 30;
-            m_size.textAlignment = UIHorizontalAlignment.Center;
-            m_size.textColor = new Color32(170, 170, 170, 255);
-            m_size.relativePosition = new Vector3(width - 35f, 5);
+            //_size = AddUIComponent<UILabel>();
+            //_size.width = 30;
+            //_size.textAlignment = UIHorizontalAlignment.Center;
+            //_size.textColor = new Color32(170, 170, 170, 255);
+            //_size.relativePosition = new Vector3(width - 35f, 5);
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)
@@ -63,8 +64,8 @@ namespace UltimateEyecandy.GUI
         {
             SetupControls();
 
-            m_preset = data as Configuration.Preset;
-            m_name.text = m_preset.name;
+            _preset = data as Configuration.Preset;
+            _name.text = _preset.name;
             backgroundSprite = null;
         }
 

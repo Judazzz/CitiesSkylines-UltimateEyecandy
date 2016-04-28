@@ -5,9 +5,8 @@ namespace UltimateEyecandy.GUI
 {
     public class UILutItem : UIPanel, IUIFastListRow
     {
-        private UILabel m_name;
-
-        private LutList.Lut m_lut;
+        private UILabel _name;
+        private LutList.Lut _lut;
 
         public LutList.Lut lut;
 
@@ -15,21 +14,24 @@ namespace UltimateEyecandy.GUI
         {
             base.OnSizeChanged();
 
-            if (m_name == null) return;
+            if (_name == null) return;
         }
 
         private void SetupControls()
         {
-            if (m_name != null) return;
+            if (_name != null) return;
 
             isVisible = true;
             isInteractive = true;
             width = parent.width;
             height = 30;
+            height = 24;
 
-            m_name = AddUIComponent<UILabel>();
-            m_name.relativePosition = new Vector3(5, 5);
-            m_name.textColor = new Color32(170, 170, 170, 255);
+            _name = AddUIComponent<UILabel>();
+            _name.name = "LutName";
+            _name.relativePosition = new Vector3(5, 6);
+            _name.textColor = new Color32(238, 238, 238, 255);
+            _name.textScale = 0.8f;
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)
@@ -54,8 +56,8 @@ namespace UltimateEyecandy.GUI
         {
             SetupControls();
 
-            m_lut = data as LutList.Lut;
-            m_name.text = m_lut.name;
+            _lut = data as LutList.Lut;
+            _name.text = _lut.name;
             backgroundSprite = null;
         }
 

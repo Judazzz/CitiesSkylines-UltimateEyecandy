@@ -33,31 +33,31 @@ namespace UltimateEyecandy
             public string name;
 
             [XmlElement("ambient_height")]
-            public double ambient_height;
+            public float ambient_height;
 
             [XmlElement("ambient_rotation")]
-            public double ambient_rotation;
+            public float ambient_rotation;
 
             [XmlElement("ambient_intensity")]
-            public double ambient_intensity;
+            public float ambient_intensity;
 
             [XmlElement("ambient_ambient")]
-            public double ambient_ambient;
+            public float ambient_ambient;
 
             [XmlElement("weather")]
             public bool weather;
 
             [XmlElement("weather_rainintensity")]
-            public double weather_rainintensity;
+            public float weather_rainintensity;
 
             [XmlElement("weather_rainmotionblur")]
             public bool weather_rainmotionblur;
 
             [XmlElement("weather_fogintensity")]
-            public double weather_fogintensity;
+            public float weather_fogintensity;
 
             [XmlElement("weather_snowintensity")]
-            public double weather_snowintensity;
+            public float weather_snowintensity;
 
             [XmlElement("color_selectedlut")]
             public string color_selectedlut;
@@ -121,6 +121,10 @@ namespace UltimateEyecandy
 
                     foreach (var preset in configuration.presets)
                     {
+                        //  Skip Temporary Preset:
+                        if (preset.name == string.Empty)
+                            continue;
+                        //  Existing presets:
                         var newPreset = new Preset
                         {
                             name = preset.name,
