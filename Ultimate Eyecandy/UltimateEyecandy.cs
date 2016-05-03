@@ -257,40 +257,18 @@ namespace UltimateEyecandy
                 config = new Configuration();
                 SaveConfig(false);
                 //  Create temporary preset for current settings:
-                CreateTemporaryPreset();
+                ResetAll();
                 return;
             }
             //  
             config = Configuration.Deserialize(fileName);
-            CreateTemporaryPreset();
+            ResetAll();
         }
 
         public static void SaveConfig(bool reloadUI = true)
         {
             var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
-            try
-            {
-                var xmlSerializer = new XmlSerializer(typeof(Configuration));
-                using (var streamWriter = new StreamWriter(fileName))
-                {
-                    config.version = ModInfo.version;
-                    //  
-                    xmlSerializer.Serialize(streamWriter, config);
-                    if (reloadUI)
-                    {
-                        PresetsPanel.instance.PopulatePresetsFastList();
-                    }
-                    //  
-                    if (config.outputDebug)
-                    {
-                        DebugUtils.Log("Configuration saved.");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                DebugUtils.LogException(e);
-            }
+            Configuration.Serialize(fileName, config, reloadUI);
         }
 
         public static List<Configuration.Preset> GetAllPresets()
@@ -344,41 +322,41 @@ namespace UltimateEyecandy
             SaveConfig();
         }
 
-        //  In-Memory Preset solely for handling current settings:
-        public static void CreateTemporaryPreset()
+        //  Reset all values and create In-Memory Preset solely for handling current settings:
+        public static void ResetAll()
         {
             currentSettings = new Configuration.Preset()
             {
                 name = string.Empty,
                 ambient_height = (isWinterMap) ? 66f : 35f,
-                ambient_rotation = (isWinterMap) ? 98f : 98f,
-                ambient_intensity = (isWinterMap) ? 6f : 6f,
+                ambient_rotation = 98f,
+                ambient_intensity = 6f,
                 ambient_ambient = (isWinterMap) ? 0.4f : 0.71f,
-                weather = false,
+                weather = false, //optionsGameplayPanel.enableWeather,
                 weather_rainintensity = 0f,
-                weather_rainmotionblur = optionsGameplayPanel.enableWeather,
+                weather_rainmotionblur = false,
                 weather_fogintensity = 0f,
                 weather_snowintensity = 0f,
                 color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection)
             };
             //  Apply to UI:
-            AmbientPanel.instance.heightSlider.value = currentSettings.ambient_height;
-            AmbientPanel.instance.rotationSlider.value = currentSettings.ambient_rotation;
-            AmbientPanel.instance.intensitySlider.value = currentSettings.ambient_intensity;
-            AmbientPanel.instance.ambientSlider.value = currentSettings.ambient_ambient;
+            _modMainPanel.ambientPanel.heightSlider.value = currentSettings.ambient_height;
+            _modMainPanel.ambientPanel.rotationSlider.value = currentSettings.ambient_rotation;
+            _modMainPanel.ambientPanel.intensitySlider.value = currentSettings.ambient_intensity;
+            _modMainPanel.ambientPanel.ambientSlider.value = currentSettings.ambient_ambient;
             if (isWinterMap)
             {
-                WeatherPanel.instance.precipitationSlider.value = currentSettings.weather_snowintensity;
+                _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_snowintensity;
             }
             else
             {
-                WeatherPanel.instance.precipitationSlider.value = currentSettings.weather_rainintensity;
-                WeatherPanel.instance.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
+                _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_rainintensity;
+                _modMainPanel.weatherPanel.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
             }
-            WeatherPanel.instance.fogIntensitySlider.value = currentSettings.weather_fogintensity;
-            WeatherPanel.instance.enableWeatherCheckbox.isChecked = currentSettings.weather;
-            ColorManagamentPanel.instance.lutFastlist.DisplayAt(0);
-            ColorManagamentPanel.instance.lutFastlist.selectedIndex = 0;
+            _modMainPanel.weatherPanel.fogIntensitySlider.value = currentSettings.weather_fogintensity;
+            _modMainPanel.weatherPanel.enableWeatherCheckbox.isChecked = currentSettings.weather;
+            _modMainPanel.colorManagementPanel.lutFastlist.DisplayAt(0);
+            _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = 0;
             ColorCorrectionManager.instance.currentSelection = 0;
             //  
             if (config.outputDebug)
@@ -403,22 +381,22 @@ namespace UltimateEyecandy
                 currentSettings = selectedPreset;
                 //  Apply values to UI Elements:
                 //  Ambient values:
-                AmbientPanel.instance.heightSlider.value = currentSettings.ambient_height;
-                AmbientPanel.instance.rotationSlider.value = currentSettings.ambient_rotation;
-                AmbientPanel.instance.intensitySlider.value = currentSettings.ambient_intensity;
-                AmbientPanel.instance.ambientSlider.value = currentSettings.ambient_ambient;
+                _modMainPanel.ambientPanel.heightSlider.value = currentSettings.ambient_height;
+                _modMainPanel.ambientPanel.rotationSlider.value = currentSettings.ambient_rotation;
+                _modMainPanel.ambientPanel.intensitySlider.value = currentSettings.ambient_intensity;
+                _modMainPanel.ambientPanel.ambientSlider.value = currentSettings.ambient_ambient;
                 //  Weather values:
-                WeatherPanel.instance.enableWeatherCheckbox.isChecked = currentSettings.weather;
+                _modMainPanel.weatherPanel.enableWeatherCheckbox.isChecked = currentSettings.weather;
                 if (isWinterMap)
                 {
-                    WeatherPanel.instance.precipitationSlider.value = currentSettings.weather_snowintensity;
+                    _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_snowintensity;
                 }
                 else
                 {
-                    WeatherPanel.instance.precipitationSlider.value = currentSettings.weather_rainintensity;
-                    WeatherPanel.instance.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
+                    _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_rainintensity;
+                    _modMainPanel.weatherPanel.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
                 }
-                WeatherPanel.instance.fogIntensitySlider.value = currentSettings.weather_fogintensity;
+                _modMainPanel.weatherPanel.fogIntensitySlider.value = currentSettings.weather_fogintensity;
                 //  ColorManagement values:
                 LutList.Lut activeLut = LutList.GetLut(currentSettings.color_selectedlut);
                 if (activeLut == null)
@@ -427,14 +405,14 @@ namespace UltimateEyecandy
                     {
                         DebugUtils.Log($"Load preset: lut {activeLut} not found, applying default Lut for current biome ({LoadingManager.instance.m_loadedEnvironment}).");
                     }
-                    ColorManagamentPanel.instance.lutFastlist.DisplayAt(0);
-                    ColorManagamentPanel.instance.lutFastlist.selectedIndex = 0;
+                    _modMainPanel.colorManagementPanel.lutFastlist.DisplayAt(0);
+                    _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = 0;
                     ColorCorrectionManager.instance.currentSelection = 0;
                 }
                 else
                 {
-                    ColorManagamentPanel.instance.lutFastlist.DisplayAt(activeLut.index);
-                    ColorManagamentPanel.instance.lutFastlist.selectedIndex = activeLut.index;
+                    _modMainPanel.colorManagementPanel.lutFastlist.DisplayAt(activeLut.index);
+                    _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = activeLut.index;
                     ColorCorrectionManager.instance.currentSelection = activeLut.index;
                 }
                 //  
@@ -445,11 +423,6 @@ namespace UltimateEyecandy
             {
                 DebugUtils.LogException(ex);
             }
-        }
-
-        public static void ResetAll()
-        {
-            CreateTemporaryPreset();
         }
     }
 }

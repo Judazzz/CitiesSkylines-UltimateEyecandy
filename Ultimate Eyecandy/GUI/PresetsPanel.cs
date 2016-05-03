@@ -68,13 +68,13 @@ namespace UltimateEyecandy.GUI
                 catch
                 {
                     //  Latest preset not found: create temporary preset from scratch:
-                    UltimateEyecandy.CreateTemporaryPreset();
+                    UltimateEyecandy.ResetAll();
                 }
             }
             else
             {
                 //  Create temporary preset from scratch:
-                UltimateEyecandy.CreateTemporaryPreset();
+                UltimateEyecandy.ResetAll();
             }
         }
 
@@ -138,11 +138,16 @@ namespace UltimateEyecandy.GUI
                 {
                     DebugUtils.Log($"PresetsPanel: 'Delete preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyecandy.DeletePreset(_selectedPreset);
-                //  
-                PopulatePresetsFastList();
-                //  Button appearance:
-                updateButtons(true);
+                ConfirmPanel.ShowModal("Delete Preset", "Are you sure you want to delete Preset '" + _selectedPreset.name + "'?", (d, i) => {
+                    if (i == 1)
+                    {
+                        UltimateEyecandy.DeletePreset(_selectedPreset);
+                        //  Update FastList:
+                        PopulatePresetsFastList();
+                        //  Button appearance:
+                        updateButtons(true);
+                    }
+                });
             };
 
             //  Save/overwrite preset:
@@ -187,9 +192,14 @@ namespace UltimateEyecandy.GUI
                 {
                     DebugUtils.Log($"PresetsPanel: 'Overwrite preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyecandy.CreatePreset(_selectedPreset.name, true);
-                //  Button appearance:
-                updateButtons(true);
+                ConfirmPanel.ShowModal("Overwrite Preset", "Are you sure you want to overwrite Preset '" + _selectedPreset.name + "'?", (d, i) => {
+                    if (i == 1)
+                    {
+                        UltimateEyecandy.CreatePreset(_selectedPreset.name, true);
+                        //  Button appearance:
+                        updateButtons(true);
+                    }
+                });
             };
 
             //  Reset all:

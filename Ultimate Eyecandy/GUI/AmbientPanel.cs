@@ -54,6 +54,7 @@ namespace UltimateEyecandy.GUI
         {
             //  Presets:
             var topContainer = UIUtils.CreateFormElement(this, "top");
+            topContainer.name = "heightSliderContainer";
 
             _heightLabel = topContainer.AddUIComponent<UILabel>();
             _heightLabel.text = "Sun height";
@@ -69,7 +70,8 @@ namespace UltimateEyecandy.GUI
 
             //  Sun rotation:
             var sunContainer = UIUtils.CreateFormElement(this, "center");
-            sunContainer.relativePosition = new Vector3(0, 75);
+            sunContainer.name = "rotationSliderContainer";
+            sunContainer.relativePosition = new Vector3(0, 70);
 
             _rotationLabel = sunContainer.AddUIComponent<UILabel>();
             _rotationLabel.text = "Sun rotation";
@@ -85,7 +87,8 @@ namespace UltimateEyecandy.GUI
 
             //  Global light intensity:
             var globalContainer = UIUtils.CreateFormElement(this, "center");
-            globalContainer.relativePosition = new Vector3(0, 135);
+            globalContainer.name = "intensitySliderContainer";
+            globalContainer.relativePosition = new Vector3(0, 120);
 
             _intensityLabel = globalContainer.AddUIComponent<UILabel>();
             _intensityLabel.text = "Global light intensity";
@@ -101,7 +104,8 @@ namespace UltimateEyecandy.GUI
 
             //  Ambient light intensity:
             var ambientContainer = UIUtils.CreateFormElement(this, "center");
-            ambientContainer.relativePosition = new Vector3(0, 195);
+            ambientContainer.name = "ambientSliderContainer";
+            ambientContainer.relativePosition = new Vector3(0, 170);
 
             _ambientLabel = ambientContainer.AddUIComponent<UILabel>();
             _ambientLabel.text = "Ambient light intensity";
@@ -130,8 +134,8 @@ namespace UltimateEyecandy.GUI
                 }
                 //  
                 _heightSlider.value = (UltimateEyecandy.isWinterMap) ? 66f : 35f;
-                _rotationSlider.value = (UltimateEyecandy.isWinterMap) ? 98f : 98f;
-                _intensitySlider.value = (UltimateEyecandy.isWinterMap) ? 6f : 6f;
+                _rotationSlider.value = 98f;
+                _intensitySlider.value = 6f;
                 _ambientSlider.value = (UltimateEyecandy.isWinterMap) ? 0.4f : 0.71f;
             };
         }

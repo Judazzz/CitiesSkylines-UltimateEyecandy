@@ -17,13 +17,23 @@ namespace UltimateEyecandy.GUI
             button.playAudioEvents = true;
             button.scaleFactor = 0.75f;
             button.textScale = 0.8f;
-            button.normalBgSprite = "ButtonMenu";
-            button.hoveredBgSprite = "ButtonMenuHovered";
-            button.pressedBgSprite = "ButtonMenuPressed";
-            button.disabledBgSprite = "ButtonMenuDisabled";
+            //button.normalBgSprite = "TextFieldUnderline"; /*"ButtonMenu";*/
+            //button.hoveredBgSprite = "TextFieldPanel"; /*"ButtonMenuHovered";*/
+            //button.pressedBgSprite = "TextFieldPanelHovered"; /*"ButtonMenuPressed";*/
+            //button.disabledBgSprite = "TextFieldUnderline"; /*"ButtonMenuDisabled";*/
+            button.normalBgSprite = "TextFieldUnderline";
+            button.hoveredBgSprite = "TextFieldUnderline";
+            button.pressedBgSprite = "TextFieldUnderline";
+            button.disabledBgSprite = "TextFieldUnderline";
+            button.focusedBgSprite = "TextFieldUnderline";
+            
+            button.textColor = new Color32(255, 255, 255, 255);
+            button.hoveredTextColor = new Color32(187, 187, 187, 255);
+            button.pressedTextColor = new Color32(0, 0, 0, 255);
+            button.focusedTextColor = new Color32(0, 0, 0, 255);
             button.disabledTextColor = new Color32(128, 128, 128, 255);
             button.canFocus = false;
-
+            //  
             return button;
         }
 
@@ -32,30 +42,41 @@ namespace UltimateEyecandy.GUI
             UIButton tab = tabstrip.AddUIComponent<UIButton>();
 
             tab.size = new Vector2((tabstrip.width / 4), 28f);
-            tab.text = text;
-            tab.normalBgSprite = "SubBarButtonBase";
-            tab.hoveredBgSprite = "SubBarButtonBaseHovered";
-            tab.pressedBgSprite = "SubBarButtonBasePressed";
-            tab.disabledBgSprite = "SubBarButtonBaseDisabled";
-            tab.focusedBgSprite = "SubBarButtonBaseFocused"; // "SubBarButtonBasePressed";
-
             tab.tabStrip = true;
+            tab.text = text;
+            //tab.normalBgSprite = "SubBarButtonBase";
+            //tab.hoveredBgSprite = "SubBarButtonBaseHovered";
+            //tab.pressedBgSprite = "SubBarButtonBasePressed";
+            //tab.disabledBgSprite = "SubBarButtonBaseDisabled";
+            //tab.focusedBgSprite = "SubBarButtonBaseFocused";
+            tab.normalBgSprite = "TextFieldUnderline";
+            tab.hoveredBgSprite = "TextFieldUnderline";
+            tab.pressedBgSprite = "TextFieldUnderline";
+            tab.disabledBgSprite = "TextFieldUnderline";
+            tab.focusedBgSprite = "TextFieldUnderline";
+
+            tab.textColor = new Color32(255, 255, 255, 255);
+            tab.hoveredTextColor = new Color32(187, 187, 187, 255);
+            tab.pressedTextColor = new Color32(0, 0, 0, 255);
+            tab.focusedTextColor = new Color32(0, 0, 0, 255);
+            //  
             return tab;
         }
 
         public static UISlider CreateSlider(UIPanel parent, float min, float max)
         {
             UIPanel bg = parent.AddUIComponent<UIPanel>();
-            bg.autoLayout = true;
+            bg.name = "sliderPanel";
+            bg.autoLayout = false;
             bg.padding = new RectOffset(0, 0, 10, 0);
             bg.size = new Vector2(parent.width - (2 * UltimateEyecandy.SPACING), 20);
 
             UISlider slider = bg.AddUIComponent<UISlider>();
             slider.autoSize = false;
             slider.area = new Vector4(8, 0, bg.width, 15);
-            slider.width = bg.width;
+            slider.width = bg.width - 16;
             slider.height = 1;
-            slider.relativePosition = new Vector3(slider.relativePosition.x, slider.relativePosition.y + 10);
+            slider.relativePosition = new Vector3(8, slider.relativePosition.y + 10);
             slider.backgroundSprite = "SubBarButtonBasePressed";
             slider.fillPadding = new RectOffset(6, 6, 0, 0);
 
@@ -77,29 +98,25 @@ namespace UltimateEyecandy.GUI
         public static UICheckBox CreateCheckBox(UIComponent parent)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
-
             checkBox.width = parent.width - (2 * UltimateEyecandy.SPACING);
             checkBox.height = 20f;
             checkBox.relativePosition = new Vector3(5, 21);
-            checkBox.clipChildren = true;
 
             UISprite sprite = checkBox.AddUIComponent<UISprite>();
-            sprite.spriteName = "ToggleBase";
+            sprite.spriteName = "InfoIconBaseHovered";
             sprite.size = new Vector2(16f, 16f);
-            sprite.relativePosition = Vector3.zero;
+            sprite.relativePosition = new Vector3(229, 0);
 
             checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
-            ((UISprite)checkBox.checkedBoxObject).spriteName = "ToggleBaseFocused";
+            ((UISprite)checkBox.checkedBoxObject).spriteName = "InfoIconBaseFocused";
             checkBox.checkedBoxObject.size = new Vector2(16f, 16f);
             checkBox.checkedBoxObject.relativePosition = Vector3.zero;
 
             checkBox.label = checkBox.AddUIComponent<UILabel>();
             checkBox.autoSize = false;
-            checkBox.label.text = " ";
-            checkBox.label.verticalAlignment = UIVerticalAlignment.Middle;
             checkBox.label.textScale = 0.8f;
             checkBox.label.width = parent.width - 22;
-            checkBox.label.relativePosition = new Vector3(28, 3);
+            checkBox.label.relativePosition = new Vector3(0, 3);
 
             return checkBox;
         }
@@ -325,8 +342,8 @@ namespace UltimateEyecandy.GUI
         public static UIPanel CreateFormElement(UIComponent parent, string position)
         {
             UIPanel panel = parent.AddUIComponent<UIPanel>();
-            
-            panel.height = 65;
+
+            panel.height = 50;// 65;
             panel.width = parent.width;
             panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 0, 15);
             panel.autoLayout = true;
@@ -334,6 +351,7 @@ namespace UltimateEyecandy.GUI
 
             if (position == "top")
             {
+                panel.height = 65;
                 panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 20, 15);
                 panel.AlignTo(parent, UIAlignAnchor.TopLeft);
                 panel.relativePosition = new Vector3(0, 0);

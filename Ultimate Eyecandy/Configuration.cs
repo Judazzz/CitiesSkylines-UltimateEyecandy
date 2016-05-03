@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ColossalFramework.Plugins;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Serialization;
+using UltimateEyecandy.GUI;
 using UnityEngine;
 
 namespace UltimateEyecandy
@@ -105,33 +107,40 @@ namespace UltimateEyecandy
             }
         }
 
-        public static void Serialize(string filename, Configuration configuration)
+        public static void Serialize(string filename, Configuration config, bool reloadUI)
         {
-            var xmlSerializer = new XmlSerializer(typeof(Configuration));
+            string FileName = "CSL_UltimateEyecandy.xml";
+            string FileNameLocal = "CSL_UltimateEyecandy_local.xml";
+
+            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
             try
             {
-                using (StreamWriter streamWriter = new StreamWriter(filename))
+                //  Todo: move serialization code to Serialize method in Config.cs!
+                var xmlSerializer = new XmlSerializer(typeof(Configuration));
+                using (var streamWriter = new StreamWriter(fileName))
                 {
-                    var presetsCopy = new Configuration();
-                    presetsCopy.version = configuration.version;
-                    presetsCopy.outputDebug = configuration.outputDebug;
-                    presetsCopy.enableAdvanced = configuration.enableAdvanced;
-                    presetsCopy.loadLastPresetOnStart = configuration.loadLastPresetOnStart;
-                    presetsCopy.lastPreset = configuration.lastPreset;
+                    UltimateEyecandy.config.version = ModInfo.version;
 
-                    foreach (var preset in configuration.presets)
+                    var configCopy = new Configuration();
+                    configCopy.version = UltimateEyecandy.config.version;
+                    configCopy.outputDebug = UltimateEyecandy.config.outputDebug;
+                    configCopy.enableAdvanced = UltimateEyecandy.config.enableAdvanced;
+                    configCopy.loadLastPresetOnStart = UltimateEyecandy.config.loadLastPresetOnStart;
+                    configCopy.lastPreset = UltimateEyecandy.config.lastPreset;
+
+                    foreach (var preset in UltimateEyecandy.config.presets)
                     {
                         //  Skip Temporary Preset:
                         if (preset.name == string.Empty)
                             continue;
                         //  Existing presets:
-                        var newPreset = new Preset
+                        var newPreset = new Configuration.Preset
                         {
                             name = preset.name,
                             ambient_height = preset.ambient_height,
                             ambient_rotation = preset.ambient_rotation,
                             ambient_intensity = preset.ambient_intensity,
-                            ambient_ambient = preset.ambient_height,
+                            ambient_ambient = preset.ambient_ambient,
                             weather = preset.weather,
                             weather_rainintensity = preset.weather_rainintensity,
                             weather_rainmotionblur = preset.weather_rainmotionblur,
@@ -139,16 +148,24 @@ namespace UltimateEyecandy
                             weather_snowintensity = preset.weather_snowintensity,
                             color_selectedlut = preset.color_selectedlut
                         };
-                        presetsCopy.presets.Add(newPreset);
+                        configCopy.presets.Add(newPreset);
                     }
-
-                    xmlSerializer.Serialize(streamWriter, presetsCopy);
+                    xmlSerializer.Serialize(streamWriter, configCopy);
+                    UltimateEyecandy.config = configCopy;
+                    if (reloadUI)
+                    {
+                        PresetsPanel.instance.PopulatePresetsFastList();
+                    }
+                    //  
+                    if (config.outputDebug)
+                    {
+                        DebugUtils.Log("Configuration saved.");
+                    }
                 }
             }
             catch (Exception e)
             {
                 DebugUtils.LogException(e);
-                throw e;
             }
         }
     }

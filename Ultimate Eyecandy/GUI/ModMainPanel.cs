@@ -12,17 +12,16 @@ namespace UltimateEyecandy.GUI
     {
         public UIMainTitleBar m_title;
 
-        public AmbientPanel ambientPanel;
-        public WeatherPanel weatherPanel;
-        public ColorManagamentPanel colormanagementPanel;
-        public PresetsPanel PresetsPanel;
-
         public UITabstrip panelTabs;
-
         public UIButton ambientButton;
         public UIButton weatherButton;
-        public UIButton colormanagementButton;
+        public UIButton colorManagementButton;
         public UIButton presetsButton;
+
+        public AmbientPanel ambientPanel;
+        public WeatherPanel weatherPanel;
+        public ColorManagementPanel colorManagementPanel;
+        public PresetsPanel presetsPanel;
 
         public UIButton toggleUltimateEyecandyButton;
         public static UITextureAtlas toggleUltimateEyecandyButtonAtlas = null;
@@ -50,13 +49,12 @@ namespace UltimateEyecandy.GUI
             isVisible = false;
             canFocus = true;
             isInteractive = true;
+            name = "modMainPanel";
             padding = new RectOffset(10, 10, 4, 4);
             width = UltimateEyecandy.SPACING + UltimateEyecandy.WIDTH;
             height = UltimateEyecandy.TITLE_HEIGHT + UltimateEyecandy.TABS_HEIGHT + UltimateEyecandy.HEIGHT + UltimateEyecandy.SPACING;
             relativePosition = new Vector3(10, 60);
             //  
-            DebugUtils.Log($"CURRENT FOV: {Camera.main.fieldOfView}");
-
             SetupControls();
         }
 
@@ -90,9 +88,9 @@ namespace UltimateEyecandy.GUI
             weatherButton = UIUtils.CreateTab(panelTabs, "Weather");
             weatherButton.tooltip = "In this section you can change several weather-related settings such as rain, snow and fog intensity.";
             weatherButton.textScale = 0.8f;
-            colormanagementButton = UIUtils.CreateTab(panelTabs, "LUT");
-            colormanagementButton.tooltip = "In this section you can quickly change the LUT you want to use.";
-            colormanagementButton.textScale = 0.8f;
+            colorManagementButton = UIUtils.CreateTab(panelTabs, "LUT");
+            colorManagementButton.tooltip = "In this section you can quickly change the LUT you want to use.";
+            colorManagementButton.textScale = 0.8f;
             presetsButton = UIUtils.CreateTab(panelTabs, "Presets");
             presetsButton.tooltip = "In this section you can save your current settings as a Preset, load previously saved Presets, or reset everything to default.";
             presetsButton.textScale = 0.8f;
@@ -106,33 +104,37 @@ namespace UltimateEyecandy.GUI
             //  Section Panels:
             //  Ambient Panel:
             ambientPanel = body.AddUIComponent<AmbientPanel>();
+            ambientPanel.name = "ambientPanel";
             ambientPanel.width = UltimateEyecandy.WIDTH - (3 * UltimateEyecandy.SPACING);
             ambientPanel.height = UltimateEyecandy.HEIGHT;
             ambientPanel.relativePosition = new Vector3(5, 0);
             ambientPanel.isVisible = true;
             //  Weather Panel:
             weatherPanel = body.AddUIComponent<WeatherPanel>();
+            weatherPanel.name = "weatherPanel";
             weatherPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
             weatherPanel.height = UltimateEyecandy.HEIGHT;
             weatherPanel.relativePosition = new Vector3(5, 0);
             weatherPanel.isVisible = false;
             //  Color Management Panel:
-            colormanagementPanel = body.AddUIComponent<ColorManagamentPanel>();
-            colormanagementPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
-            colormanagementPanel.height = UltimateEyecandy.HEIGHT;
-            colormanagementPanel.relativePosition = new Vector3(5, 0);
-            colormanagementPanel.isVisible = false;
+            colorManagementPanel = body.AddUIComponent<ColorManagementPanel>();
+            colorManagementPanel.name = "colormanagementPanel";
+            colorManagementPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
+            colorManagementPanel.height = UltimateEyecandy.HEIGHT;
+            colorManagementPanel.relativePosition = new Vector3(5, 0);
+            colorManagementPanel.isVisible = false;
             //  Presets Panel:
-            PresetsPanel = body.AddUIComponent<PresetsPanel>();
-            PresetsPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
-            PresetsPanel.height = UltimateEyecandy.HEIGHT;
-            PresetsPanel.relativePosition = new Vector3(5, 0);
-            PresetsPanel.isVisible = false;
+            presetsPanel = body.AddUIComponent<PresetsPanel>();
+            presetsPanel.name = "presetsPanel";
+            presetsPanel.width = UltimateEyecandy.WIDTH - 3 * UltimateEyecandy.SPACING;
+            presetsPanel.height = UltimateEyecandy.HEIGHT;
+            presetsPanel.relativePosition = new Vector3(5, 0);
+            presetsPanel.isVisible = false;
 
             //  Tab Button Events:
             ambientButton.eventClick += (c, e) => TabClicked(c, e);
             weatherButton.eventClick += (c, e) => TabClicked(c, e);
-            colormanagementButton.eventClick += (c, e) => TabClicked(c, e);
+            colorManagementButton.eventClick += (c, e) => TabClicked(c, e);
             presetsButton.eventClick += (c, e) => TabClicked(c, e);
         }
 
@@ -145,8 +147,8 @@ namespace UltimateEyecandy.GUI
             //  
             weatherPanel.isVisible = false;
             ambientPanel.isVisible = false;
-            colormanagementPanel.isVisible = false;
-            PresetsPanel.isVisible = false;
+            colorManagementPanel.isVisible = false;
+            presetsPanel.isVisible = false;
 
             if (trigger == ambientButton)
             {
@@ -156,26 +158,26 @@ namespace UltimateEyecandy.GUI
             {
                 weatherPanel.isVisible = true;
             }
-            if (trigger == colormanagementButton)
+            if (trigger == colorManagementButton)
             {
-                colormanagementPanel.isVisible = true;
-                ColorManagamentPanel.instance.lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
-                var isActive = (ColorManagamentPanel.instance._selectedLut.internal_name == UltimateEyecandy.currentSettings.color_selectedlut);
-                ColorManagamentPanel.instance.loadLutButton.isEnabled = (isActive) ? false : true;
-                ColorManagamentPanel.instance.loadLutButton.opacity = (isActive) ? 0.5f : 1.0f;
-                ColorManagamentPanel.instance.loadLutButton.tooltip = (isActive) ? "LUT selected in list is already active." : "Load LUT selected in list.";
+                colorManagementPanel.isVisible = true;
+                colorManagementPanel.lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
+                var isActive = (colorManagementPanel._selectedLut.internal_name == UltimateEyecandy.currentSettings.color_selectedlut);
+                colorManagementPanel.loadLutButton.isEnabled = (isActive) ? false : true;
+                colorManagementPanel.loadLutButton.opacity = (isActive) ? 0.5f : 1.0f;
+                colorManagementPanel.loadLutButton.tooltip = (isActive) ? "LUT selected in list is already active." : "Load LUT selected in list.";
             }
             if (trigger == presetsButton)
             {
-                if (PresetsPanel.instance.presetFastlist.selectedIndex < 0)
+                if (presetsPanel.presetFastlist.selectedIndex < 0)
                 {
-                    PresetsPanel.instance.updateButtons(true);
+                    presetsPanel.updateButtons(true);
                 }
                 else
                 {
-                    PresetsPanel.instance.updateButtons(false);
+                    presetsPanel.updateButtons(false);
                 }
-                PresetsPanel.isVisible = true;
+                presetsPanel.isVisible = true;
             }
         }
 

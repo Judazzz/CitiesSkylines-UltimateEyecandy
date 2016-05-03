@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
-    public class ColorManagamentPanel : UIPanel
+    public class ColorManagementPanel : UIPanel
     {
         private UILabel _lutLabel;
         private UIFastList _lutFastlist;
@@ -25,8 +25,8 @@ namespace UltimateEyecandy.GUI
 
         public LutList.Lut _selectedLut;
 
-        private static ColorManagamentPanel _instance;
-        public static ColorManagamentPanel instance
+        private static ColorManagementPanel _instance;
+        public static ColorManagementPanel instance
         {
             get { return _instance; }
         }
@@ -92,7 +92,7 @@ namespace UltimateEyecandy.GUI
                     }
                     DebugUtils.LogException(ex);
                     _lutFastlist.DisplayAt(0);
-                    UltimateEyecandy.currentSettings.color_selectedlut = "None";
+                    UltimateEyecandy.currentSettings.color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection); // "None";
                     ColorCorrectionManager.instance.currentSelection = 0;
                 }
             };
@@ -113,7 +113,7 @@ namespace UltimateEyecandy.GUI
                 //  
                 _lutFastlist.DisplayAt(0);
                 _lutFastlist.selectedIndex = 0;
-                UltimateEyecandy.currentSettings.color_selectedlut = "None";
+                UltimateEyecandy.currentSettings.color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection); // "None";
                 ColorCorrectionManager.instance.currentSelection = 0;
             };
         }

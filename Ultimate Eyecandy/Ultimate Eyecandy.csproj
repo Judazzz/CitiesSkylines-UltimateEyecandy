@@ -75,11 +75,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Assets\ToolbarIcon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\Workshop Description.txt" />
-    <Content Include="Assets\Workshop PreviewImage.png" />
-    <Content Include="Assets\Workshop visual.png" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "%25LOCALAPPDATA%25\Colossal Order\Cities_Skylines\Addons\Mods\$(ProjectName)"

@@ -66,7 +66,7 @@ namespace UltimateEyecandy.GUI
 
             m_close = AddUIComponent<UIButton>();
             m_close.size = new Vector2(25, 25);
-            m_close.relativePosition = new Vector3(width - 45, 2);
+            m_close.relativePosition = new Vector3(width - 45, 0);
             m_close.normalBgSprite = "buttonclose";
             m_close.hoveredBgSprite = "buttonclosehover";
             m_close.pressedBgSprite = "buttonclosepressed";

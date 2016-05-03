@@ -53,9 +53,12 @@ namespace UltimateEyecandy.GUI
         {
             //  Enable weather:
             var topContainer = UIUtils.CreateFormElement(this, "top");
-            topContainer.autoLayout = false;
+            topContainer.name = "enableWeatherCheckboxContainer";
+            topContainer.relativePosition = new Vector3(0, -3);
+            //topContainer.autoLayout = false;
 
             _enableWeatherCheckbox = UIUtils.CreateCheckBox(topContainer);
+            _enableWeatherCheckbox.relativePosition = new Vector3(5, 17);
             _enableWeatherCheckbox.name = "enableWeatherCheckbox";
             _enableWeatherCheckbox.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
             _enableWeatherCheckbox.isChecked = WeatherManager.instance.m_enableWeather;
@@ -65,7 +68,9 @@ namespace UltimateEyecandy.GUI
 
             //  Precipitation intensity:
             var precipitationContainer = UIUtils.CreateFormElement(this, "center");
-            precipitationContainer.relativePosition = new Vector3(0, 68);
+            precipitationContainer.name = "precipitationSliderContainer";
+            precipitationContainer.relativePosition = new Vector3(0, 60);
+            precipitationContainer.relativePosition = new Vector3(0, 57);
 
             _precipitationLabel = precipitationContainer.AddUIComponent<UILabel>();
             _precipitationLabel.textScale = 0.8f;
@@ -93,7 +98,9 @@ namespace UltimateEyecandy.GUI
 
             //  Precipitation motion blur:
             var rainMotionblurContainer = UIUtils.CreateFormElement(this, "center");
-            rainMotionblurContainer.relativePosition = new Vector3(0, 115);
+            rainMotionblurContainer.name = "rainMotionblurCheckboxContainer";
+            //rainMotionblurContainer.relativePosition = new Vector3(0, 95);
+            rainMotionblurContainer.relativePosition = new Vector3(0, 89);
             rainMotionblurContainer.autoLayout = false;
 
             _rainMotionblurCheckbox = UIUtils.CreateCheckBox(rainMotionblurContainer);
@@ -106,7 +113,9 @@ namespace UltimateEyecandy.GUI
 
             //  Fog intensity:
             var fogContainer = UIUtils.CreateFormElement(this, "center");
-            fogContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 128) : new Vector3(0, 183);
+            fogContainer.name = "fogIntensitySliderContainer";
+            //fogContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 110) : new Vector3(0, 156);
+            fogContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 104) : new Vector3(0, 150);
 
             _fogIntensityLabel = fogContainer.AddUIComponent<UILabel>();
             _fogIntensityLabel.text = "Fog intensity";
