@@ -5,10 +5,8 @@ namespace UltimateEyecandy.GUI
 {
     public class WeatherPanel : UIPanel
     {
-        private UILabel _enableWeatherLabel;
         private UICheckBox _enableWeatherCheckbox;
 
-        private UILabel _rainMotionblurLabel;
         private UICheckBox _rainMotionblurCheckbox;
 
         private UILabel _fogIntensityLabel;
@@ -85,14 +83,14 @@ namespace UltimateEyecandy.GUI
             if (UltimateEyecandy.isWinterMap)
             {
                 //  Snow intensity:
-                _precipitationLabel.text = "Snowfall intensity";
+                _precipitationLabel.text = "Snowfall intensity (0)";
                 _precipitationSlider.tooltip = "Move this slider to the right to increase Snow Intensity.\nDynamic Weather will be enabled if necessary.";
             }
             //  Non-winter map:
             else
             {
                 //  Rain intensity:
-                _precipitationLabel.text = "Rain intensity";
+                _precipitationLabel.text = "Rain intensity (0)";
                 _precipitationSlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
             }
 
@@ -118,7 +116,7 @@ namespace UltimateEyecandy.GUI
             fogContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 104) : new Vector3(0, 150);
 
             _fogIntensityLabel = fogContainer.AddUIComponent<UILabel>();
-            _fogIntensityLabel.text = "Fog intensity";
+            _fogIntensityLabel.text = "Fog intensity (0)";
             _fogIntensityLabel.textScale = 0.8f;
             _fogIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
@@ -163,10 +161,12 @@ namespace UltimateEyecandy.GUI
                 if (UltimateEyecandy.isWinterMap)
                 {
                     UltimateEyecandy.currentSettings.weather_snowintensity = value;
+                    _precipitationLabel.text = "Snowfall intensity (" + value.ToString() + ")";
                 }
                 else
                 {
                     UltimateEyecandy.currentSettings.weather_rainintensity = value;
+                    _precipitationLabel.text = "Rain intensity (" + value.ToString() + ")";
                 }
                 //  Enable dynamic weather if disabled (required for rainfall):
                 if (!WeatherManager.instance.m_enableWeather)
@@ -180,6 +180,7 @@ namespace UltimateEyecandy.GUI
             {
                 WeatherManager.instance.m_currentFog = value;
                 UltimateEyecandy.currentSettings.weather_fogintensity = value;
+                _fogIntensityLabel.text = "Fog intensity (" + value.ToString() + ")";
                 //  Enable dynamic weather if disabled (required for rainfall):
                 if (!WeatherManager.instance.m_enableWeather)
                 {

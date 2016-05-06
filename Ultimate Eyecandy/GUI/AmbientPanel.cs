@@ -57,16 +57,17 @@ namespace UltimateEyecandy.GUI
             topContainer.name = "heightSliderContainer";
 
             _heightLabel = topContainer.AddUIComponent<UILabel>();
-            _heightLabel.text = "Sun height";
+            _heightLabel.text = "Sun height (0)";
             _heightLabel.textScale = 0.8f;
             _heightLabel.padding = new RectOffset(0, 0, 0, 5);
 
-            _heightSlider = UIUtils.CreateSlider(topContainer, -80f, 80f);
+            //_heightSlider = UIUtils.CreateSlider(topContainer, -80f, 80f);
+            _heightSlider = UIUtils.CreateSlider(topContainer, -120f, 120f);
             _heightSlider.name = "heightSlider";
             _heightSlider.tooltip = "Move this slider to change the sun's Vertical Position.";
             _heightSlider.value = UltimateEyecandy.currentSettings.ambient_height;
             _heightSlider.eventValueChanged += ValueChanged;
-            _heightSlider.stepSize = 0.5f;
+            _heightSlider.stepSize = 0.125f;
 
             //  Sun rotation:
             var sunContainer = UIUtils.CreateFormElement(this, "center");
@@ -74,7 +75,7 @@ namespace UltimateEyecandy.GUI
             sunContainer.relativePosition = new Vector3(0, 70);
 
             _rotationLabel = sunContainer.AddUIComponent<UILabel>();
-            _rotationLabel.text = "Sun rotation";
+            _rotationLabel.text = "Sun rotation (0)";
             _rotationLabel.textScale = 0.8f;
             _rotationLabel.padding = new RectOffset(0, 0, 0, 5);
 
@@ -83,7 +84,7 @@ namespace UltimateEyecandy.GUI
             _rotationSlider.tooltip = "Move this slider to change the sun's Horizontal Position.";
             _rotationSlider.value = UltimateEyecandy.currentSettings.ambient_rotation;
             _rotationSlider.eventValueChanged += ValueChanged;
-            _rotationSlider.stepSize = 1f;
+            _rotationSlider.stepSize = 0.25f;
 
             //  Global light intensity:
             var globalContainer = UIUtils.CreateFormElement(this, "center");
@@ -91,7 +92,7 @@ namespace UltimateEyecandy.GUI
             globalContainer.relativePosition = new Vector3(0, 120);
 
             _intensityLabel = globalContainer.AddUIComponent<UILabel>();
-            _intensityLabel.text = "Global light intensity";
+            _intensityLabel.text = "Global light intensity (0)";
             _intensityLabel.textScale = 0.8f;
             _intensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
@@ -100,7 +101,7 @@ namespace UltimateEyecandy.GUI
             _intensitySlider.tooltip = "Move this slider to change the Sun Light Intensity.";
             _intensitySlider.value = UltimateEyecandy.currentSettings.ambient_intensity;
             _intensitySlider.eventValueChanged += ValueChanged;
-            _intensitySlider.stepSize = 0.2f;
+            _intensitySlider.stepSize = 0.25f;
 
             //  Ambient light intensity:
             var ambientContainer = UIUtils.CreateFormElement(this, "center");
@@ -108,7 +109,7 @@ namespace UltimateEyecandy.GUI
             ambientContainer.relativePosition = new Vector3(0, 170);
 
             _ambientLabel = ambientContainer.AddUIComponent<UILabel>();
-            _ambientLabel.text = "Ambient light intensity";
+            _ambientLabel.text = "Ambient light intensity (0)";
             _ambientLabel.textScale = 0.8f;
             _ambientLabel.padding = new RectOffset(0, 0, 0, 5);
 
@@ -151,24 +152,28 @@ namespace UltimateEyecandy.GUI
             {
                 DayNightProperties.instance.m_Latitude = value;
                 UltimateEyecandy.currentSettings.ambient_height = value;
+                _heightLabel.text = "Sun height (" + value.ToString() + ")";
             }
 
             if (trigger == _rotationSlider)
             {
                 DayNightProperties.instance.m_Longitude = value;
                 UltimateEyecandy.currentSettings.ambient_rotation = value;
+                _rotationLabel.text = "Sun rotation (" + value.ToString() + ")";
             }
 
             if (trigger == _intensitySlider)
             {
                 DayNightProperties.instance.m_SunIntensity = value;
                 UltimateEyecandy.currentSettings.ambient_intensity = value;
+                _intensityLabel.text = "Global light intensity (" + value.ToString() + ")";
             }
 
             if (trigger == _ambientSlider)
             {
                 DayNightProperties.instance.m_Exposure = value;
                 UltimateEyecandy.currentSettings.ambient_ambient = value;
+                _ambientLabel.text = "Ambient light intensity (" + value.ToString() + ")";
             }
         }
     }
