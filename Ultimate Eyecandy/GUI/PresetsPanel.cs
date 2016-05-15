@@ -98,13 +98,14 @@ namespace UltimateEyecandy.GUI
 
             //  Load/delete preset:
             var loadDeleteContainer = UIUtils.CreateFormElement(this, "center");
+            loadDeleteContainer.height = 40;
             loadDeleteContainer.name = "loadDeleteContainer";
             loadDeleteContainer.relativePosition = new Vector3(0, 190);
             loadDeleteContainer.autoLayout = false;
             loadDeleteContainer.isVisible = true;
 
             _loadPresetButton = UIUtils.CreateButton(loadDeleteContainer);
-            _loadPresetButton.width = 100f;
+            //_loadPresetButton.width = 100f;
             _loadPresetButton.opacity = 0.25f;
             _loadPresetButton.isEnabled = false;
             _loadPresetButton.relativePosition = new Vector3(5, 10);
@@ -124,10 +125,10 @@ namespace UltimateEyecandy.GUI
             };
 
             _deletePresetButton = UIUtils.CreateButton(loadDeleteContainer);
-            _deletePresetButton.width = 100f;
+            //_deletePresetButton.width = 100f;
             _deletePresetButton.opacity = 0.25f;
             _deletePresetButton.isEnabled = false;
-            _deletePresetButton.relativePosition = new Vector3(150, 10);
+            _deletePresetButton.relativePosition = new Vector3(160, 10);
             _deletePresetButton.name = "deletePresetButton";
             _deletePresetButton.text = "Delete preset";
             _deletePresetButton.tooltip = "Delete Preset selected in list.";
@@ -152,12 +153,13 @@ namespace UltimateEyecandy.GUI
 
             //  Save/overwrite preset:
             var saveOverwriteContainer = UIUtils.CreateFormElement(this, "center");
-            saveOverwriteContainer.relativePosition = new Vector3(0, 240);
+            saveOverwriteContainer.height = 40;
+            saveOverwriteContainer.relativePosition = new Vector3(0, 230);
             saveOverwriteContainer.autoLayout = false;
             saveOverwriteContainer.isVisible = true;
 
             _savePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
-            _savePresetButton.width = 100f;
+            //_savePresetButton.width = 100f;
             _savePresetButton.relativePosition = new Vector3(5, 10);
             _savePresetButton.name = "savePresetButton";
             _savePresetButton.text = "Save as new";
@@ -178,10 +180,10 @@ namespace UltimateEyecandy.GUI
             };
 
             _overwritePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
-            _overwritePresetButton.width = 100f;
+            //_overwritePresetButton.width = 100f;
             _overwritePresetButton.opacity = 0.25f;
             _overwritePresetButton.isEnabled = false;
-            _overwritePresetButton.relativePosition = new Vector3(150, 10);
+            _overwritePresetButton.relativePosition = new Vector3(160, 10);
             _overwritePresetButton.name = "overwritePresetButton";
             _overwritePresetButton.text = "Overwrite";
             _overwritePresetButton.tooltip = "Save current settings as the Preset selected in the list (overwrite Existing Preset).";

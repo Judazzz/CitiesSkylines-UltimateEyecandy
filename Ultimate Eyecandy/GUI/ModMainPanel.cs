@@ -24,7 +24,7 @@ namespace UltimateEyecandy.GUI
         public PresetsPanel presetsPanel;
 
         public UIButton toggleUltimateEyecandyButton;
-        public static UITextureAtlas toggleUltimateEyecandyButtonAtlas = null;
+        public UITextureAtlas toggleButtonAtlas = null;
         static readonly string UE = "UltimateEyecandy";
 
         private static GameObject _gameObject;
@@ -44,7 +44,6 @@ namespace UltimateEyecandy.GUI
         {
             base.Start();
             
-            //backgroundSprite = "UnlockingPanel2";
             backgroundSprite = "LevelBarBackground";
             isVisible = false;
             canFocus = true;
@@ -199,9 +198,9 @@ namespace UltimateEyecandy.GUI
             toggleUltimateEyecandyButton.playAudioEvents = true;
             toggleUltimateEyecandyButton.tooltip = "Ultimate Eyecandy " + ModInfo.version;
             //  Create custom atlas:
-            if (toggleUltimateEyecandyButtonAtlas == null)
+            if (toggleButtonAtlas == null)
             {
-                toggleUltimateEyecandyButtonAtlas = CreateAtlas(UE, size, size, "ToolbarIcon.png", new[]
+                toggleButtonAtlas = UIUtils.CreateAtlas(UE, size, size, "ToolbarIcon.png", new[]
                                             {
                                                 "EyecandyNormalBg",
                                                 "EyecandyHoveredBg",
@@ -209,13 +208,13 @@ namespace UltimateEyecandy.GUI
                                                 "EyecandyNormalFg",
                                                 "EyecandyHoveredFg",
                                                 "EyecandyPressedFg",
-                                                "EyecandyUnlockBg",
-                                                "EyecandyLogo",
+                                                "EyecandyButtonNormal",
+                                                "EyecandyButtonHover",
                                                 "EyecandyInfoTextBg",
                                             });
             }
             //  Apply custom sprite:
-            toggleUltimateEyecandyButton.atlas = toggleUltimateEyecandyButtonAtlas;
+            toggleUltimateEyecandyButton.atlas = toggleButtonAtlas;
             toggleUltimateEyecandyButton.normalFgSprite = "EyecandyNormalBg";
             toggleUltimateEyecandyButton.normalBgSprite = null;
             toggleUltimateEyecandyButton.hoveredFgSprite = "EyecandyHoveredBg";
@@ -234,45 +233,6 @@ namespace UltimateEyecandy.GUI
                 }
             };
 
-        }
-
-        public static UITextureAtlas CreateAtlas(string name, int width, int height, string file, string[] spriteNames)
-        {
-            var tex = new Texture2D(width, height, TextureFormat.ARGB32, false)
-            {
-                filterMode = FilterMode.Bilinear,
-            };
-
-            var assembly = Assembly.GetExecutingAssembly();
-            using (var textureStream = assembly.GetManifestResourceStream(UE + ".Assets." + file))
-            {
-                var buf = new byte[textureStream.Length];
-                textureStream.Read(buf, 0, buf.Length);
-                tex.LoadImage(buf);
-                tex.Apply(true, false);
-            }
-
-            var atlas = ScriptableObject.CreateInstance<UITextureAtlas>();
-            var material = Instantiate(UIView.Find<UITabstrip>("ToolMode").atlas.material);
-            material.mainTexture = tex;
-
-            atlas.material = material;
-            atlas.name = name;
-
-            for (var i = 0; i < spriteNames.Length; ++i)
-            {
-                var uw = 1.0f / spriteNames.Length;
-
-                var sprite = new UITextureAtlas.SpriteInfo
-                {
-                    name = spriteNames[i],
-                    texture = tex,
-                    region = new Rect(i * uw, 0, uw, 1),
-                };
-
-                atlas.AddSprite(sprite);
-            }
-            return atlas;
         }
 
         private static bool toggleButtonPositionConflicted()

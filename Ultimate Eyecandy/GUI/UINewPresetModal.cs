@@ -33,20 +33,20 @@ namespace UltimateEyecandy.GUI
             isVisible = false;
             canFocus = true;
             isInteractive = true;
-            width = 250;
-            height = 130;
+            size = new Vector2(250, 135);
+            relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
 
-            // Title Bar
+            // Title Bar:
             m_title = AddUIComponent<UIModalTitleBar>();
             m_title.title = "Create New Preset";
             m_title.isModal = true;
             m_title.relativePosition = new Vector3(10, 5);
 
-            // Name
+            // Name:
             UILabel name = AddUIComponent<UILabel>();
             name.height = 30;
             name.text = "Preset name:";
-            name.textScale = 0.85f;
+            name.textScale = 0.8f;
             name.relativePosition = new Vector3(10, m_title.height);
 
             m_name = UIUtils.CreateTextField(this);
@@ -62,7 +62,6 @@ namespace UltimateEyecandy.GUI
             m_name.Focus();
             m_name.eventTextChanged += (c, s) =>
             {
-                //  Overwrite existing or create new:
                 m_ok.text = (!s.IsNullOrWhiteSpace() && UltimateEyecandy.GetPresetByName(s) == null) ? "Create" : "Overwrite";
                 m_name.tooltip = (UltimateEyecandy.GetPresetByName(s) != null) ? $"Preset '{s}' already exists: it will be overwritten!" : "Please enter a Preset name";
                 m_ok.isEnabled = !s.IsNullOrWhiteSpace();
@@ -73,16 +72,16 @@ namespace UltimateEyecandy.GUI
                 if (m_ok.isEnabled && Input.GetKey(KeyCode.Return)) m_ok.SimulateClick();
             };
 
-            // Ok
+            // Ok button:
             m_ok = UIUtils.CreateButton(this);
+            m_ok.relativePosition = new Vector3(11, m_name.relativePosition.y + m_name.height + 10);
             m_ok.text = "Create";
-            //  Overwrite existing instead of blocking?
             m_ok.isEnabled = false;
-            m_ok.relativePosition = new Vector3(10, m_name.relativePosition.y + m_name.height + 5);
-
             m_ok.eventClick += (c, p) =>
             {
-                if (UltimateEyecandy.GetPresetByName(m_name.text) != null) {
+                if (UltimateEyecandy.GetPresetByName(m_name.text) != null)
+                {
+                    //  Overwrite, confirm first:
                     ConfirmPanel.ShowModal("Overwrite Preset", "Are you sure you want to overwrite Preset '" + m_name.text + "'?", (d, i) => {
                         if (i == 1)
                         {
@@ -93,26 +92,23 @@ namespace UltimateEyecandy.GUI
                     });
                 }
                 else {
+                    //  Create new:
                     UltimateEyecandy.CreatePreset(m_name.text, false);
                     UIView.PopModal();
                     Hide();
                 }
             };
 
-            // Cancel
+            // Cancel button:
             m_cancel = UIUtils.CreateButton(this);
+            m_cancel.relativePosition = new Vector3(width - m_cancel.width - 11, m_ok.relativePosition.y + 1);
             m_cancel.text = "Cancel";
-            m_cancel.relativePosition = new Vector3(width - m_cancel.width - 10, m_ok.relativePosition.y);
-
             m_cancel.eventClick += (c, p) =>
             {
                 UIView.PopModal();
                 Hide();
             };
-
-            height = m_cancel.relativePosition.y + m_cancel.height + 5;
-            relativePosition = new Vector3(Mathf.Floor((GetUIView().fixedWidth - width) / 2), Mathf.Floor((GetUIView().fixedHeight - height) / 2));
-
+            //  
             isVisible = true;
         }
 

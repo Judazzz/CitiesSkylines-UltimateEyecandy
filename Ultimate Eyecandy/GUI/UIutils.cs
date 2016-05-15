@@ -1,4 +1,6 @@
 ﻿using ColossalFramework.UI;
+using System;
+using System.Reflection;
 using UnityEngine;
 
 namespace UltimateEyecandy.GUI
@@ -17,20 +19,22 @@ namespace UltimateEyecandy.GUI
             button.playAudioEvents = true;
             button.scaleFactor = 0.75f;
             button.textScale = 0.8f;
-            //button.normalBgSprite = "TextFieldUnderline"; /*"ButtonMenu";*/
-            //button.hoveredBgSprite = "TextFieldPanel"; /*"ButtonMenuHovered";*/
-            //button.pressedBgSprite = "TextFieldPanelHovered"; /*"ButtonMenuPressed";*/
-            //button.disabledBgSprite = "TextFieldUnderline"; /*"ButtonMenuDisabled";*/
-            button.normalBgSprite = "TextFieldUnderline";
-            button.hoveredBgSprite = "TextFieldUnderline";
+
+            //  ListItemHover
+
+            button.normalBgSprite = "LevelBarBackground";
+            button.hoveredBgSprite = "LevelBarBackground";
             button.pressedBgSprite = "TextFieldUnderline";
-            button.disabledBgSprite = "TextFieldUnderline";
             button.focusedBgSprite = "TextFieldUnderline";
-            
+            button.disabledBgSprite = "LevelBarBackground";
+
+            button.textPadding = new RectOffset(0, 0, 3, 0);
+            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+
             button.textColor = new Color32(255, 255, 255, 255);
             button.hoveredTextColor = new Color32(187, 187, 187, 255);
-            button.pressedTextColor = new Color32(0, 0, 0, 255);
-            button.focusedTextColor = new Color32(0, 0, 0, 255);
+            button.pressedTextColor = new Color32(255, 255, 255, 255);
+            button.focusedTextColor = new Color32(255, 255, 255, 255);
             button.disabledTextColor = new Color32(128, 128, 128, 255);
             button.canFocus = false;
             //  
@@ -44,11 +48,6 @@ namespace UltimateEyecandy.GUI
             tab.size = new Vector2((tabstrip.width / 4), 28f);
             tab.tabStrip = true;
             tab.text = text;
-            //tab.normalBgSprite = "SubBarButtonBase";
-            //tab.hoveredBgSprite = "SubBarButtonBaseHovered";
-            //tab.pressedBgSprite = "SubBarButtonBasePressed";
-            //tab.disabledBgSprite = "SubBarButtonBaseDisabled";
-            //tab.focusedBgSprite = "SubBarButtonBaseFocused";
             tab.normalBgSprite = "TextFieldUnderline";
             tab.hoveredBgSprite = "TextFieldUnderline";
             tab.pressedBgSprite = "TextFieldUnderline";
@@ -313,22 +312,6 @@ namespace UltimateEyecandy.GUI
             }
         }
 
-        public static UITextureAtlas[] s_atlases;
-
-        public static UITextureAtlas GetAtlas(string name)
-        {
-            if (s_atlases == null)
-                s_atlases = Resources.FindObjectsOfTypeAll(typeof(UITextureAtlas)) as UITextureAtlas[];
-
-            for (int i = 0; i < s_atlases.Length; i++)
-            {
-                if (s_atlases[i].name == name)
-                    return s_atlases[i];
-            }
-
-            return UIView.GetAView().defaultAtlas;
-        }
-
         public static void TruncateLabel(UILabel label, float maxWidth)
         {
             label.autoSize = true;
@@ -343,7 +326,7 @@ namespace UltimateEyecandy.GUI
         {
             UIPanel panel = parent.AddUIComponent<UIPanel>();
 
-            panel.height = 50;// 65;
+            panel.height = 50;
             panel.width = parent.width;
             panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 0, 15);
             panel.autoLayout = true;
@@ -406,8 +389,7 @@ namespace UltimateEyecandy.GUI
 
         //    return colorField;
         //}
-
-
+        
         public static void DestroyDeeply(UIComponent component)
         {
             if (component == null) return;
@@ -424,6 +406,62 @@ namespace UltimateEyecandy.GUI
             }
 
             GameObject.Destroy(component);
+        }
+
+
+        public static UITextureAtlas[] s_atlases;
+
+        public static UITextureAtlas GetAtlas(string name)
+        {
+            if (s_atlases == null)
+                s_atlases = Resources.FindObjectsOfTypeAll(typeof(UITextureAtlas)) as UITextureAtlas[];
+
+            for (int i = 0; i < s_atlases.Length; i++)
+            {
+                if (s_atlases[i].name == name)
+                    return s_atlases[i];
+            }
+
+            return UIView.GetAView().defaultAtlas;
+        }
+
+        public static UITextureAtlas CreateAtlas(string name, int width, int height, string file, string[] spriteNames)
+        {
+            var tex = new Texture2D(width, height, TextureFormat.ARGB32, false)
+            {
+                filterMode = FilterMode.Bilinear,
+            };
+
+            var assembly = Assembly.GetExecutingAssembly();
+            using (var textureStream = assembly.GetManifestResourceStream(name + ".Assets." + file))
+            {
+                var buf = new byte[textureStream.Length];
+                textureStream.Read(buf, 0, buf.Length);
+                tex.LoadImage(buf);
+                tex.Apply(true, false);
+            }
+
+            var atlas = ScriptableObject.CreateInstance<UITextureAtlas>();
+            var material = UnityEngine.Object.Instantiate(UIView.Find<UITabstrip>("ToolMode").atlas.material);
+            material.mainTexture = tex;
+
+            atlas.material = material;
+            atlas.name = name;
+
+            for (var i = 0; i < spriteNames.Length; ++i)
+            {
+                var uw = 1.0f / spriteNames.Length;
+
+                var sprite = new UITextureAtlas.SpriteInfo
+                {
+                    name = spriteNames[i],
+                    texture = tex,
+                    region = new Rect(i * uw, 0, uw, 1),
+                };
+
+                atlas.AddSprite(sprite);
+            }
+            return atlas;
         }
     }
 }

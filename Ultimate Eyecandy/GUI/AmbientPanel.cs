@@ -13,6 +13,8 @@ namespace UltimateEyecandy.GUI
         private UISlider _intensitySlider;
         private UILabel _ambientLabel;
         private UISlider _ambientSlider;
+        private UILabel _fovLabel;
+        private UISlider _fovSlider;
 
         private UIButton _resetAmbientButton;
 
@@ -32,6 +34,11 @@ namespace UltimateEyecandy.GUI
         public UISlider ambientSlider
         {
             get { return _ambientSlider; }
+        }
+        
+        public UISlider fovSlider
+        {
+            get { return _fovSlider; }
         }
 
         private static AmbientPanel _instance;
@@ -68,6 +75,8 @@ namespace UltimateEyecandy.GUI
             _heightSlider.value = UltimateEyecandy.currentSettings.ambient_height;
             _heightSlider.eventValueChanged += ValueChanged;
             _heightSlider.stepSize = 0.125f;
+
+            DebugUtils.Log($"DEFAULT POINT OF VIEW: {Camera.main.fieldOfView}");
 
             //  Sun rotation:
             var sunContainer = UIUtils.CreateFormElement(this, "center");
@@ -119,6 +128,23 @@ namespace UltimateEyecandy.GUI
             _ambientSlider.value = UltimateEyecandy.currentSettings.ambient_ambient;
             _ambientSlider.eventValueChanged += ValueChanged;
             _ambientSlider.stepSize = 0.04f;
+
+            //  Field of View:
+            var fovContainer = UIUtils.CreateFormElement(this, "center");
+            fovContainer.name = "fovContainer";
+            fovContainer.relativePosition = new Vector3(0, 220);
+
+            _fovLabel = fovContainer.AddUIComponent<UILabel>();
+            _fovLabel.text = "Field of View (" + Camera.main.fieldOfView.ToString() + ")";
+            _fovLabel.textScale = 0.8f;
+            _fovLabel.padding = new RectOffset(0, 0, 0, 5);
+
+            _fovSlider = UIUtils.CreateSlider(fovContainer, 10f, 80f);
+            _fovSlider.name = "fovSlider";
+            _fovSlider.tooltip = "Move this slider to change the Field of View (FoV).";
+            _fovSlider.value = 45f;
+            _fovSlider.eventValueChanged += ValueChanged;
+            _fovSlider.stepSize = 0.5f;
 
             //  Reset button:
             var resetContainer = UIUtils.CreateFormElement(this, "bottom");
@@ -174,6 +200,12 @@ namespace UltimateEyecandy.GUI
                 DayNightProperties.instance.m_Exposure = value;
                 UltimateEyecandy.currentSettings.ambient_ambient = value;
                 _ambientLabel.text = "Ambient light intensity (" + value.ToString() + ")";
+            }
+
+            if (trigger == _fovSlider)
+            {
+                Camera.main.fieldOfView = value;
+                _fovLabel.text = "Field of View (" + value.ToString() + ")";
             }
         }
     }

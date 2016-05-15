@@ -135,7 +135,6 @@ namespace UltimateEyecandy
                 // Is it an actual game ?
                 if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame)
                 {
-                    //DefaultOptions.Clear();
                     return;
                 }
                 //  

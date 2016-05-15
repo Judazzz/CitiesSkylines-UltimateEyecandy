@@ -65,11 +65,11 @@ namespace UltimateEyecandy.GUI
             m_title.isInteractive = false;
 
             m_close = AddUIComponent<UIButton>();
-            m_close.size = new Vector2(25, 25);
-            m_close.relativePosition = new Vector3(width - 33, 7);
-            m_close.normalBgSprite = "buttonclose";
-            m_close.hoveredBgSprite = "buttonclosehover";
-            m_close.pressedBgSprite = "buttonclosepressed";
+            m_close.size = new Vector2(17, 17);
+            m_close.relativePosition = new Vector3(width - 25, 12);
+            m_close.normalBgSprite = "IconError";
+            m_close.hoveredBgSprite = "IconError";
+            m_close.pressedBgSprite = "IconError";
             m_close.eventClick += (component, param) =>
             {
                 if (isModal)
