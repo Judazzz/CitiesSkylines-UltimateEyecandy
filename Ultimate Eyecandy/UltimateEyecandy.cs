@@ -87,7 +87,7 @@ namespace UltimateEyecandy
             }
         }
 
-        public const string version = "1.1.0";
+        public const string version = "1.1.1";
     }
 
     public class UltimateEyecandy : LoadingExtensionBase
@@ -108,7 +108,12 @@ namespace UltimateEyecandy
         public static bool isWinterMap = false;
 
         public static Configuration config = new Configuration();
+        //  In-Memory Preset for storing initial settings:
+        public static Configuration.Preset initialSettings = new Configuration.Preset();
+        //  In-Memory Preset for storing current settings:
         public static Configuration.Preset currentSettings = new Configuration.Preset();
+
+        public static bool hasDaylightClassic = false;
 
         public static bool isGameLoaded = false;
 
@@ -132,23 +137,25 @@ namespace UltimateEyecandy
         {
             try
             {
-                // Is it an actual game ?
+                // In-game?
                 if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame)
                 {
                     return;
                 }
                 //  
                 isGameLoaded = true;
-                // Creating GUI
+                // Creating GUI:
                 UIView view = UIView.GetAView();
                 _gameObject = new GameObject("UltimateEyecandy");
                 _gameObject.transform.SetParent(view.transform);
-
+                //  Back up initial values:
+                SaveInitialValues();
+                isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
+                //  
                 try
                 {
                     optionsGameplayPanel = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<OptionsGameplayPanel>().gameObject).GetComponent<OptionsGameplayPanel>();
                     //  
-                    isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
                     _modMainPanel = _gameObject.AddComponent<ModMainPanel>();
                     _modMainPanel.AddGuiToggle();
                     if (config.outputDebug)
@@ -168,7 +175,9 @@ namespace UltimateEyecandy
             catch (Exception e)
             {
                 if (_gameObject != null)
+                {
                     GameObject.Destroy(_gameObject);
+                }
                 DebugUtils.LogException(e);
             }
         }
@@ -207,19 +216,6 @@ namespace UltimateEyecandy
         }
         #endregion
 
-        public static void RestoreBackup()
-        {
-            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
-            if (!File.Exists(fileName + ".bak")) return;
-
-            File.Copy(fileName + ".bak", fileName, true);
-            //  
-            if (config.outputDebug)
-            {
-                DebugUtils.Log("Backup configuration file restored.");
-            }
-        }
-
         public static void SaveBackup()
         {
             var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
@@ -230,6 +226,19 @@ namespace UltimateEyecandy
             if (config.outputDebug)
             {
                 DebugUtils.Log("Backup configuration file created.");
+            }
+        }
+
+        public static void RestoreBackup()
+        {
+            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
+            if (!File.Exists(fileName + ".bak")) return;
+
+            File.Copy(fileName + ".bak", fileName, true);
+            //  
+            if (config.outputDebug)
+            {
+                DebugUtils.Log("Backup configuration file restored.");
             }
         }
 
@@ -321,56 +330,6 @@ namespace UltimateEyecandy
             SaveConfig();
         }
 
-        //  Reset all values and create In-Memory Preset solely for handling current settings:
-        public static void ResetAll()
-        {
-            currentSettings = new Configuration.Preset()
-            {
-                name = string.Empty,
-                ambient_height = (isWinterMap) ? 66f : 35f,
-                ambient_rotation = 98f,
-                ambient_intensity = 6f,
-                ambient_ambient = (isWinterMap) ? 0.4f : 0.71f,
-                weather = false, //optionsGameplayPanel.enableWeather,
-                weather_rainintensity = 0f,
-                weather_rainmotionblur = false,
-                weather_fogintensity = 0f,
-                weather_snowintensity = 0f,
-                color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection)
-            };
-            //  Apply to UI:
-            _modMainPanel.ambientPanel.heightSlider.value = currentSettings.ambient_height;
-            _modMainPanel.ambientPanel.rotationSlider.value = currentSettings.ambient_rotation;
-            _modMainPanel.ambientPanel.intensitySlider.value = currentSettings.ambient_intensity;
-            _modMainPanel.ambientPanel.ambientSlider.value = currentSettings.ambient_ambient;
-            if (isWinterMap)
-            {
-                _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_snowintensity;
-            }
-            else
-            {
-                _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_rainintensity;
-                _modMainPanel.weatherPanel.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
-            }
-            _modMainPanel.weatherPanel.fogIntensitySlider.value = currentSettings.weather_fogintensity;
-            _modMainPanel.weatherPanel.enableWeatherCheckbox.isChecked = currentSettings.weather;
-            _modMainPanel.colorManagementPanel.lutFastlist.DisplayAt(0);
-            _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = 0;
-            ColorCorrectionManager.instance.currentSelection = 0;
-            //  
-            if (config.outputDebug)
-            {
-                DebugUtils.Log("Temporary preset created from scratch.");
-            }
-        }
-
-        public static void DeletePreset(Configuration.Preset preset)
-        {
-            config.presets.Remove(preset);
-            //  
-            SaveConfig();
-        }
-        
         public static void LoadPreset(string presetName)
         {
             //  
@@ -422,6 +381,62 @@ namespace UltimateEyecandy
             {
                 DebugUtils.LogException(ex);
             }
+        }
+
+        public static void DeletePreset(Configuration.Preset preset)
+        {
+            config.presets.Remove(preset);
+            //  
+            SaveConfig();
+        }
+
+        //  Reset all values and (re-)apply initial settings to In-Memory Preset for storing current settings:
+        public static void ResetAll()
+        {
+            currentSettings = initialSettings;
+            //  Apply to UI:
+            _modMainPanel.ambientPanel.heightSlider.value = currentSettings.ambient_height;
+            _modMainPanel.ambientPanel.rotationSlider.value = currentSettings.ambient_rotation;
+            _modMainPanel.ambientPanel.intensitySlider.value = currentSettings.ambient_intensity;
+            _modMainPanel.ambientPanel.ambientSlider.value = currentSettings.ambient_ambient;
+            if (isWinterMap)
+            {
+                _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_snowintensity;
+            }
+            else
+            {
+                _modMainPanel.weatherPanel.precipitationSlider.value = currentSettings.weather_rainintensity;
+                _modMainPanel.weatherPanel.rainMotionblurCheckbox.isChecked = currentSettings.weather_rainmotionblur;
+            }
+            _modMainPanel.weatherPanel.fogIntensitySlider.value = currentSettings.weather_fogintensity;
+            _modMainPanel.weatherPanel.enableWeatherCheckbox.isChecked = currentSettings.weather;
+            _modMainPanel.colorManagementPanel.lutFastlist.DisplayAt(0);
+            _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = 0;
+            ColorCorrectionManager.instance.currentSelection = 0;
+            //  
+            if (config.outputDebug)
+            {
+                DebugUtils.Log("Temporary preset created from scratch.");
+            }
+        }
+
+        //  Create In-Memory Preset for storing initial settings (to reset to default values independent of similar mods like Daylight Classic):
+        public static void SaveInitialValues()
+        {
+            initialSettings = new Configuration.Preset()
+            {
+                name = string.Empty,
+                ambient_height = DayNightProperties.instance.m_Latitude,
+                ambient_rotation = DayNightProperties.instance.m_Longitude,
+                ambient_intensity = DayNightProperties.instance.m_SunIntensity,
+                ambient_ambient = DayNightProperties.instance.m_Exposure,
+                weather = false, //optionsGameplayPanel.enableWeather,
+                weather_rainintensity = 0f,
+                weather_rainmotionblur = false,
+                weather_fogintensity = 0f,
+                weather_snowintensity = 0f,
+                color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection)
+            };
         }
     }
 }

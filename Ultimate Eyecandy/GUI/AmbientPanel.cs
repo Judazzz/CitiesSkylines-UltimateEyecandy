@@ -68,15 +68,12 @@ namespace UltimateEyecandy.GUI
             _heightLabel.textScale = 0.8f;
             _heightLabel.padding = new RectOffset(0, 0, 0, 5);
 
-            //_heightSlider = UIUtils.CreateSlider(topContainer, -80f, 80f);
             _heightSlider = UIUtils.CreateSlider(topContainer, -120f, 120f);
             _heightSlider.name = "heightSlider";
             _heightSlider.tooltip = "Move this slider to change the sun's Vertical Position.";
             _heightSlider.value = UltimateEyecandy.currentSettings.ambient_height;
             _heightSlider.eventValueChanged += ValueChanged;
             _heightSlider.stepSize = 0.125f;
-
-            DebugUtils.Log($"DEFAULT POINT OF VIEW: {Camera.main.fieldOfView}");
 
             //  Sun rotation:
             var sunContainer = UIUtils.CreateFormElement(this, "center");
@@ -127,7 +124,7 @@ namespace UltimateEyecandy.GUI
             _ambientSlider.tooltip = "Move this slider to change the Ambient Light Intensity.";
             _ambientSlider.value = UltimateEyecandy.currentSettings.ambient_ambient;
             _ambientSlider.eventValueChanged += ValueChanged;
-            _ambientSlider.stepSize = 0.04f;
+            _ambientSlider.stepSize = 0.01f;
 
             //  Field of View:
             //var fovContainer = UIUtils.CreateFormElement(this, "center");

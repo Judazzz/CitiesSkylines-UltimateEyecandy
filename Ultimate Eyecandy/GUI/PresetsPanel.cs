@@ -43,7 +43,7 @@ namespace UltimateEyecandy.GUI
         {
             base.Start();
 
-            UltimateEyecandy.LoadConfig();
+            //UltimateEyecandy.LoadConfig();
             if (UltimateEyecandy.config.outputDebug)
             {
                 DebugUtils.Log($"Ultimate Eyecandy: configuration loaded");
@@ -58,7 +58,8 @@ namespace UltimateEyecandy.GUI
             if (UltimateEyecandy.config.loadLastPresetOnStart && !string.IsNullOrEmpty(UltimateEyecandy.config.lastPreset))
             {
                 //  Create temporary preset based on last active preset:
-                try {
+                try
+                {
                     UltimateEyecandy.LoadPreset(UltimateEyecandy.config.lastPreset);
                     if (UltimateEyecandy.config.outputDebug)
                     {
