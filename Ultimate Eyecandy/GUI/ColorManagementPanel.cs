@@ -25,6 +25,26 @@ namespace UltimateEyecandy.GUI
 
         public LutList.Lut _selectedLut;
 
+        private UICheckBox _enableBloomCheckbox;
+        public UICheckBox enableBloomCheckbox
+        {
+            get { return _enableBloomCheckbox; }
+        }
+
+        private UICheckBox _enableTonemappingCheckbox;
+        public UICheckBox enableTonemappingCheckbox
+        {
+            get { return _enableTonemappingCheckbox; }
+        }
+
+        //private UICheckBox _enableTbaCheckbox;
+        //public UICheckBox enableTbaCheckbox
+        //{
+        //    get { return _enableTbaCheckbox; }
+        //}
+
+        private MonoBehaviour[] cameraBehaviours;
+
         private static ColorManagementPanel _instance;
         public static ColorManagementPanel instance
         {
@@ -38,8 +58,8 @@ namespace UltimateEyecandy.GUI
             canFocus = true;
             isInteractive = true;
             //  
+            cameraBehaviours = Camera.main.GetComponents<MonoBehaviour>() as MonoBehaviour[];
             SetupControls();
-
             PopulateLutFastList();
         }
 
@@ -57,14 +77,14 @@ namespace UltimateEyecandy.GUI
             _lutFastlist = UIFastList.Create<UILutItem>(topContainer);
             _lutFastlist.backgroundSprite = "UnlockingPanel";
             _lutFastlist.width = parent.width - (3 * UltimateEyecandy.SPACING) - 12;
-            _lutFastlist.height = 150;
+            _lutFastlist.height = 125;
             _lutFastlist.canSelect = true;
             _lutFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
 
             //  Load lut:
             var loadContainer = UIUtils.CreateFormElement(this, "center");
             loadContainer.name = "loadDeleteContainer";
-            loadContainer.relativePosition = new Vector3(0, 190);
+            loadContainer.relativePosition = new Vector3(0, 165);
             loadContainer.autoLayout = false;
             loadContainer.isVisible = true;
 
@@ -97,6 +117,52 @@ namespace UltimateEyecandy.GUI
                 }
             };
 
+            //  Tonemapping (LUT):
+            var tonemappingContainer = UIUtils.CreateFormElement(this, "center");
+            tonemappingContainer.name = "tonemappingContainer";
+            tonemappingContainer.relativePosition = new Vector3(0, 220);
+
+            _enableTonemappingCheckbox = UIUtils.CreateCheckBox(tonemappingContainer);
+            _enableTonemappingCheckbox.relativePosition = new Vector3(5, 17);
+            _enableTonemappingCheckbox.name = "_enableTonemappingCheckbox";
+            _enableTonemappingCheckbox.tooltip = "Check this box to toggle Tonemapping (disabling means no LUT is used at all).";
+            //_enableTonemappingCheckbox.isChecked = GetCameraBehaviour("ToneMapping");
+            _enableTonemappingCheckbox.isChecked = true;
+            _enableTonemappingCheckbox.eventCheckChanged += CheckboxChanged;
+
+            _enableTonemappingCheckbox.label.text = "LUT Tonemapping";
+
+            //  Bloom:
+            var bloomContainer = UIUtils.CreateFormElement(this, "center");
+            bloomContainer.name = "bloomContainer";
+            bloomContainer.relativePosition = new Vector3(0, 240);
+            bloomContainer.height = 20;
+
+            _enableBloomCheckbox = UIUtils.CreateCheckBox(bloomContainer);
+            _enableBloomCheckbox.relativePosition = new Vector3(5, 17);
+            _enableBloomCheckbox.name = "_enableBloomCheckbox";
+            _enableBloomCheckbox.tooltip = "Check this box to toggle bloom.";
+            //_enableBloomCheckbox.isChecked = GetCameraBehaviour("Bloom");
+            _enableBloomCheckbox.isChecked = true;
+            _enableBloomCheckbox.eventCheckChanged += CheckboxChanged;
+
+            _enableBloomCheckbox.label.text = "Bloom";
+
+            //  tba:
+            //var tbaContainer = UIUtils.CreateFormElement(this, "center");
+            //tbaContainer.name = "tbaContainer";
+            //tbaContainer.relativePosition = new Vector3(0, 260);
+            //tbaContainer.height = 20;
+
+            //_enableTbaCheckbox = UIUtils.CreateCheckBox(tbaContainer);
+            //_enableTbaCheckbox.relativePosition = new Vector3(5, 17);
+            //_enableTbaCheckbox.name = "_enableTbaCheckbox";
+            //_enableTbaCheckbox.tooltip = "Check this box to toggle tba.";
+            //_enableTbaCheckbox.isChecked = Camera.main.tba;
+            //_enableTbaCheckbox.eventCheckChanged += CheckboxChanged;
+
+            //_enableTbaCheckbox.label.text = "tba";
+
             //  Reset button:
             var bottomContainer = UIUtils.CreateFormElement(this, "bottom");
 
@@ -113,8 +179,10 @@ namespace UltimateEyecandy.GUI
                 //  
                 _lutFastlist.DisplayAt(0);
                 _lutFastlist.selectedIndex = 0;
-                UltimateEyecandy.currentSettings.color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection); // "None";
+                UltimateEyecandy.currentSettings.color_selectedlut = LutList.GetLutNameByIndex(ColorCorrectionManager.instance.lastSelection);
                 ColorCorrectionManager.instance.currentSelection = 0;
+                _enableTonemappingCheckbox.isChecked = true;
+                _enableTonemappingCheckbox.isChecked = true;
             };
         }
 
@@ -154,6 +222,44 @@ namespace UltimateEyecandy.GUI
         protected void OnEnableStateChanged(UIComponent component, bool state)
         {
             _lutFastlist.DisplayAt(_lutFastlist.listPosition);
+        }
+
+
+        private void CheckboxChanged(UIComponent trigger, bool isChecked)
+        {
+            if (UltimateEyecandy.config.outputDebug)
+            {
+                DebugUtils.Log($"AmbientPanel: Checkbox {trigger.name} = {isChecked}");
+            }
+            //  
+            if (trigger == _enableBloomCheckbox)
+            {
+                GetCameraBehaviour("Bloom").enabled = isChecked;
+                UltimateEyecandy.currentSettings.color_bloom = isChecked;
+            }
+            else if (trigger == _enableTonemappingCheckbox)
+            {
+                GetCameraBehaviour("ToneMapping").enabled = isChecked;
+                UltimateEyecandy.currentSettings.color_tonemapping = isChecked;
+            }
+            //else if (trigger == _enableTbaCheckbox)
+            //{
+            //    Camera.main.tba = isChecked;
+            //    //UltimateEyecandy.currentSettings.color_tba = isChecked;
+            //}
+        }
+
+        MonoBehaviour GetCameraBehaviour(string name)
+        {
+            for (int i = 0; i < cameraBehaviours.Length; i++)
+            {
+                if (cameraBehaviours[i].GetType().Name == name)
+                {
+                    return cameraBehaviours[i];
+                }
+
+            }
+            return null;
         }
     }
 

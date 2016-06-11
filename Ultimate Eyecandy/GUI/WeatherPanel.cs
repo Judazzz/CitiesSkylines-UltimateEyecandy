@@ -14,6 +14,9 @@ namespace UltimateEyecandy.GUI
 
         private UILabel _precipitationLabel;
         private UISlider _precipitationSlider;
+        
+        //private UILabel _wetnessLabel;
+        //private UISlider _wetnessSlider;
 
         private UIButton _resetWeatherButton;
 
@@ -33,6 +36,10 @@ namespace UltimateEyecandy.GUI
         {
             get { return _precipitationSlider; }
         }
+        //public UISlider wetnessSlider
+        //{
+        //    get { return _wetnessSlider; }
+        //}
 
         private static WeatherPanel _instance;
         public static WeatherPanel instance => _instance;
@@ -59,10 +66,10 @@ namespace UltimateEyecandy.GUI
             _enableWeatherCheckbox.relativePosition = new Vector3(5, 17);
             _enableWeatherCheckbox.name = "enableWeatherCheckbox";
             _enableWeatherCheckbox.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
-            _enableWeatherCheckbox.isChecked = WeatherManager.instance.m_enableWeather;
+            _enableWeatherCheckbox.isChecked = UltimateEyecandy.optionsGameplayPanel.enableWeather;
             _enableWeatherCheckbox.eventCheckChanged += CheckboxChanged;
 
-            _enableWeatherCheckbox.label.text = "Enable weather";
+            _enableWeatherCheckbox.label.text = "Weather";
 
             //  Precipitation intensity:
             var precipitationContainer = UIUtils.CreateFormElement(this, "center");
@@ -104,6 +111,7 @@ namespace UltimateEyecandy.GUI
             _rainMotionblurCheckbox = UIUtils.CreateCheckBox(rainMotionblurContainer);
             _rainMotionblurCheckbox.name = "rainMotionblurCheckbox";
             _rainMotionblurCheckbox.tooltip = "Check this box to enable the Rain Motion Blur Effect. This setting is mainly visible when the game is paused.";
+            _rainMotionblurCheckbox.isChecked = true;
             _rainMotionblurCheckbox.eventCheckChanged += CheckboxChanged;
             _rainMotionblurCheckbox.label.text = "Rain motion blur";
             //  Hide on winter maps:
@@ -126,6 +134,23 @@ namespace UltimateEyecandy.GUI
             _fogIntensitySlider.tooltip = "Move this slider to the right to increase Fog Density.\nDynamic Weather will be enabled if necessary.";
             _fogIntensitySlider.eventValueChanged += SliderChanged;
 
+            //  Ground Wetness:
+            //var wetnessContainer = UIUtils.CreateFormElement(this, "center");
+            //wetnessContainer.name = "wetnessContainer";
+            //wetnessContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 156) : new Vector3(0, 202);
+
+            //_wetnessLabel = wetnessContainer.AddUIComponent<UILabel>();
+            //_wetnessLabel.text = "Ground wetness (" + WeatherManager.instance.m_groundWetness + ")";
+            //_wetnessLabel.textScale = 0.8f;
+            //_wetnessLabel.padding = new RectOffset(0, 0, 0, 5);
+
+            //_wetnessSlider = UIUtils.CreateSlider(wetnessContainer, 0f, 1f);
+            //_wetnessSlider.name = "wetnessSlider";
+            //_wetnessSlider.tooltip = "Move this slider to change ground wetness.";
+            //_wetnessSlider.stepSize = 0.01f;
+            //_wetnessSlider.value = WeatherManager.instance.m_groundWetness;
+            //_wetnessSlider.eventValueChanged += SliderChanged;
+
             //  Reset button:
             var resetContainer = UIUtils.CreateFormElement(this, "bottom");
 
@@ -144,7 +169,7 @@ namespace UltimateEyecandy.GUI
                 _precipitationSlider.value = 0;
                 _rainMotionblurCheckbox.isChecked = false;
                 _fogIntensitySlider.value = 0;
-
+                //_wetnessSlider.value = 0;
             };
         }
 
@@ -169,10 +194,10 @@ namespace UltimateEyecandy.GUI
                     _precipitationLabel.text = "Rain intensity (" + value.ToString() + ")";
                 }
                 //  Enable dynamic weather if disabled (required for rainfall):
-                if (!WeatherManager.instance.m_enableWeather)
+                if (!UltimateEyecandy.optionsGameplayPanel.enableWeather)
                 {
-                    WeatherManager.instance.m_enableWeather = true;
                     UltimateEyecandy.currentSettings.weather = true;
+                    UltimateEyecandy.optionsGameplayPanel.enableWeather = true;
                     _enableWeatherCheckbox.isChecked = true;
                 }
             }
@@ -182,13 +207,22 @@ namespace UltimateEyecandy.GUI
                 UltimateEyecandy.currentSettings.weather_fogintensity = value;
                 _fogIntensityLabel.text = "Fog intensity (" + value.ToString() + ")";
                 //  Enable dynamic weather if disabled (required for rainfall):
-                if (!WeatherManager.instance.m_enableWeather)
+                if (!UltimateEyecandy.optionsGameplayPanel.enableWeather)
                 {
-                    WeatherManager.instance.m_enableWeather = true;
                     UltimateEyecandy.currentSettings.weather = true;
+                    UltimateEyecandy.optionsGameplayPanel.enableWeather = true;
                     _enableWeatherCheckbox.isChecked = true;
                 }
             }
+            //else if (trigger == _wetnessSlider)
+            //{
+            //    WeatherManager.instance.m_groundWetness = value;
+            //    NetManager.instance.m_lastMaxWetness = (int)value;
+            //    NetManager.instance.m_currentMaxWetness = (int)value;
+            //    UltimateEyecandy.currentSettings.weather_wetness = value;
+            //    NetManager.instance.m_wetnessChanged = (int)value;
+            //    _wetnessLabel.text = "Ground wetness (" + value.ToString() + ")";
+            //}
         }
 
         private void CheckboxChanged(UIComponent trigger, bool isChecked)
@@ -200,29 +234,8 @@ namespace UltimateEyecandy.GUI
             //  
             if (trigger == _enableWeatherCheckbox)
             {
-                WeatherManager.instance.m_enableWeather = isChecked;
                 UltimateEyecandy.currentSettings.weather = isChecked;
-                //  
                 UltimateEyecandy.optionsGameplayPanel.enableWeather = isChecked;
-                //  Re-apply current weather settings - To-do: only re-apply when checking box manually (not when triggered by LoadPreset()):
-                //if (isChecked)
-                //{
-                //    if (UltimateEyecandy.isWinterMap)
-                //    {
-                //        //WeatherManager.instance.m_currentRain = _snowIntensitySlider.value;
-                //        UltimateEyecandy.currentSettings.weather_snowintensity = _snowIntensitySlider.value;
-                //    }
-                //    else
-                //    {
-                //        WeatherManager.instance.m_currentRain = _rainIntensitySlider.value;
-                //        UltimateEyecandy.currentSettings.weather_rainintensity = _rainIntensitySlider.value;
-                //        var rrp = FindObjectOfType<RainParticleProperties>();
-                //        rrp.ForceRainMotionBlur = _rainMotionblurCheckbox.isChecked;
-                //        UltimateEyecandy.currentSettings.weather_rainmotionblur = _rainMotionblurCheckbox.isChecked;
-                //    }
-                //    WeatherManager.instance.m_currentFog = _fogIntensitySlider.value;
-                //    UltimateEyecandy.currentSettings.weather_fogintensity = _fogIntensitySlider.value;
-                //}
             }
             else if (trigger == _rainMotionblurCheckbox)
             {

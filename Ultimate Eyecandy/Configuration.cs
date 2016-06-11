@@ -46,8 +46,11 @@ namespace UltimateEyecandy
             [XmlElement("ambient_ambient")]
             public float ambient_ambient;
 
+            //[XmlElement("ambient_fov")]
+            //public float ambient_fov;
+
             [XmlElement("weather")]
-            public bool weather;
+            public bool weather = false;
 
             [XmlElement("weather_rainintensity")]
             public float weather_rainintensity;
@@ -64,6 +67,12 @@ namespace UltimateEyecandy
             [XmlElement("color_selectedlut")]
             public string color_selectedlut;
 
+            [XmlElement("color_tonemapping")]
+            public bool color_tonemapping = true;
+
+            [XmlElement("color_bloom")]
+            public bool color_bloom = true;
+
             public Preset(string name)
             {
                 this.name = name;
@@ -76,11 +85,14 @@ namespace UltimateEyecandy
                 this.ambient_rotation = builtInPreset.ambient_rotation;
                 this.ambient_intensity = builtInPreset.ambient_intensity;
                 this.ambient_ambient = builtInPreset.ambient_height;
+                //this.ambient_fov = builtInPreset.ambient_fov;
                 this.weather = builtInPreset.weather;
                 this.weather_rainintensity = builtInPreset.weather_rainintensity;
                 this.weather_rainmotionblur = builtInPreset.weather_rainmotionblur;
                 this.weather_fogintensity = builtInPreset.weather_fogintensity;
                 this.color_selectedlut = builtInPreset.color_selectedlut;
+                this.color_tonemapping = builtInPreset.color_tonemapping;
+                this.color_bloom = builtInPreset.color_bloom;
             }
 
             public Preset()
@@ -134,19 +146,25 @@ namespace UltimateEyecandy
                         if (preset.name == string.Empty)
                             continue;
                         //  Existing presets:
-                        var newPreset = new Configuration.Preset
+
+                        DebugUtils.Log($"[DEBUG] - {preset.name} / {preset.weather}.");
+
+                        var newPreset = new Preset
                         {
                             name = preset.name,
                             ambient_height = preset.ambient_height,
                             ambient_rotation = preset.ambient_rotation,
                             ambient_intensity = preset.ambient_intensity,
                             ambient_ambient = preset.ambient_ambient,
+                            //ambient_fov = preset.ambient_fov,
                             weather = preset.weather,
                             weather_rainintensity = preset.weather_rainintensity,
                             weather_rainmotionblur = preset.weather_rainmotionblur,
                             weather_fogintensity = preset.weather_fogintensity,
                             weather_snowintensity = preset.weather_snowintensity,
-                            color_selectedlut = preset.color_selectedlut
+                            color_selectedlut = preset.color_selectedlut,
+                            color_tonemapping = preset.color_tonemapping,
+                            color_bloom = preset.color_bloom
                         };
                         configCopy.presets.Add(newPreset);
                     }

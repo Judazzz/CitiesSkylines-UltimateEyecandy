@@ -35,7 +35,7 @@ namespace UltimateEyecandy.GUI
         {
             get { return _ambientSlider; }
         }
-        
+
         //public UISlider fovSlider
         //{
         //    get { return _fovSlider; }
@@ -132,7 +132,7 @@ namespace UltimateEyecandy.GUI
             //fovContainer.relativePosition = new Vector3(0, 220);
 
             //_fovLabel = fovContainer.AddUIComponent<UILabel>();
-            //_fovLabel.text = "Field of View (" + Camera.main.fieldOfView.ToString() + ")";
+            //_fovLabel.text = "Field of View (45)";
             //_fovLabel.textScale = 0.8f;
             //_fovLabel.padding = new RectOffset(0, 0, 0, 5);
 

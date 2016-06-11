@@ -42,12 +42,6 @@ namespace UltimateEyecandy.GUI
         public override void Start()
         {
             base.Start();
-
-            //UltimateEyecandy.LoadConfig();
-            if (UltimateEyecandy.config.outputDebug)
-            {
-                DebugUtils.Log($"Ultimate Eyecandy: configuration loaded");
-            }
             _instance = this;
             canFocus = true;
             isInteractive = true;
@@ -60,7 +54,7 @@ namespace UltimateEyecandy.GUI
                 //  Create temporary preset based on last active preset:
                 try
                 {
-                    UltimateEyecandy.LoadPreset(UltimateEyecandy.config.lastPreset);
+                    UltimateEyecandy.LoadPreset(UltimateEyecandy.config.lastPreset, false);
                     if (UltimateEyecandy.config.outputDebug)
                     {
                         DebugUtils.Log($"Temporary preset created based on last active preset '{UltimateEyecandy.config.lastPreset}'.");
@@ -74,7 +68,7 @@ namespace UltimateEyecandy.GUI
             }
             else
             {
-                //  Create temporary preset from scratch:
+                //  Fallback: create temporary preset from scratch:
                 UltimateEyecandy.ResetAll();
             }
         }
@@ -92,8 +86,8 @@ namespace UltimateEyecandy.GUI
             // FastList
             _presetFastlist = UIFastList.Create<UIPresetItem>(topContainer);
             _presetFastlist.backgroundSprite = "UnlockingPanel";
-            _presetFastlist.width = parent.width - (3 * UltimateEyecandy.SPACING) - 12; // parent.width - (2 * UltimateEyecandy.SPACING);
-            _presetFastlist.height = 150;
+            _presetFastlist.width = parent.width - (3 * UltimateEyecandy.SPACING) - 12;
+            _presetFastlist.height = 125;
             _presetFastlist.canSelect = true;
             _presetFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
 
@@ -101,7 +95,7 @@ namespace UltimateEyecandy.GUI
             var loadDeleteContainer = UIUtils.CreateFormElement(this, "center");
             loadDeleteContainer.height = 40;
             loadDeleteContainer.name = "loadDeleteContainer";
-            loadDeleteContainer.relativePosition = new Vector3(0, 190);
+            loadDeleteContainer.relativePosition = new Vector3(0, 165); // new Vector3(0, 190);
             loadDeleteContainer.autoLayout = false;
             loadDeleteContainer.isVisible = true;
 
@@ -120,7 +114,7 @@ namespace UltimateEyecandy.GUI
                 {
                     DebugUtils.Log($"PresetsPanel: 'Load preset' clicked: preset '{_selectedPreset.name}'.");
                 }
-                UltimateEyecandy.LoadPreset(_selectedPreset.name);
+                UltimateEyecandy.LoadPreset(_selectedPreset.name, true);
                 //  Button appearance:
                 updateButtons(true);
             };
@@ -155,7 +149,7 @@ namespace UltimateEyecandy.GUI
             //  Save/overwrite preset:
             var saveOverwriteContainer = UIUtils.CreateFormElement(this, "center");
             saveOverwriteContainer.height = 40;
-            saveOverwriteContainer.relativePosition = new Vector3(0, 230);
+            saveOverwriteContainer.relativePosition = new Vector3(0, 205); // new Vector3(0, 230);
             saveOverwriteContainer.autoLayout = false;
             saveOverwriteContainer.isVisible = true;
 

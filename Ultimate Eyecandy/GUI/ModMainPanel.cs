@@ -44,7 +44,7 @@ namespace UltimateEyecandy.GUI
         {
             base.Start();
             
-            backgroundSprite = "LevelBarBackground";
+            backgroundSprite = (UltimateEyecandy.isEditor) ? "MenuPanel2" : "LevelBarBackground";
             isVisible = false;
             canFocus = true;
             isInteractive = true;
@@ -98,6 +98,7 @@ namespace UltimateEyecandy.GUI
             UIPanel body = AddUIComponent<UIPanel>();
             body.width = UltimateEyecandy.WIDTH;
             body.height = UltimateEyecandy.HEIGHT;
+            //  ScrollRect
             body.relativePosition = new Vector3(UltimateEyecandy.SPACING, UltimateEyecandy.TITLE_HEIGHT + UltimateEyecandy.TABS_HEIGHT + UltimateEyecandy.SPACING);
 
             //  Section Panels:
