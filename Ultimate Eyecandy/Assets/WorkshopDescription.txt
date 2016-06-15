@@ -35,7 +35,13 @@ Ultimate Eyecandy allows you to:
 
 
 [h1]Updates[/h1]
-[quote][b]June 11th, 2016 - v1.2[/b]
+[quote][b]June 15th, 2016 - v1.2.2[/b]
+- Bugfix: 'Use LUT Color Correction' setting now re-applied properly after closing a resource overlay.
+[b]June 15th, 2016 - v1.2.1[/b]
+- Tonemapping option is now split in two separate options: toggle LUT and toggle Tonemapping;
+- Bugfix: 'Use Tomemapping' setting now re-applied properly after closing a resource overlay.
+
+[b]June 11th, 2016 - v1.2[/b]
 - Asset Editor support added (layout looks a bit different, as for some reason unknown to me in-game sprites are not available in the editor);
 - Toggle Bloom option added to ColorManagement Panel;
 - Toggle LUT Tonemapping option added to ColorManagement Panel.

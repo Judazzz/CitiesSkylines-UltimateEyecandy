@@ -14,7 +14,7 @@ namespace UltimateEyecandy
 {
     public class ModInfo : IUserMod
     {
-        public const string version = "1.2.1";
+        public const string version = "1.2.2";
 
         public string Name
         {
@@ -482,9 +482,19 @@ namespace UltimateEyecandy
 
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
-            if (ColorManagementPanel.instance.tonemappingApplied == false && Singleton<InfoManager>.instance.CurrentMode == InfoManager.InfoMode.None)
+            //  Re-disable CameraBehavior settings after Resource Overlay is closed (if necessary):
+            if (Singleton<InfoManager>.instance.CurrentMode == InfoManager.InfoMode.None)
             {
-                ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled = false;
+                //  Re-disable LUT if it was disabled in Color Correction Panel:
+                if (UltimateEyecandy.currentSettings.color_lut == false)
+                {
+                    ColorManagementPanel.instance.GetCameraBehaviour("ColorCorrectionLut").enabled = false;
+                }
+                //  Re-disable Tonemapping if it was disabled in Color Correction Panel:
+                if (UltimateEyecandy.currentSettings.color_tonemapping == false)
+                {
+                    ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled = false;
+                }
             }
         }
     }
