@@ -8,11 +8,14 @@ using ColossalFramework.Plugins;
 using ICities;
 using UnityEngine;
 using UltimateEyecandy.GUI;
+using ColossalFramework;
 
 namespace UltimateEyecandy
 {
     public class ModInfo : IUserMod
     {
+        public const string version = "1.2.1";
+
         public string Name
         {
             get
@@ -36,7 +39,7 @@ namespace UltimateEyecandy
             {
                 UltimateEyecandy.LoadConfig();
                 Debug.Log($"OnSettingsUI: configuration {UltimateEyecandy.config.version} loaded");
-                
+
                 //UICheckBox checkBox;
                 UIHelperBase group = helper.AddGroup(Name);
                 group.AddSpace(10);
@@ -86,8 +89,6 @@ namespace UltimateEyecandy
                 DebugUtils.LogException(e);
             }
         }
-
-        public const string version = "1.1.1";
     }
 
     public class UltimateEyecandy : LoadingExtensionBase
@@ -136,6 +137,7 @@ namespace UltimateEyecandy
 
         public override void OnLevelLoaded(LoadMode mode)
         {
+            UltimateEyecandyExtension.currentInfoMode = InfoManager.InfoMode.None;
             try
             {
                 // Check if in-game or in Asset Editor:
@@ -205,16 +207,6 @@ namespace UltimateEyecandy
 
         public override void OnReleased()
         {
-            //try
-            //{
-            //    DebugUtils.Log("Restoring default values");
-            //    DefaultOptions.RestoreAll();
-            //    DefaultOptions.Clear();
-            //}
-            //catch (Exception e)
-            //{
-            //    DebugUtils.LogException(e);
-            //}
         }
         #endregion
 
@@ -293,7 +285,7 @@ namespace UltimateEyecandy
         {
             return config.presets;
         }
-        
+
         public static Configuration.Preset GetPresetByName(string presetName)
         {
             return config.presets.FirstOrDefault(preset => preset.name == presetName);
@@ -318,6 +310,7 @@ namespace UltimateEyecandy
                 existingPreset.weather_fogintensity = currentSettings.weather_fogintensity;
                 existingPreset.weather_snowintensity = currentSettings.weather_snowintensity;
                 existingPreset.color_selectedlut = currentSettings.color_selectedlut;
+                existingPreset.color_lut = currentSettings.color_lut;
                 existingPreset.color_tonemapping = currentSettings.color_tonemapping;
                 existingPreset.color_bloom = currentSettings.color_bloom;
                 //  
@@ -341,6 +334,7 @@ namespace UltimateEyecandy
                     weather_fogintensity = currentSettings.weather_fogintensity,
                     weather_snowintensity = currentSettings.weather_snowintensity,
                     color_selectedlut = currentSettings.color_selectedlut,
+                    color_lut = currentSettings.color_lut,
                     color_tonemapping = currentSettings.color_tonemapping,
                     color_bloom = currentSettings.color_bloom
                 };
@@ -352,8 +346,6 @@ namespace UltimateEyecandy
                 }
             }
             //  
-
-            DebugUtils.Log($"Pre tonemapping/bloom: {currentSettings.color_bloom}/{currentSettings.color_tonemapping}.");
             config.lastPreset = presetName;
             SaveConfig();
         }
@@ -370,7 +362,6 @@ namespace UltimateEyecandy
                 _modMainPanel.ambientPanel.rotationSlider.value = selectedPreset.ambient_rotation;
                 _modMainPanel.ambientPanel.intensitySlider.value = selectedPreset.ambient_intensity;
                 _modMainPanel.ambientPanel.ambientSlider.value = selectedPreset.ambient_ambient;
-                //_modMainPanel.ambientPanel.fovSlider.value = selectedPreset.ambient_fov;
                 //  Weather values:
                 _modMainPanel.weatherPanel.enableWeatherCheckbox.isChecked = selectedPreset.weather;
                 optionsGameplayPanel.enableWeather = selectedPreset.weather;
@@ -403,6 +394,7 @@ namespace UltimateEyecandy
                     _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = activeLut.index;
                     ColorCorrectionManager.instance.currentSelection = activeLut.index;
                 }
+                _modMainPanel.colorManagementPanel.enableLutCheckbox.isChecked = selectedPreset.color_lut;
                 _modMainPanel.colorManagementPanel.enableTonemappingCheckbox.isChecked = selectedPreset.color_tonemapping;
                 _modMainPanel.colorManagementPanel.enableBloomCheckbox.isChecked = selectedPreset.color_bloom;
                 //  
@@ -451,6 +443,7 @@ namespace UltimateEyecandy
             _modMainPanel.colorManagementPanel.lutFastlist.DisplayAt(0);
             _modMainPanel.colorManagementPanel.lutFastlist.selectedIndex = 0;
             ColorCorrectionManager.instance.currentSelection = 0;
+            _modMainPanel.colorManagementPanel.enableLutCheckbox.isChecked = true;
             _modMainPanel.colorManagementPanel.enableTonemappingCheckbox.isChecked = true;
             _modMainPanel.colorManagementPanel.enableBloomCheckbox.isChecked = true;
             //  
@@ -480,6 +473,19 @@ namespace UltimateEyecandy
                 color_tonemapping = true,
                 color_bloom = true
             };
+        }
+    }
+
+    public class UltimateEyecandyExtension : ThreadingExtensionBase
+    {
+        public static InfoManager.InfoMode currentInfoMode;
+
+        public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
+        {
+            if (ColorManagementPanel.instance.tonemappingApplied == false && Singleton<InfoManager>.instance.CurrentMode == InfoManager.InfoMode.None)
+            {
+                ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled = false;
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 Hey all,
 
 I've  been enjoying Cities: Skylines basically since release day, immensely helped by all the awesome stuff the community created. So after so much taking, I figured it was time for a little giving.
-In real life I'm a front-end/C# developer, and in my free time I love travel and photography (preferably combined ;) So it was pretty inevitable that I ended up creating a mod that goes right after the aesthetics. The result: Ultimate Eyecandy.
+In real life I'm a web developer (mainly front-end, but also a bit of C#), and in my free time I love travel and photography (preferably combined ;) So it was pretty inevitable that I ended up creating a mod that goes right after the aesthetics. The result: Ultimate Eyecandy.
 
 
 [h1]So, what does this mod do?[/h1]
@@ -28,20 +28,24 @@ Ultimate Eyecandy allows you to:
 - anyone else :D[/quote]
 
 
-[h1]Wish list (not to be confused with a to-do list - feasibility needs to be researched)[/h1]
-[quote]- setting to turn on/off building night lights at will, without messing with the actual simulation (based on what I've found so far, the two seem rather intertwined).
-- color picker to change the fog color;
-- color picker to change air pollution color;
-- slider to change the strength of 'ground wetness';
-- slider to change the Field of View (FoV);
-- LUT Creator: apply various settings to a neutral LUT (color channels, brightness, contrast, lightness, etc.) and export/upload the result as a custom LUT;
-- a modular set-up: this mod will be the core, and other graphics-related mods can be integrated as 'plug-ins', each with a menu item/tab of their own. Think (orphaned) mods like Dynamic Resolution, BorderCities and/or Ambient Occlusion;
-- who knows what else I'll come up with (feel free to make suggestions!)[/quote]
-
-
 [h1]Thank you[/h1]
-[quote]- [url=http://steamcommunity.com/id/boformer/myworkshopfiles/?appid=255710]Boformer[/url], [url=http://steamcommunity.com/id/bloody_penguin/myworkshopfiles/?appid=255710]BloodyPenguin[/url] and [url=http://steamcommunity.com/id/samsamts/myworkshopfiles/?appid=255710]SamsamTS[/url] for making their mods publicly available on Github: I've learned an awful lot about C:SL modding simply by studying their mods and experimenting with their code;
+[quote]- [url=http://steamcommunity.com/id/LisaLionheart/myworkshopfiles/?appid=255710]LisaLionheart[/url] and her Timewarp mod for providing the initial spark of inspiration to start developing this mod;
+- [url=http://steamcommunity.com/id/boformer/myworkshopfiles/?appid=255710]Boformer[/url], [url=http://steamcommunity.com/id/bloody_penguin/myworkshopfiles/?appid=255710]BloodyPenguin[/url] and [url=http://steamcommunity.com/id/samsamts/myworkshopfiles/?appid=255710]SamsamTS[/url] for making their mods publicly available on Github: I've learned an awful lot about C:SL modding simply by studying their mods and experimenting with their code;
 - [url=http://steamcommunity.com/id/AJ3D/myworkshopfiles/?appid=255710]AJ3D[/url] for helping me to get started and taking my first baby steps in the wonderful world of CSL modding![/quote]
+
+
+[h1]Updates[/h1]
+[quote][b]June 11th, 2016 - v1.2[/b]
+- Asset Editor support added (layout looks a bit different, as for some reason unknown to me in-game sprites are not available in the editor);
+- Toggle Bloom option added to ColorManagement Panel;
+- Toggle LUT Tonemapping option added to ColorManagement Panel.
+
+[b]May 15th, 2016 - v1.1[/b]
+- New layout;
+- Bug fixes regarding xml serialization and (re)setting default values;
+- Added confirm boxes for Delete/Overwrite actions;
+- Fine-tuned Ambient slider ranges;
+- Slider values now displayed in label.[/quote]
 
 
 [b]Source:[/b] [url=https://github.com/Judazzz/CitiesSkylines-UltimateEyecandy]Github[/url]

@@ -67,6 +67,9 @@ namespace UltimateEyecandy
             [XmlElement("color_selectedlut")]
             public string color_selectedlut;
 
+            [XmlElement("color_lut")]
+            public bool color_lut = true;
+
             [XmlElement("color_tonemapping")]
             public bool color_tonemapping = true;
 
@@ -80,19 +83,19 @@ namespace UltimateEyecandy
 
             public Preset(Preset builtInPreset)
             {
-                this.name = builtInPreset.name;
-                this.ambient_height = builtInPreset.ambient_height;
-                this.ambient_rotation = builtInPreset.ambient_rotation;
-                this.ambient_intensity = builtInPreset.ambient_intensity;
-                this.ambient_ambient = builtInPreset.ambient_height;
-                //this.ambient_fov = builtInPreset.ambient_fov;
-                this.weather = builtInPreset.weather;
-                this.weather_rainintensity = builtInPreset.weather_rainintensity;
-                this.weather_rainmotionblur = builtInPreset.weather_rainmotionblur;
-                this.weather_fogintensity = builtInPreset.weather_fogintensity;
-                this.color_selectedlut = builtInPreset.color_selectedlut;
-                this.color_tonemapping = builtInPreset.color_tonemapping;
-                this.color_bloom = builtInPreset.color_bloom;
+                name = builtInPreset.name;
+                ambient_height = builtInPreset.ambient_height;
+                ambient_rotation = builtInPreset.ambient_rotation;
+                ambient_intensity = builtInPreset.ambient_intensity;
+                ambient_ambient = builtInPreset.ambient_height;
+                weather = builtInPreset.weather;
+                weather_rainintensity = builtInPreset.weather_rainintensity;
+                weather_rainmotionblur = builtInPreset.weather_rainmotionblur;
+                weather_fogintensity = builtInPreset.weather_fogintensity;
+                color_selectedlut = builtInPreset.color_selectedlut;
+                color_lut = builtInPreset.color_lut;
+                color_tonemapping = builtInPreset.color_tonemapping;
+                color_bloom = builtInPreset.color_bloom;
             }
 
             public Preset()
@@ -146,9 +149,6 @@ namespace UltimateEyecandy
                         if (preset.name == string.Empty)
                             continue;
                         //  Existing presets:
-
-                        DebugUtils.Log($"[DEBUG] - {preset.name} / {preset.weather}.");
-
                         var newPreset = new Preset
                         {
                             name = preset.name,
@@ -163,6 +163,7 @@ namespace UltimateEyecandy
                             weather_fogintensity = preset.weather_fogintensity,
                             weather_snowintensity = preset.weather_snowintensity,
                             color_selectedlut = preset.color_selectedlut,
+                            color_lut = preset.color_lut,
                             color_tonemapping = preset.color_tonemapping,
                             color_bloom = preset.color_bloom
                         };
