@@ -14,7 +14,7 @@ namespace UltimateEyecandy
 {
     public class ModInfo : IUserMod
     {
-        public const string version = "1.2.2";
+        public const string version = "1.3.0";
 
         public string Name
         {
