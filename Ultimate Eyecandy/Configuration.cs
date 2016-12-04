@@ -11,6 +11,7 @@ namespace UltimateEyecandy
     public class Configuration
     {
         public string version;
+        public int keyboardShortcut = 0;
         public bool outputDebug;
         public bool enableAdvanced = false;
         public bool loadLastPresetOnStart;
@@ -138,6 +139,7 @@ namespace UltimateEyecandy
 
                     var configCopy = new Configuration();
                     configCopy.version = UltimateEyecandy.config.version;
+                    configCopy.keyboardShortcut = UltimateEyecandy.config.keyboardShortcut;
                     configCopy.outputDebug = UltimateEyecandy.config.outputDebug;
                     configCopy.enableAdvanced = UltimateEyecandy.config.enableAdvanced;
                     configCopy.loadLastPresetOnStart = UltimateEyecandy.config.loadLastPresetOnStart;

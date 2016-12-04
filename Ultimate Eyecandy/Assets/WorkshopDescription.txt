@@ -35,11 +35,19 @@ Ultimate Eyecandy allows you to:
 
 
 [h1]Updates[/h1]
-[quote][b]June 15th, 2016 - v1.2.2[/b]
+[quote]
+[b]December 4th, 2016 - v1.3.1[/b]
+- Added configurable hotkey to toggle the mod's panel. Default key combo is [b]Shift+U[/b], but in the mod's options panel you can change this to [b]Ctrl+U[/b] or [b]Alt+U[/b];
+- fixed a few minor issues.
+
+[b]November 30th, 2016 - v1.3.0[/b]
+Update 1.3.0 added support for C:SL 1.6.0 (Natural Disasters).
+
+[b]June 15th, 2016 - v1.2.2[/b]
 - Bugfix: 'Use LUT Color Correction' setting now re-applied properly after closing a resource overlay.
 [b]June 15th, 2016 - v1.2.1[/b]
 - Tonemapping option is now split in two separate options: toggle LUT and toggle Tonemapping;
-- Bugfix: 'Use Tomemapping' setting now re-applied properly after closing a resource overlay.
+- Bugfix: 'Use Tonemapping' setting now re-applied properly after closing a resource overlay.
 
 [b]June 11th, 2016 - v1.2[/b]
 - Asset Editor support added (layout looks a bit different, as for some reason unknown to me in-game sprites are not available in the editor);

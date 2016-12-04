@@ -9,6 +9,7 @@ using ICities;
 using UnityEngine;
 using UltimateEyecandy.GUI;
 using ColossalFramework;
+using System.ComponentModel;
 
 namespace UltimateEyecandy
 {
@@ -38,7 +39,7 @@ namespace UltimateEyecandy
             try
             {
                 UltimateEyecandy.LoadConfig();
-                Debug.Log($"OnSettingsUI: configuration {UltimateEyecandy.config.version} loaded");
+                Debug.Log($"OnSettingsUI: configuration {version} loaded");
 
                 //UICheckBox checkBox;
                 UIHelperBase group = helper.AddGroup(Name);
@@ -70,19 +71,15 @@ namespace UltimateEyecandy
                 loadLastPresetOnStartCheckBox.tooltip = "Load last active preset on start.";
                 group.AddSpace(20);
 
-                //  Advanced Options (disabled for now):
-                //UICheckBox advancedCheckBox = (UICheckBox)group.AddCheckbox("Enable advanced mod settings (not yet implemented).", UltimateEyecandy.config.enableAdvanced,
-                //    b =>
-                //    {
-                //        if (UltimateEyecandy.config.enableAdvanced != b)
-                //        {
-                //            UltimateEyecandy.config.enableAdvanced = b;
-                //            UltimateEyecandy.SaveConfig(false);
-                //        }
-                //    });
-                //advancedCheckBox.tooltip = "Enable advanced mod settings (not yet implemented).";
-                //group.AddSpace(10);
-                //group.AddGroup("WARNING: playing with the advanced settings may result in unexpected behavior of\nthe game's simulation, so it is strongly recommended to only use these settings on a\nbacked up save game and to NOT save the game afterwards.\nTL;DR: use these settings at your own risk, you have been warned!");
+                //  Keyboard Shortcut:
+                UIDropDown keyboardShortcutDropdown = (UIDropDown)group.AddDropdown("Select your preferred keyboard shortcut for toggling the mod panel", new[] { "Shift + U", "Ctrl + U", "Alt + U" }, UltimateEyecandy.config.keyboardShortcut,
+                    b =>
+                    {
+                        UltimateEyecandy.config.keyboardShortcut = b;
+                        UltimateEyecandy.SaveConfig(false);
+                    });
+                keyboardShortcutDropdown.tooltip = "Select your preferred keyboard shortcut for toggling the mod panel.";
+                group.AddSpace(20);
             }
             catch (Exception e)
             {
@@ -91,7 +88,7 @@ namespace UltimateEyecandy
         }
     }
 
-    public class UltimateEyecandy : LoadingExtensionBase
+    public class UltimateEyecandy : MonoBehaviour
     {
         private static GameObject _gameObject;
         private static ModMainPanel _modMainPanel;
@@ -120,95 +117,6 @@ namespace UltimateEyecandy
         public static bool isGameLoaded = false;
 
         public static OptionsGameplayPanel optionsGameplayPanel = new OptionsGameplayPanel();
-
-        #region LoadingExtensionBase overrides
-        public override void OnCreated(ILoading loading)
-        {
-            try
-            {
-                // Create backup:
-                SaveBackup();
-            }
-            catch (Exception e)
-            {
-                DebugUtils.LogException(e);
-            }
-        }
-
-        public override void OnLevelLoaded(LoadMode mode)
-        {
-            UltimateEyecandyExtension.currentInfoMode = InfoManager.InfoMode.None;
-            try
-            {
-                // Check if in-game or in Asset Editor:
-                if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.LoadAsset && mode != LoadMode.NewAsset)
-                {
-                    return;
-                }
-                isEditor = (mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset) ? true : false;
-                //  
-                isGameLoaded = true;
-                // Creating GUI:
-                UIView view = UIView.GetAView();
-                _gameObject = new GameObject("UltimateEyecandy");
-                _gameObject.transform.SetParent(view.transform);
-                //  Back up initial values:
-                SaveInitialValues();
-                isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
-                //  
-                try
-                {
-                    optionsGameplayPanel = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<OptionsGameplayPanel>().gameObject).GetComponent<OptionsGameplayPanel>();
-                    //  
-                    _modMainPanel = _gameObject.AddComponent<ModMainPanel>();
-                    _modMainPanel.AddGuiToggle();
-                    if (config.outputDebug)
-                    {
-                        DebugUtils.Log("MainPanel created");
-                    }
-                }
-                catch (Exception e)
-                {
-                    DebugUtils.LogException(e);
-                    //  
-                    if (_gameObject != null)
-                        GameObject.Destroy(_gameObject);
-                    return;
-                }
-            }
-            catch (Exception e)
-            {
-                if (_gameObject != null)
-                {
-                    GameObject.Destroy(_gameObject);
-                }
-                DebugUtils.LogException(e);
-            }
-        }
-
-        public override void OnLevelUnloading()
-        {
-            try
-            {
-                //  Delete current settings:
-                currentSettings = null;
-                //  
-                GUI.UIUtils.DestroyDeeply(_modMainPanel);
-                if (_gameObject != null)
-                    GameObject.Destroy(_gameObject);
-
-                isGameLoaded = false;
-            }
-            catch (Exception e)
-            {
-                DebugUtils.LogException(e);
-            }
-        }
-
-        public override void OnReleased()
-        {
-        }
-        #endregion
 
         public static void SaveBackup()
         {
@@ -406,9 +314,9 @@ namespace UltimateEyecandy
                 //  
                 currentSettings = selectedPreset;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                DebugUtils.LogException(ex);
+                DebugUtils.LogException(e);
             }
         }
 
@@ -474,24 +382,161 @@ namespace UltimateEyecandy
                 color_bloom = true
             };
         }
+
+        //  Toggle main panel and update button state:
+        public static void ToggleMainPanel()
+        {
+            if (ModMainPanel.instance.isVisible) {
+                ModMainPanel.instance.isVisible = false;
+                ModMainPanel.instance.toggleUltimateEyecandyButton.state = UIButton.ButtonState.Normal;
+            }
+            else
+            {
+                ModMainPanel.instance.isVisible = true;
+                ModMainPanel.instance.toggleUltimateEyecandyButton.state = UIButton.ButtonState.Focused;
+            }
+        }
+
+        //  Events:
+        public static void EventCreated()
+        {
+            try
+            {
+                // Create backup:
+                SaveBackup();
+            }
+            catch (Exception e)
+            {
+                DebugUtils.LogException(e);
+            }
+        }
+
+        public static void EventLevelLoaded(LoadMode mode)
+        {
+            try
+            {
+                // Check if in-game or in Asset Editor:
+                if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.LoadAsset && mode != LoadMode.NewAsset)
+                {
+                    return;
+                }
+                isEditor = (mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset) ? true : false;
+                //  
+                isGameLoaded = true;
+                // Creating GUI:
+                UIView view = UIView.GetAView();
+                _gameObject = new GameObject("UltimateEyecandy");
+                _gameObject.transform.SetParent(view.transform);
+                //  Back up initial values:
+                SaveInitialValues();
+                isWinterMap = LoadingManager.instance.m_loadedEnvironment.ToLower() == "winter";
+                //  
+                try
+                {
+                    optionsGameplayPanel = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<OptionsGameplayPanel>().gameObject).GetComponent<OptionsGameplayPanel>();
+                    //  
+                    _modMainPanel = _gameObject.AddComponent<ModMainPanel>();
+                    _modMainPanel.AddGuiToggle();
+                    if (config.outputDebug)
+                    {
+                        DebugUtils.Log("MainPanel created");
+                    }
+                }
+                catch (Exception e)
+                {
+                    DebugUtils.LogException(e);
+                    //  
+                    if (_gameObject != null)
+                        GameObject.Destroy(_gameObject);
+                    return;
+                }
+            }
+            catch (Exception e)
+            {
+                if (_gameObject != null)
+                {
+                    GameObject.Destroy(_gameObject);
+                }
+                DebugUtils.LogException(e);
+            }
+        }
+
+        public static void EventLevelUnloading()
+        {
+            try
+            {
+                //  Delete current settings:
+                currentSettings = null;
+                //  
+                GUI.UIUtils.DestroyDeeply(_modMainPanel);
+                if (_gameObject != null)
+                    GameObject.Destroy(_gameObject);
+
+                isGameLoaded = false;
+            }
+            catch (Exception e)
+            {
+                DebugUtils.LogException(e);
+            }
+        }
     }
 
-    public class UltimateEyecandyExtension : ThreadingExtensionBase
+    public class UltimateEyecandyLoadingExtension : LoadingExtensionBase
     {
-        public static InfoManager.InfoMode currentInfoMode;
+        public override void OnCreated(ILoading loading)
+        {
+            base.OnCreated(loading);
+            UltimateEyecandy.EventCreated();
+        }
 
+        public override void OnLevelLoaded(LoadMode mode)
+        {
+            base.OnLevelLoaded(mode);
+            UltimateEyecandy.EventLevelLoaded(mode);
+        }
+
+        public override void OnLevelUnloading()
+        {
+            base.OnLevelUnloading();
+            UltimateEyecandy.EventLevelUnloading();
+        }
+    }
+
+    public class UltimateEyecandyThreadingExtension : ThreadingExtensionBase
+    {
         public override void OnUpdate(float realTimeDelta, float simulationTimeDelta)
         {
+            base.OnUpdate(realTimeDelta, simulationTimeDelta);
+
+            try {
+                _OnUpdate();
+            }
+            catch (Exception e)
+            {
+                DebugUtils.LogException(e);
+            }
+        }
+
+        void _OnUpdate()
+        {
+            //  Register Key combo:
+            bool flag = InputUtils.IsComboPressed();
+            if (flag)
+            {
+                UltimateEyecandy.ToggleMainPanel();
+            }
+
+            //  Register InfoMode change:
             //  Re-disable CameraBehavior settings after Resource Overlay is closed (if necessary):
             if (Singleton<InfoManager>.instance.CurrentMode == InfoManager.InfoMode.None)
             {
                 //  Re-disable LUT if it was disabled in Color Correction Panel:
-                if (UltimateEyecandy.currentSettings.color_lut == false)
+                if (UltimateEyecandy.currentSettings.color_lut == false && ColorManagementPanel.instance.GetCameraBehaviour("ColorCorrectionLut").enabled)
                 {
                     ColorManagementPanel.instance.GetCameraBehaviour("ColorCorrectionLut").enabled = false;
                 }
                 //  Re-disable Tonemapping if it was disabled in Color Correction Panel:
-                if (UltimateEyecandy.currentSettings.color_tonemapping == false)
+                if (UltimateEyecandy.currentSettings.color_tonemapping == false && ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled)
                 {
                     ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled = false;
                 }

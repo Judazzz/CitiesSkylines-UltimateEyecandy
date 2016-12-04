@@ -28,8 +28,8 @@ namespace UltimateEyecandy.GUI
         static readonly string UE = "UltimateEyecandy";
 
         private static GameObject _gameObject;
-
         private static ModMainPanel _instance;
+
         public static ModMainPanel instance
 
         {
@@ -43,7 +43,8 @@ namespace UltimateEyecandy.GUI
         public override void Start()
         {
             base.Start();
-            
+            _instance = this;
+
             backgroundSprite = (UltimateEyecandy.isEditor) ? "MenuPanel2" : "LevelBarBackground";
             isVisible = false;
             canFocus = true;
