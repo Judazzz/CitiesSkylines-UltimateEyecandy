@@ -36,6 +36,10 @@ Ultimate Eyecandy allows you to:
 
 [h1]Updates[/h1]
 [quote]
+[b]December 8th, 2016 - v1.3.2[/b]
+- Made mod button draggable (right mouse button), its position will be saved in the config file;
+- Changed the default position of the mod button to avoid conflicts with other mod's buttons.
+
 [b]December 4th, 2016 - v1.3.1[/b]
 - Added configurable hotkey to toggle the mod's panel. Default key combo is [b]Shift+U[/b], but in the mod's options panel you can change this to [b]Ctrl+U[/b] or [b]Alt+U[/b];
 - fixed a few minor issues.

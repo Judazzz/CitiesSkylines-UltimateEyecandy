@@ -23,9 +23,11 @@ namespace UltimateEyecandy.GUI
         public ColorManagementPanel colorManagementPanel;
         public PresetsPanel presetsPanel;
 
-        public UIButton toggleUltimateEyecandyButton;
-        public UITextureAtlas toggleButtonAtlas = null;
-        static readonly string UE = "UltimateEyecandy";
+        public static UIMainButton mainButton;
+
+        //public UIButton toggleUltimateEyecandyButton;
+        //public UITextureAtlas toggleButtonAtlas = null;
+        //static readonly string UE = "UltimateEyecandy";
 
         private static GameObject _gameObject;
         private static ModMainPanel _instance;
@@ -73,6 +75,9 @@ namespace UltimateEyecandy.GUI
 
         public void SetupControls()
         {
+            UIView view = UIView.GetAView();
+            mainButton = view.AddUIComponent(typeof(UIMainButton)) as UIMainButton;
+
             //  Title Bar:
             m_title = AddUIComponent<UIMainTitleBar>();
             m_title.title = "Ultimate Eyecandy";
@@ -182,68 +187,19 @@ namespace UltimateEyecandy.GUI
             }
         }
 
-        public void AddGuiToggle()
+        //  Toggle main panel and update button state:
+        public void ToggleMainPanel()
         {
-            const int size = 36;
-
-            //  Positioned relative to Freecamera Button:
-            var freeCameraButton = UIView.GetAView().FindUIComponent<UIButton>("Freecamera");
-            toggleUltimateEyecandyButton = UIView.GetAView().FindUIComponent<UIPanel>("InfoPanel").AddUIComponent<UIButton>();
-            toggleUltimateEyecandyButton.verticalAlignment = UIVerticalAlignment.Middle;
-            toggleUltimateEyecandyButton.relativePosition = toggleButtonPositionConflicted()
-                //  Enhanced Mouse Light mod detected (position button more to left to prevent overlapping):
-                ? new Vector3(freeCameraButton.absolutePosition.x - 76, freeCameraButton.relativePosition.y)
-                //  Enhanced Mouse Light mod not detected (position button in default position):
-                : new Vector3(freeCameraButton.absolutePosition.x - 42, freeCameraButton.relativePosition.y);
-            //  
-            toggleUltimateEyecandyButton.size = new Vector2(36f, 36f);
-            toggleUltimateEyecandyButton.playAudioEvents = true;
-            toggleUltimateEyecandyButton.tooltip = "Ultimate Eyecandy " + ModInfo.version;
-            //  Create custom atlas:
-            if (toggleButtonAtlas == null)
+            if (instance.isVisible)
             {
-                toggleButtonAtlas = UIUtils.CreateAtlas(UE, size, size, "ToolbarIcon.png", new[]
-                                            {
-                                                "EyecandyNormalBg",
-                                                "EyecandyHoveredBg",
-                                                "EyecandyPressedBg",
-                                                "EyecandyNormalFg",
-                                                "EyecandyHoveredFg",
-                                                "EyecandyPressedFg",
-                                                "EyecandyButtonNormal",
-                                                "EyecandyButtonHover",
-                                                "EyecandyInfoTextBg",
-                                            });
+                instance.isVisible = false;
+                mainButton.state = UIButton.ButtonState.Normal;
             }
-            //  Apply custom sprite:
-            toggleUltimateEyecandyButton.atlas = toggleButtonAtlas;
-            toggleUltimateEyecandyButton.normalFgSprite = "EyecandyNormalBg";
-            toggleUltimateEyecandyButton.normalBgSprite = null;
-            toggleUltimateEyecandyButton.hoveredFgSprite = "EyecandyHoveredBg";
-            toggleUltimateEyecandyButton.hoveredBgSprite = "EyecandyHoveredFg";
-            toggleUltimateEyecandyButton.pressedFgSprite = "EyecandyPressedBg";
-            toggleUltimateEyecandyButton.pressedBgSprite = "EyecandyPressedFg";
-            toggleUltimateEyecandyButton.focusedFgSprite = "EyecandyPressedBg";
-            toggleUltimateEyecandyButton.focusedBgSprite = "EyecandyPressedFg";
-            //  Event handling:
-            toggleUltimateEyecandyButton.eventClicked += (c, e) =>
+            else
             {
-                isVisible = !isVisible;
-                if (!isVisible)
-                {
-                    toggleUltimateEyecandyButton.Unfocus();
-                }
-            };
-
-        }
-
-        private static bool toggleButtonPositionConflicted()
-        {
-            if (PluginManager.instance.GetPluginsInfo().Any(mod => (mod.publishedFileID.AsUInt64 == 527036685 && mod.isEnabled)))
-            {
-                return true;
+                instance.isVisible = true;
+                mainButton.state = UIButton.ButtonState.Focused;
             }
-            return false;
         }
     }
 }

@@ -12,6 +12,11 @@ namespace UltimateEyecandy
     {
         public string version;
         public int keyboardShortcut = 0;
+
+        //public int buttonPosX = -1000;
+        //public int buttonPosY = -1000;
+        public Vector3 buttonPos = new Vector3(-9999, -9999, -9999);
+
         public bool outputDebug;
         public bool enableAdvanced = false;
         public bool loadLastPresetOnStart;
@@ -140,6 +145,9 @@ namespace UltimateEyecandy
                     var configCopy = new Configuration();
                     configCopy.version = UltimateEyecandy.config.version;
                     configCopy.keyboardShortcut = UltimateEyecandy.config.keyboardShortcut;
+                    //configCopy.buttonPosX = UltimateEyecandy.config.buttonPosX;
+                    //configCopy.buttonPosY = UltimateEyecandy.config.buttonPosY;
+                    configCopy.buttonPos = UltimateEyecandy.config.buttonPos;
                     configCopy.outputDebug = UltimateEyecandy.config.outputDebug;
                     configCopy.enableAdvanced = UltimateEyecandy.config.enableAdvanced;
                     configCopy.loadLastPresetOnStart = UltimateEyecandy.config.loadLastPresetOnStart;

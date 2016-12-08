@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
 using ColossalFramework.UI;
 using ColossalFramework.Plugins;
 using ICities;
 using UnityEngine;
 using UltimateEyecandy.GUI;
 using ColossalFramework;
-using System.ComponentModel;
 
 namespace UltimateEyecandy
 {
     public class ModInfo : IUserMod
     {
-        public const string version = "1.3.0";
+        public const string version = "1.3.2";
 
         public string Name
         {
@@ -382,21 +380,7 @@ namespace UltimateEyecandy
                 color_bloom = true
             };
         }
-
-        //  Toggle main panel and update button state:
-        public static void ToggleMainPanel()
-        {
-            if (ModMainPanel.instance.isVisible) {
-                ModMainPanel.instance.isVisible = false;
-                ModMainPanel.instance.toggleUltimateEyecandyButton.state = UIButton.ButtonState.Normal;
-            }
-            else
-            {
-                ModMainPanel.instance.isVisible = true;
-                ModMainPanel.instance.toggleUltimateEyecandyButton.state = UIButton.ButtonState.Focused;
-            }
-        }
-
+        
         //  Events:
         public static void EventCreated()
         {
@@ -436,10 +420,9 @@ namespace UltimateEyecandy
                     optionsGameplayPanel = UnityEngine.Object.Instantiate<GameObject>(UnityEngine.Object.FindObjectOfType<OptionsGameplayPanel>().gameObject).GetComponent<OptionsGameplayPanel>();
                     //  
                     _modMainPanel = _gameObject.AddComponent<ModMainPanel>();
-                    _modMainPanel.AddGuiToggle();
                     if (config.outputDebug)
                     {
-                        DebugUtils.Log("MainPanel created");
+                        DebugUtils.Log("MainPanel created.");
                     }
                 }
                 catch (Exception e)
@@ -523,7 +506,7 @@ namespace UltimateEyecandy
             bool flag = InputUtils.IsComboPressed();
             if (flag)
             {
-                UltimateEyecandy.ToggleMainPanel();
+                ModMainPanel.instance.ToggleMainPanel();
             }
 
             //  Register InfoMode change:

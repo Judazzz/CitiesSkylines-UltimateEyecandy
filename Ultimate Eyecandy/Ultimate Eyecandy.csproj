@@ -61,6 +61,7 @@
     <Compile Include="GUI\PresetsPanel.cs" />
     <Compile Include="GUI\UIFastList.cs" />
     <Compile Include="GUI\UILutItem.cs" />
+    <Compile Include="GUI\UIMainButton.cs" />
     <Compile Include="GUI\UIModalTitleBar.cs" />
     <Compile Include="GUI\UIPresetItem.cs" />
     <Compile Include="GUI\WeatherPanel.cs" />
@@ -75,6 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\ToolbarIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\WorkshopDescription.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
