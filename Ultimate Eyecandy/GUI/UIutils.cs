@@ -68,7 +68,7 @@ namespace UltimateEyecandy.GUI
             bg.name = "sliderPanel";
             bg.autoLayout = false;
             bg.padding = new RectOffset(0, 0, 10, 0);
-            bg.size = new Vector2(parent.width - (2 * UltimateEyecandy.SPACING), 20);
+            bg.size = new Vector2(parent.width - (2 * UltimateEyecandyTool.SPACING), 20);
 
             UISlider slider = bg.AddUIComponent<UISlider>();
             slider.autoSize = false;
@@ -97,7 +97,7 @@ namespace UltimateEyecandy.GUI
         public static UICheckBox CreateCheckBox(UIComponent parent)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
-            checkBox.width = parent.width - (2 * UltimateEyecandy.SPACING);
+            checkBox.width = parent.width - (2 * UltimateEyecandyTool.SPACING);
             checkBox.height = 20f;
             checkBox.relativePosition = new Vector3(5, 21);
 
@@ -328,14 +328,14 @@ namespace UltimateEyecandy.GUI
 
             panel.height = 50;
             panel.width = parent.width;
-            panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 0, 15);
+            panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 0, 15);
             panel.autoLayout = true;
             panel.autoLayoutDirection = LayoutDirection.Vertical;
 
             if (position == "top")
             {
                 panel.height = 65;
-                panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 20, 15);
+                panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 20, 15);
                 panel.AlignTo(parent, UIAlignAnchor.TopLeft);
                 panel.relativePosition = new Vector3(0, 0);
             }
@@ -347,7 +347,7 @@ namespace UltimateEyecandy.GUI
             }
             else
             {
-                panel.padding = new RectOffset((int)UltimateEyecandy.SPACING, (int)UltimateEyecandy.SPACING, 0, 0);
+                panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 0, 0);
             }
 
             return panel;

@@ -1,15 +1,19 @@
 ﻿using ColossalFramework;
 using ColossalFramework.UI;
-using ColossalFramework.Plugins;
-using System.Linq;
 using UnityEngine;
 
 namespace UltimateEyecandy.GUI
 {
     public class UIMainButton : UIButton
     {
+        public static UIMainButton instance;
+        private bool dragging = false;
+
         public override void Start()
         {
+            base.Start();
+            instance = this;
+
             const int buttonSize = 36;
             UITextureAtlas toggleButtonAtlas = null;
             string UE = "UltimateEyecandy";
@@ -18,18 +22,18 @@ namespace UltimateEyecandy.GUI
             var freeCameraButton = UIView.GetAView().FindUIComponent<UIButton>("Freecamera");
             verticalAlignment = UIVerticalAlignment.Middle;
 
-            if (UltimateEyecandy.config.buttonPos.x == -9999)
+            if (UltimateEyecandyTool.config.buttonPos.x == -9999)
             {
                 absolutePosition = new Vector2(freeCameraButton.absolutePosition.x - (3 * buttonSize) - 5, freeCameraButton.absolutePosition.y);
             }
             else
             {
-                absolutePosition = UltimateEyecandy.config.buttonPos; //new Vector2(UltimateEyecandy.config.buttonPosX, UltimateEyecandy.config.buttonPosY);
+                absolutePosition = UltimateEyecandyTool.config.buttonPos;
             }
             //  
             size = new Vector2(36f, 36f);
             playAudioEvents = true;
-            tooltip = "Ultimate Eyecandy " + ModInfo.version;
+            tooltip = "Ultimate Eyecandy " + Mod.version;
             //  Create custom atlas:
             if (toggleButtonAtlas == null)
             {
@@ -56,24 +60,18 @@ namespace UltimateEyecandy.GUI
             pressedBgSprite = "EyecandyPressedFg";
             focusedFgSprite = "EyecandyPressedBg";
             focusedBgSprite = "EyecandyPressedFg";
-            //  
-            if (UltimateEyecandy.config.outputDebug)
-            {
-                DebugUtils.Log("Main button created.");
-            }
         }
 
         protected override void OnClick(UIMouseEventParameter p)
         {
             if (p.buttons.IsFlagSet(UIMouseButton.Left))
             {
-                ModMainPanel.instance.ToggleMainPanel();
+                UIMainPanel.instance.Toggle();
             }
 
             base.OnClick(p);
         }
 
-        private bool dragging = false;
         protected override void OnMouseDown(UIMouseEventParameter p)
         {
             if (p.buttons.IsFlagSet(UIMouseButton.Right))
@@ -99,49 +97,15 @@ namespace UltimateEyecandy.GUI
                 var ratio = UIView.GetAView().ratio;
                 position = new Vector3(position.x + (p.moveDelta.x * ratio), position.y + (p.moveDelta.y * ratio), position.z);
                 //  
-                //UltimateEyecandy.config.buttonPosX = (int)(position.x + (p.moveDelta.x * ratio));
-                //UltimateEyecandy.config.buttonPosY = (int)(position.y + (p.moveDelta.y * ratio));
-                UltimateEyecandy.config.buttonPos = absolutePosition;
-                UltimateEyecandy.SaveConfig();
+                UltimateEyecandyTool.config.buttonPos = absolutePosition;
+                UltimateEyecandyTool.SaveConfig();
                 //  
-                if (UltimateEyecandy.config.outputDebug)
+                if (UltimateEyecandyTool.config.outputDebug)
                 {
                     DebugUtils.Log($"Button position changed to x = {absolutePosition}.");
                 }
             }
             base.OnMouseMove(p);
         }
-
-        //private Vector3 m_deltaPos;
-        //protected override void OnMouseDown(UIMouseEventParameter p)
-        //{
-        //    if (p.buttons.IsFlagSet(UIMouseButton.Right))
-        //    {
-        //        Vector3 mousePos = Input.mousePosition;
-        //        mousePos.y = m_OwnerView.fixedHeight - mousePos.y;
-
-        //        m_deltaPos = absolutePosition - mousePos;
-        //        BringToFront();
-        //    }
-        //}
-
-        //protected override void OnMouseMove(UIMouseEventParameter p)
-        //{
-        //    if (p.buttons.IsFlagSet(UIMouseButton.Right))
-        //    {
-        //        Vector3 mousePos = Input.mousePosition;
-        //        mousePos.y = m_OwnerView.fixedHeight - mousePos.y;
-
-        //        absolutePosition = mousePos + m_deltaPos;
-        //        UltimateEyecandy.config.buttonPosX = (int)absolutePosition.x;
-        //        UltimateEyecandy.config.buttonPosY = (int)absolutePosition.y;
-        //        UltimateEyecandy.SaveConfig();
-        //        //  
-        //        if (UltimateEyecandy.config.outputDebug)
-        //        {
-        //            DebugUtils.Log($"Button position changed to x = {(int)absolutePosition.x}, y = {(int)absolutePosition.y}.");
-        //        }
-        //    }
-        //}
     }
 }

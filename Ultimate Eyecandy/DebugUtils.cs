@@ -6,7 +6,7 @@ namespace UltimateEyecandy
 {
     class DebugUtils
     {
-        public const string modPrefix = "[Ultimate Eyecandy " + ModInfo.version + "] ";
+        public const string modPrefix = "[Ultimate Eyecandy " + Mod.version + "] ";
 
         public static void Message(string message)
         {

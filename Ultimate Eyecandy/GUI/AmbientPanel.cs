@@ -71,7 +71,7 @@ namespace UltimateEyecandy.GUI
             _heightSlider = UIUtils.CreateSlider(topContainer, -120f, 120f);
             _heightSlider.name = "heightSlider";
             _heightSlider.tooltip = "Move this slider to change the sun's Vertical Position.";
-            _heightSlider.value = UltimateEyecandy.currentSettings.ambient_height;
+            _heightSlider.value = UltimateEyecandyTool.currentSettings.ambient_height;
             _heightSlider.eventValueChanged += ValueChanged;
             _heightSlider.stepSize = 0.125f;
 
@@ -88,7 +88,7 @@ namespace UltimateEyecandy.GUI
             _rotationSlider = UIUtils.CreateSlider(sunContainer, -180f, 180f);
             _rotationSlider.name = "rotationSlider";
             _rotationSlider.tooltip = "Move this slider to change the sun's Horizontal Position.";
-            _rotationSlider.value = UltimateEyecandy.currentSettings.ambient_rotation;
+            _rotationSlider.value = UltimateEyecandyTool.currentSettings.ambient_rotation;
             _rotationSlider.eventValueChanged += ValueChanged;
             _rotationSlider.stepSize = 0.25f;
 
@@ -105,7 +105,7 @@ namespace UltimateEyecandy.GUI
             _intensitySlider = UIUtils.CreateSlider(globalContainer, 0f, 10f);
             _intensitySlider.name = "intensitySlider";
             _intensitySlider.tooltip = "Move this slider to change the Sun Light Intensity.";
-            _intensitySlider.value = UltimateEyecandy.currentSettings.ambient_intensity;
+            _intensitySlider.value = UltimateEyecandyTool.currentSettings.ambient_intensity;
             _intensitySlider.eventValueChanged += ValueChanged;
             _intensitySlider.stepSize = 0.25f;
 
@@ -122,7 +122,7 @@ namespace UltimateEyecandy.GUI
             _ambientSlider = UIUtils.CreateSlider(ambientContainer, 0f, 2f);
             _ambientSlider.name = "ambientSlider";
             _ambientSlider.tooltip = "Move this slider to change the Ambient Light Intensity.";
-            _ambientSlider.value = UltimateEyecandy.currentSettings.ambient_ambient;
+            _ambientSlider.value = UltimateEyecandyTool.currentSettings.ambient_ambient;
             _ambientSlider.eventValueChanged += ValueChanged;
             _ambientSlider.stepSize = 0.01f;
 
@@ -152,21 +152,21 @@ namespace UltimateEyecandy.GUI
             _resetAmbientButton.tooltip = "Reset all values set in this panel to default values.";
             _resetAmbientButton.eventClicked += (c, e) =>
             {
-                if (UltimateEyecandy.config.outputDebug)
+                if (UltimateEyecandyTool.config.outputDebug)
                 {
                     DebugUtils.Log($"AmbientPanel: 'Reset' clicked.");
                 }
                 //  
-                _heightSlider.value = (UltimateEyecandy.isWinterMap) ? 66f : 35f;
+                _heightSlider.value = (UltimateEyecandyTool.isWinterMap) ? 66f : 35f;
                 _rotationSlider.value = 98f;
                 _intensitySlider.value = 6f;
-                _ambientSlider.value = (UltimateEyecandy.isWinterMap) ? 0.4f : 0.71f;
+                _ambientSlider.value = (UltimateEyecandyTool.isWinterMap) ? 0.4f : 0.71f;
             };
         }
 
         void ValueChanged(UIComponent trigger, float value)
         {
-            if (UltimateEyecandy.config.outputDebug)
+            if (UltimateEyecandyTool.config.outputDebug)
             {
                 DebugUtils.Log($"AmbientPanel: Slider {trigger.name} = {value}");
             }
@@ -174,28 +174,28 @@ namespace UltimateEyecandy.GUI
             if (trigger == _heightSlider)
             {
                 DayNightProperties.instance.m_Latitude = value;
-                UltimateEyecandy.currentSettings.ambient_height = value;
+                UltimateEyecandyTool.currentSettings.ambient_height = value;
                 _heightLabel.text = "Sun height (" + value.ToString() + ")";
             }
 
             if (trigger == _rotationSlider)
             {
                 DayNightProperties.instance.m_Longitude = value;
-                UltimateEyecandy.currentSettings.ambient_rotation = value;
+                UltimateEyecandyTool.currentSettings.ambient_rotation = value;
                 _rotationLabel.text = "Sun rotation (" + value.ToString() + ")";
             }
 
             if (trigger == _intensitySlider)
             {
                 DayNightProperties.instance.m_SunIntensity = value;
-                UltimateEyecandy.currentSettings.ambient_intensity = value;
+                UltimateEyecandyTool.currentSettings.ambient_intensity = value;
                 _intensityLabel.text = "Global light intensity (" + value.ToString() + ")";
             }
 
             if (trigger == _ambientSlider)
             {
                 DayNightProperties.instance.m_Exposure = value;
-                UltimateEyecandy.currentSettings.ambient_ambient = value;
+                UltimateEyecandyTool.currentSettings.ambient_ambient = value;
                 _ambientLabel.text = "Ambient light intensity (" + value.ToString() + ")";
             }
 

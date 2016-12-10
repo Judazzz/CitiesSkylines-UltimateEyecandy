@@ -12,9 +12,6 @@ namespace UltimateEyecandy
     {
         public string version;
         public int keyboardShortcut = 0;
-
-        //public int buttonPosX = -1000;
-        //public int buttonPosY = -1000;
         public Vector3 buttonPos = new Vector3(-9999, -9999, -9999);
 
         public bool outputDebug;
@@ -109,7 +106,7 @@ namespace UltimateEyecandy
             }
         }
 
-        public static Configuration Deserialize(string filename)
+        public static Configuration Load(string filename)
         {
             if (!File.Exists(filename)) return null;
 
@@ -128,32 +125,29 @@ namespace UltimateEyecandy
             }
         }
 
-        public static void Serialize(string filename, Configuration config, bool reloadUI)
+        public static void Save(Configuration config, bool reloadUI)
         {
-            string FileName = "CSL_UltimateEyecandy.xml";
-            string FileNameLocal = "CSL_UltimateEyecandy_local.xml";
+            string fileNameOnline = "CSL_UltimateEyecandy.xml";
+            string fileNameLocal = "CSL_UltimateEyecandy_local.xml";
 
-            var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileName;
+            var fileName = (PluginManager.noWorkshop) ? fileNameLocal : fileNameOnline;
             try
             {
-                //  Todo: move serialization code to Serialize method in Config.cs!
                 var xmlSerializer = new XmlSerializer(typeof(Configuration));
                 using (var streamWriter = new StreamWriter(fileName))
                 {
-                    UltimateEyecandy.config.version = ModInfo.version;
+                    UltimateEyecandyTool.config.version = Mod.version;
 
                     var configCopy = new Configuration();
-                    configCopy.version = UltimateEyecandy.config.version;
-                    configCopy.keyboardShortcut = UltimateEyecandy.config.keyboardShortcut;
-                    //configCopy.buttonPosX = UltimateEyecandy.config.buttonPosX;
-                    //configCopy.buttonPosY = UltimateEyecandy.config.buttonPosY;
-                    configCopy.buttonPos = UltimateEyecandy.config.buttonPos;
-                    configCopy.outputDebug = UltimateEyecandy.config.outputDebug;
-                    configCopy.enableAdvanced = UltimateEyecandy.config.enableAdvanced;
-                    configCopy.loadLastPresetOnStart = UltimateEyecandy.config.loadLastPresetOnStart;
-                    configCopy.lastPreset = UltimateEyecandy.config.lastPreset;
+                    configCopy.version = UltimateEyecandyTool.config.version;
+                    configCopy.keyboardShortcut = UltimateEyecandyTool.config.keyboardShortcut;
+                    configCopy.buttonPos = UltimateEyecandyTool.config.buttonPos;
+                    configCopy.outputDebug = UltimateEyecandyTool.config.outputDebug;
+                    configCopy.enableAdvanced = UltimateEyecandyTool.config.enableAdvanced;
+                    configCopy.loadLastPresetOnStart = UltimateEyecandyTool.config.loadLastPresetOnStart;
+                    configCopy.lastPreset = UltimateEyecandyTool.config.lastPreset;
 
-                    foreach (var preset in UltimateEyecandy.config.presets)
+                    foreach (var preset in UltimateEyecandyTool.config.presets)
                     {
                         //  Skip Temporary Preset:
                         if (preset.name == string.Empty)
@@ -180,7 +174,7 @@ namespace UltimateEyecandy
                         configCopy.presets.Add(newPreset);
                     }
                     xmlSerializer.Serialize(streamWriter, configCopy);
-                    UltimateEyecandy.config = configCopy;
+                    UltimateEyecandyTool.config = configCopy;
                     if (reloadUI)
                     {
                         PresetsPanel.instance.PopulatePresetsFastList();
