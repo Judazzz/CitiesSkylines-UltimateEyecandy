@@ -16,11 +16,14 @@ namespace UltimateEyecandy
                 //  Execute code only when in-game:
                 if (UltimateEyecandyTool.isGameLoaded)
                 {
-                    //  Register Key combo:
-                    bool flag = InputUtils.IsComboPressed();
+                    //  Register Hotkey:
+                    bool flag = InputUtils.HotkeyPressed();
                     if (flag)
                     {
-                        DebugUtils.Log($"Hotkey pressed.");
+                        if (UltimateEyecandyTool.config.outputDebug)
+                        {
+                            DebugUtils.Log($"Hotkey pressed.");
+                        }
                         UIMainPanel.instance.Toggle();
                     }
 
@@ -32,11 +35,21 @@ namespace UltimateEyecandy
                         if (UltimateEyecandyTool.currentSettings.color_lut == false && ColorManagementPanel.instance.GetCameraBehaviour("ColorCorrectionLut").enabled)
                         {
                             ColorManagementPanel.instance.GetCameraBehaviour("ColorCorrectionLut").enabled = false;
+                            //  
+                            if (UltimateEyecandyTool.config.outputDebug)
+                            {
+                                DebugUtils.Log($"LUT disabled again after InfoMode change.");
+                            }
                         }
                         //  Re-disable Tonemapping if it was disabled in Color Correction Panel:
                         if (UltimateEyecandyTool.currentSettings.color_tonemapping == false && ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled)
                         {
                             ColorManagementPanel.instance.GetCameraBehaviour("ToneMapping").enabled = false;
+                            //  
+                            if (UltimateEyecandyTool.config.outputDebug)
+                            {
+                                DebugUtils.Log($"Tonemapping disabled again after InfoMode change.");
+                            }
                         }
                     }
                 }

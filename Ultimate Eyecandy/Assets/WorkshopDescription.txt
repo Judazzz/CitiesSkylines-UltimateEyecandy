@@ -38,7 +38,8 @@ Ultimate Eyecandy allows you to:
 [quote]
 [b]December 10th, 2016 - v1.3.3[/b]
 - Big code rewrite/clean-up;
-- Various bug-fixes (in particular those related to exiting to desktop/main menu and reloading/restarting a city).
+- Various bug-fixes (in particular those related to exiting to desktop/main menu and reloading/restarting a city);
+- OnSettingsUI: added 'Config File exists'-check.
 
 [b]December 8th, 2016 - v1.3.2[/b]
 - Made mod button draggable (right mouse button), its position will be saved in the config file;

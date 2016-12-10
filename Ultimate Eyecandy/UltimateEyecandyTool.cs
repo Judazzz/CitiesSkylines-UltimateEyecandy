@@ -129,11 +129,18 @@ namespace UltimateEyecandy
                 var fileName = (PluginManager.noWorkshop) ? FileNameLocal : FileNameOnline;
                 if (File.Exists(fileName))
                 {
+                    //  Load config:
                     config = Configuration.Load(fileName);
                     if (config.outputDebug)
                     {
                         DebugUtils.Log($"OnSettingsUI: configuration loaded (file name: {fileName}).");
                     }
+                }
+                else
+                {
+                    //  No config: create and save new config:
+                    config = new Configuration();
+                    SaveConfig(false);
                 }
                 return;
             }
