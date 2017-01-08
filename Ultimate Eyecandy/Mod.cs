@@ -6,13 +6,13 @@ namespace UltimateEyecandy
 {
     public class Mod : IUserMod
     {
-        public const string version = "1.3.3";
+        public const string version = "1.3.4";
 
         public string Name
         {
             get
             {
-                return "Ultimate Eyecandy";
+                return "Ultimate Eyecandy " + version;
             }
         }
 

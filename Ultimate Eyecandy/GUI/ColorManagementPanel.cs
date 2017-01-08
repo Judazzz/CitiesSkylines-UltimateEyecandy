@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ColossalFramework.UI;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 namespace UltimateEyecandy.GUI
 {
@@ -42,12 +43,6 @@ namespace UltimateEyecandy.GUI
         {
             get { return _enableBloomCheckbox; }
         }
-
-        //private UICheckBox _enableTbaCheckbox;
-        //public UICheckBox enableTbaCheckbox
-        //{
-        //    get { return _enableTbaCheckbox; }
-        //}
 
         private MonoBehaviour[] cameraBehaviours;
         public CameraController cameraController;
@@ -139,7 +134,6 @@ namespace UltimateEyecandy.GUI
             //_enableLutCheckbox.isChecked = GetCameraBehaviour("ColorCorrectionLut");
             _enableLutCheckbox.isChecked = true;
             _enableLutCheckbox.eventCheckChanged += CheckboxChanged;
-
             _enableLutCheckbox.label.text = "Use LUT Color Correction";
 
             //  Tonemapping:
@@ -154,7 +148,6 @@ namespace UltimateEyecandy.GUI
             //_enableTonemappingCheckbox.isChecked = GetCameraBehaviour("ToneMapping");
             _enableTonemappingCheckbox.isChecked = true;
             _enableTonemappingCheckbox.eventCheckChanged += CheckboxChanged;
-
             _enableTonemappingCheckbox.label.text = "Use Tonemapping";
 
             //  Bloom:
@@ -170,23 +163,7 @@ namespace UltimateEyecandy.GUI
             //_enableBloomCheckbox.isChecked = GetCameraBehaviour("Bloom");
             _enableBloomCheckbox.isChecked = true;
             _enableBloomCheckbox.eventCheckChanged += CheckboxChanged;
-
             _enableBloomCheckbox.label.text = "Use Bloom";
-
-            //  tba:
-            //var tbaContainer = UIUtils.CreateFormElement(this, "center");
-            //tbaContainer.name = "tbaContainer";
-            //tbaContainer.relativePosition = new Vector3(0, 280);
-            //tbaContainer.height = 20;
-
-            //_enableTbaCheckbox = UIUtils.CreateCheckBox(tbaContainer);
-            //_enableTbaCheckbox.relativePosition = new Vector3(5, 17);
-            //_enableTbaCheckbox.name = "_enableTbaCheckbox";
-            //_enableTbaCheckbox.tooltip = "Check this box to toggle tba.";
-            //_enableTbaCheckbox.isChecked = Camera.main.stereoMirrorMode;
-            //_enableTbaCheckbox.eventCheckChanged += CheckboxChanged;
-
-            //_enableTbaCheckbox.label.text = "tba";
 
             //  Reset button:
             var bottomContainer = UIUtils.CreateFormElement(this, "bottom");
@@ -273,11 +250,6 @@ namespace UltimateEyecandy.GUI
                 GetCameraBehaviour("Bloom").enabled = isChecked;
                 UltimateEyecandyTool.currentSettings.color_bloom = isChecked;
             }
-            //else if (trigger == _enableTbaCheckbox)
-            //{
-            //    GetCameraBehaviour("SMAA").enabled = isChecked;
-            //    //UltimateEyecandy.currentSettings.color_bloom = isChecked;
-            //}
         }
 
         public MonoBehaviour GetCameraBehaviour(string name)
@@ -296,6 +268,14 @@ namespace UltimateEyecandy.GUI
 
     public class LutList
     {
+        private static readonly string[] vanillaLuts = new string[] {
+            "None",
+            "LUTSunny",
+            "LUTNorth",
+            "LUTTropical",
+            "LUTeurope"
+        };
+
         public static Lut GetLut(string name)
         {
             foreach (var lut in GetLutList())
@@ -321,6 +301,11 @@ namespace UltimateEyecandy.GUI
             //  
             foreach (var lut in ColorCorrectionManager.instance.items)
             {
+                //  Skip local Luts:
+                if (!Regex.IsMatch(lut, "^[0-9]{9}.") && !vanillaLuts.Contains(lut))
+                {
+                    continue;
+                }
                 Lut l = new Lut()
                 {
                     index = i,

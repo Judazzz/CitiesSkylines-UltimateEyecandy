@@ -102,7 +102,7 @@ namespace UltimateEyecandy.GUI
                 //  
                 if (UltimateEyecandyTool.config.outputDebug)
                 {
-                    DebugUtils.Log($"Button position changed to x = {absolutePosition}.");
+                    DebugUtils.Log($"Button position changed to {absolutePosition}.");
                 }
             }
             base.OnMouseMove(p);

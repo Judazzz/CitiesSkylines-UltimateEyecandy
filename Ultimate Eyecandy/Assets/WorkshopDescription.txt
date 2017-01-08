@@ -36,6 +36,9 @@ Ultimate Eyecandy allows you to:
 
 [h1]Updates[/h1]
 [quote]
+[b]January 8th, 2017 - v1.3.4[/b]
+- Dropped support for local (non-Workshop) Color Correction LUTs (caused unpredicatble mod behavior for some).
+
 [b]December 10th, 2016 - v1.3.3[/b]
 - Big code rewrite/clean-up;
 - Various bug-fixes (in particular those related to exiting to desktop/main menu and reloading/restarting a city);

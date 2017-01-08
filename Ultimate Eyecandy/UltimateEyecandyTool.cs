@@ -62,12 +62,6 @@ namespace UltimateEyecandy
 
         public static void Initialize(LoadMode mode)
         {
-            // Check if in-game or in Asset Editor (else abort):
-            if (mode != LoadMode.LoadGame && mode != LoadMode.NewGame && mode != LoadMode.LoadAsset && mode != LoadMode.NewAsset)
-            {
-                return;
-            }
-            //  
             var go = new GameObject("UltimateEyecandyTool");
             try
             {
