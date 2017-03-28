@@ -36,8 +36,13 @@ Ultimate Eyecandy allows you to:
 
 [h1]Updates[/h1]
 [quote]
+[b]March 28th, 2017 - v1.3.5[/b]
+- Increased the sensitivity of the Ambient Panel sliders for more precise control.
+
 [b]January 8th, 2017 - v1.3.4[/b]
-- Dropped support for local (non-Workshop) Color Correction LUTs (caused unpredicatble mod behavior for some).
+- Dropped support for local (non-Workshop) Color Correction LUTs (caused unpredictable mod behavior for some);
+- Mod now only works in-game and in Asset Editor;
+- Minor tweaks and fixes.
 
 [b]December 10th, 2016 - v1.3.3[/b]
 - Big code rewrite/clean-up;
@@ -50,7 +55,7 @@ Ultimate Eyecandy allows you to:
 
 [b]December 4th, 2016 - v1.3.1[/b]
 - Added configurable hotkey to toggle the mod's panel. Default key combo is [b]Shift+U[/b], but in the mod's options panel you can change this to [b]Ctrl+U[/b] or [b]Alt+U[/b];
-- fixed a few minor issues.
+- Fixed a few minor issues.
 
 [b]November 30th, 2016 - v1.3.0[/b]
 Update 1.3.0 added support for C:SL 1.6.0 (Natural Disasters).

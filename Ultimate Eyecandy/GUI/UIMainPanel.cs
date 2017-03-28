@@ -1,9 +1,5 @@
-﻿using System;
-using System.Reflection;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using UnityEngine;
-using ColossalFramework.Plugins;
-using System.Linq;
 
 namespace UltimateEyecandy.GUI
 {

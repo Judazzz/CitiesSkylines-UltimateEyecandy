@@ -73,7 +73,7 @@ namespace UltimateEyecandy.GUI
             _heightSlider.tooltip = "Move this slider to change the sun's Vertical Position.";
             _heightSlider.value = UltimateEyecandyTool.currentSettings.ambient_height;
             _heightSlider.eventValueChanged += ValueChanged;
-            _heightSlider.stepSize = 0.125f;
+            _heightSlider.stepSize = 0.005f;
 
             //  Sun rotation:
             var sunContainer = UIUtils.CreateFormElement(this, "center");
@@ -90,7 +90,7 @@ namespace UltimateEyecandy.GUI
             _rotationSlider.tooltip = "Move this slider to change the sun's Horizontal Position.";
             _rotationSlider.value = UltimateEyecandyTool.currentSettings.ambient_rotation;
             _rotationSlider.eventValueChanged += ValueChanged;
-            _rotationSlider.stepSize = 0.25f;
+            _rotationSlider.stepSize = 0.005f;
 
             //  Global light intensity:
             var globalContainer = UIUtils.CreateFormElement(this, "center");
@@ -107,7 +107,7 @@ namespace UltimateEyecandy.GUI
             _intensitySlider.tooltip = "Move this slider to change the Sun Light Intensity.";
             _intensitySlider.value = UltimateEyecandyTool.currentSettings.ambient_intensity;
             _intensitySlider.eventValueChanged += ValueChanged;
-            _intensitySlider.stepSize = 0.25f;
+            _intensitySlider.stepSize = 0.0005f;
 
             //  Ambient light intensity:
             var ambientContainer = UIUtils.CreateFormElement(this, "center");
@@ -124,7 +124,7 @@ namespace UltimateEyecandy.GUI
             _ambientSlider.tooltip = "Move this slider to change the Ambient Light Intensity.";
             _ambientSlider.value = UltimateEyecandyTool.currentSettings.ambient_ambient;
             _ambientSlider.eventValueChanged += ValueChanged;
-            _ambientSlider.stepSize = 0.01f;
+            _ambientSlider.stepSize = 0.0005f;
 
             //  Field of View:
             //var fovContainer = UIUtils.CreateFormElement(this, "center");
