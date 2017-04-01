@@ -1,4 +1,5 @@
-﻿using ColossalFramework.UI;
+﻿using ColossalFramework;
+using ColossalFramework.UI;
 using UnityEngine;
 
 namespace UltimateEyecandy.GUI
@@ -55,15 +56,19 @@ namespace UltimateEyecandy.GUI
 
             //  Tab Buttons:
             ambientButton = UIUtils.CreateTab(panelTabs, "Ambient", true);
-            ambientButton.tooltip = "In this section you can change several world-related settings such as the sun's horizontal and vertical position and sun and ambient light intensity.";
+            ambientButton.width = 77;
+            ambientButton.tooltip = "In this section you can change several world-related settings such as Time of Day, latitude, longitude and sun and ambient light intensity.";
             ambientButton.textScale = 0.8f;
             weatherButton = UIUtils.CreateTab(panelTabs, "Weather");
+            weatherButton.width = 73f;
             weatherButton.tooltip = "In this section you can change several weather-related settings such as rain, snow and fog intensity.";
             weatherButton.textScale = 0.8f;
             colorManagementButton = UIUtils.CreateTab(panelTabs, "LUT");
+            colorManagementButton.width = 40f;
             colorManagementButton.tooltip = "In this section you can quickly change the LUT you want to use.";
             colorManagementButton.textScale = 0.8f;
             presetsButton = UIUtils.CreateTab(panelTabs, "Presets");
+            presetsButton.width = 68f;
             presetsButton.tooltip = "In this section you can save your current settings as a Preset, load previously saved Presets, or reset everything to default.";
             presetsButton.textScale = 0.8f;
 
@@ -82,6 +87,7 @@ namespace UltimateEyecandy.GUI
             ambientPanel.height = UltimateEyecandyTool.HEIGHT;
             ambientPanel.relativePosition = new Vector3(5, 0);
             ambientPanel.isVisible = true;
+            ambientPanel.todManager = Singleton<TimeOfDayManager>.instance;
             //  Weather Panel:
             weatherPanel = body.AddUIComponent<WeatherPanel>();
             weatherPanel.name = "weatherPanel";

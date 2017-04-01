@@ -71,11 +71,13 @@
     <Compile Include="LoadingExtension.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="ThreadingExtension.cs" />
+    <Compile Include="TimeOfDayManager.cs" />
     <Compile Include="UltimateEyecandyTool.cs" />
     <Compile Include="GUI\UIMainPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GUI\UIMainTitleBar.cs" />
     <Compile Include="GUI\UIutils.cs" />
+    <Compile Include="Fraction.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\ToolbarIcon.png" />

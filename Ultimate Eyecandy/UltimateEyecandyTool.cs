@@ -69,6 +69,7 @@ namespace UltimateEyecandy
                 DebugUtils.Log($"Currently used config File: {FileName}.");
                 //  
                 go.AddComponent<UltimateEyecandyTool>();
+                go.AddComponent<TimeOfDayManager>();
                 //  
                 isEditor = (mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset) ? true : false;
                 isGameLoaded = true;
@@ -188,6 +189,7 @@ namespace UltimateEyecandy
                 existingPreset.name = presetName;
                 existingPreset.ambient_height = currentSettings.ambient_height;
                 existingPreset.ambient_rotation = currentSettings.ambient_rotation;
+                //existingPreset.ambient_size = currentSettings.ambient_size;
                 existingPreset.ambient_intensity = currentSettings.ambient_intensity;
                 existingPreset.ambient_ambient = currentSettings.ambient_ambient;
                 //existingPreset.ambient_fov = currentSettings.ambient_fov;
@@ -213,6 +215,7 @@ namespace UltimateEyecandy
                     name = presetName,
                     ambient_height = currentSettings.ambient_height,
                     ambient_rotation = currentSettings.ambient_rotation,
+                    //ambient_size = currentSettings.ambient_size,
                     ambient_intensity = currentSettings.ambient_intensity,
                     ambient_ambient = currentSettings.ambient_ambient,
                     weather = currentSettings.weather,
@@ -247,6 +250,7 @@ namespace UltimateEyecandy
                 //  Ambient values:
                 UIMainPanel.instance.ambientPanel.heightSlider.value = selectedPreset.ambient_height;
                 UIMainPanel.instance.ambientPanel.rotationSlider.value = selectedPreset.ambient_rotation;
+                //UIMainPanel.instance.ambientPanel.sizeSlider.value = selectedPreset.ambient_size;
                 UIMainPanel.instance.ambientPanel.intensitySlider.value = selectedPreset.ambient_intensity;
                 UIMainPanel.instance.ambientPanel.ambientSlider.value = selectedPreset.ambient_ambient;
                 //  Weather values:
@@ -315,6 +319,7 @@ namespace UltimateEyecandy
                 //  Apply to GUI:
                 UIMainPanel.instance.ambientPanel.heightSlider.value = currentSettings.ambient_height;
                 UIMainPanel.instance.ambientPanel.rotationSlider.value = currentSettings.ambient_rotation;
+                //UIMainPanel.instance.ambientPanel.sizeSlider.value = currentSettings.ambient_size;
                 UIMainPanel.instance.ambientPanel.intensitySlider.value = currentSettings.ambient_intensity;
                 UIMainPanel.instance.ambientPanel.ambientSlider.value = currentSettings.ambient_ambient;
                 //ModMainPanel.instance.ambientPanel.fovSlider.value = currentSettings.ambient_fov;
@@ -351,6 +356,7 @@ namespace UltimateEyecandy
                 name = string.Empty,
                 ambient_height = DayNightProperties.instance.m_Latitude,
                 ambient_rotation = DayNightProperties.instance.m_Longitude,
+                //ambient_size = DayNightProperties.instance.m_SunSize,
                 ambient_intensity = DayNightProperties.instance.m_SunIntensity,
                 ambient_ambient = DayNightProperties.instance.m_Exposure,
                 //ambient_fov = Camera.main.fieldOfView,

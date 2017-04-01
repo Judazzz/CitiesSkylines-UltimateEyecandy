@@ -11,7 +11,8 @@ So what [i]does[/i] it do, you may wonder?
 Well, this is a mod that gives you direct control over various settings that impact the game's visuals.
 
 Ultimate Eyecandy allows you to:
-- change the sun's horizontal and vertical position;
+- change the Time of Day;
+- change the sun's latitude and longitude;
 - change sun and ambient light intensity;
 - enable rain, snow and fog instantly and change the intensity;
 - change LUT's in-game, so no more having to exit to the game's Options Panel;
@@ -29,13 +30,16 @@ Ultimate Eyecandy allows you to:
 
 
 [h1]Thank you[/h1]
-[quote]- [url=http://steamcommunity.com/id/LisaLionheart/myworkshopfiles/?appid=255710]LisaLionheart[/url] and her Timewarp mod for providing the initial spark of inspiration to start developing this mod;
+[quote]- [url=http://steamcommunity.com/id/LisaLionheart/myworkshopfiles/?appid=255710]LisaLionheart[/url] and her Timewarp mod for providing the initial spark of inspiration to start developing this mod. Timewarp is also the source of most of the code for the Time of Day feature;
 - [url=http://steamcommunity.com/id/boformer/myworkshopfiles/?appid=255710]Boformer[/url], [url=http://steamcommunity.com/id/bloody_penguin/myworkshopfiles/?appid=255710]BloodyPenguin[/url] and [url=http://steamcommunity.com/id/samsamts/myworkshopfiles/?appid=255710]SamsamTS[/url] for making their mods publicly available on Github: I've learned an awful lot about C:SL modding simply by studying their mods and experimenting with their code;
 - [url=http://steamcommunity.com/id/AJ3D/myworkshopfiles/?appid=255710]AJ3D[/url] for helping me to get started and taking my first baby steps in the wonderful world of CSL modding![/quote]
 
 
-[h1]Updates[/h1]
+[h1]Most recent updates[/h1]
 [quote]
+[b]April 1st, 2017 - v1.4.0[/b]
+- Added Time of Day slider to the Ambient Panel.
+
 [b]March 28th, 2017 - v1.3.5[/b]
 - Increased the sensitivity of the Ambient Panel sliders for more precise control.
 
@@ -44,39 +48,9 @@ Ultimate Eyecandy allows you to:
 - Mod now only works in-game and in Asset Editor;
 - Minor tweaks and fixes.
 
-[b]December 10th, 2016 - v1.3.3[/b]
-- Big code rewrite/clean-up;
-- Various bug-fixes (in particular those related to exiting to desktop/main menu and reloading/restarting a city);
-- OnSettingsUI: added 'Config File exists'-check.
-
-[b]December 8th, 2016 - v1.3.2[/b]
-- Made mod button draggable (right mouse button), its position will be saved in the config file;
-- Changed the default position of the mod button to avoid conflicts with other mod's buttons.
-
-[b]December 4th, 2016 - v1.3.1[/b]
-- Added configurable hotkey to toggle the mod's panel. Default key combo is [b]Shift+U[/b], but in the mod's options panel you can change this to [b]Ctrl+U[/b] or [b]Alt+U[/b];
-- Fixed a few minor issues.
-
-[b]November 30th, 2016 - v1.3.0[/b]
-Update 1.3.0 added support for C:SL 1.6.0 (Natural Disasters).
-
-[b]June 15th, 2016 - v1.2.2[/b]
-- Bugfix: 'Use LUT Color Correction' setting now re-applied properly after closing a resource overlay.
-[b]June 15th, 2016 - v1.2.1[/b]
-- Tonemapping option is now split in two separate options: toggle LUT and toggle Tonemapping;
-- Bugfix: 'Use Tonemapping' setting now re-applied properly after closing a resource overlay.
-
-[b]June 11th, 2016 - v1.2[/b]
-- Asset Editor support added (layout looks a bit different, as for some reason unknown to me in-game sprites are not available in the editor);
-- Toggle Bloom option added to ColorManagement Panel;
-- Toggle LUT Tonemapping option added to ColorManagement Panel.
-
-[b]May 15th, 2016 - v1.1[/b]
-- New layout;
-- Bug fixes regarding xml serialization and (re)setting default values;
-- Added confirm boxes for Delete/Overwrite actions;
-- Fine-tuned Ambient slider ranges;
-- Slider values now displayed in label.[/quote]
+[b]Full update history[/b]
+- [url=http://steamcommunity.com/sharedfiles/filedetails/changelog/672248733]Change log[/url]
+[/quote]
 
 
 [b]Source:[/b] [url=https://github.com/Judazzz/CitiesSkylines-UltimateEyecandy]Github[/url]

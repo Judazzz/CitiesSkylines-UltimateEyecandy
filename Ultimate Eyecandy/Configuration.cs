@@ -43,6 +43,9 @@ namespace UltimateEyecandy
             [XmlElement("ambient_rotation")]
             public float ambient_rotation;
 
+            //[XmlElement("ambient_size")]
+            //public float ambient_size;
+
             [XmlElement("ambient_intensity")]
             public float ambient_intensity;
 
@@ -89,6 +92,7 @@ namespace UltimateEyecandy
                 name = builtInPreset.name;
                 ambient_height = builtInPreset.ambient_height;
                 ambient_rotation = builtInPreset.ambient_rotation;
+                //ambient_size = builtInPreset.ambient_size;
                 ambient_intensity = builtInPreset.ambient_intensity;
                 ambient_ambient = builtInPreset.ambient_height;
                 weather = builtInPreset.weather;
