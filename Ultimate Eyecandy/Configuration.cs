@@ -14,9 +14,9 @@ namespace UltimateEyecandy
         public int keyboardShortcut = 0;
         public Vector3 buttonPos = new Vector3(-9999, -9999, -9999);
 
-        public bool outputDebug;
-        public bool enableAdvanced = false;
         public bool loadLastPresetOnStart;
+        public bool enableSimulationControl = true;
+        public bool outputDebug;
         public string lastPreset;
 
         [XmlArray(ElementName = "Presets")]
@@ -147,7 +147,7 @@ namespace UltimateEyecandy
                     configCopy.keyboardShortcut = UltimateEyecandyTool.config.keyboardShortcut;
                     configCopy.buttonPos = UltimateEyecandyTool.config.buttonPos;
                     configCopy.outputDebug = UltimateEyecandyTool.config.outputDebug;
-                    configCopy.enableAdvanced = UltimateEyecandyTool.config.enableAdvanced;
+                    configCopy.enableSimulationControl = UltimateEyecandyTool.config.enableSimulationControl;
                     configCopy.loadLastPresetOnStart = UltimateEyecandyTool.config.loadLastPresetOnStart;
                     configCopy.lastPreset = UltimateEyecandyTool.config.lastPreset;
 

@@ -6,7 +6,7 @@ namespace UltimateEyecandy
 {
     public class Mod : IUserMod
     {
-        public const string version = "1.4.0";
+        public const string version = "1.4.1";
 
         public string Name
         {
@@ -52,6 +52,18 @@ namespace UltimateEyecandy
                         }
                     });
                 loadLastPresetOnStartCheckBox.tooltip = "Load last active preset on start.";
+                group.AddSpace(15);
+                //  Enable Time of Day:
+                UICheckBox enableSimulationControlCheckBox = (UICheckBox)group.AddCheckbox("Enable simulation control (Time of Day and simulation speed).", UltimateEyecandyTool.config.enableSimulationControl,
+                    b =>
+                    {
+                        if (UltimateEyecandyTool.config.enableSimulationControl != b)
+                        {
+                            UltimateEyecandyTool.config.enableSimulationControl = b;
+                            UltimateEyecandyTool.SaveConfig(false);
+                        }
+                    });
+                loadLastPresetOnStartCheckBox.tooltip = "Enable the Time of Day slider functionality.";
                 group.AddSpace(15);
                 //  Output Debug Data:
                 UICheckBox debugCheckBox = (UICheckBox)group.AddCheckbox("Write data to debug log (it's going to be a lot!)", UltimateEyecandyTool.config.outputDebug,

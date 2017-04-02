@@ -87,7 +87,7 @@ namespace UltimateEyecandy.GUI
             ambientPanel.height = UltimateEyecandyTool.HEIGHT;
             ambientPanel.relativePosition = new Vector3(5, 0);
             ambientPanel.isVisible = true;
-            ambientPanel.todManager = Singleton<TimeOfDayManager>.instance;
+            ambientPanel.todManager = Singleton<DayNightCycleManager>.instance;
             //  Weather Panel:
             weatherPanel = body.AddUIComponent<WeatherPanel>();
             weatherPanel.name = "weatherPanel";

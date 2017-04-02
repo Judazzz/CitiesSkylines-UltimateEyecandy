@@ -37,16 +37,15 @@ Ultimate Eyecandy allows you to:
 
 [h1]Most recent updates[/h1]
 [quote]
+[b]April 2nd, 2017 - v1.4.1[/b]
+- Added Day/Night Cycle speed slider to the Ambient Panel;
+- Added mod option to disable Time of Day and Day/Night Cycle speed sliders.
+
 [b]April 1st, 2017 - v1.4.0[/b]
 - Added Time of Day slider to the Ambient Panel.
 
 [b]March 28th, 2017 - v1.3.5[/b]
 - Increased the sensitivity of the Ambient Panel sliders for more precise control.
-
-[b]January 8th, 2017 - v1.3.4[/b]
-- Dropped support for local (non-Workshop) Color Correction LUTs (caused unpredictable mod behavior for some);
-- Mod now only works in-game and in Asset Editor;
-- Minor tweaks and fixes.
 
 [b]Full update history[/b]
 - [url=http://steamcommunity.com/sharedfiles/filedetails/changelog/672248733]Change log[/url]

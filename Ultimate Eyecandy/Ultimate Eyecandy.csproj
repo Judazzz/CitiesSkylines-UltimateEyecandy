@@ -71,7 +71,7 @@
     <Compile Include="LoadingExtension.cs" />
     <Compile Include="Mod.cs" />
     <Compile Include="ThreadingExtension.cs" />
-    <Compile Include="TimeOfDayManager.cs" />
+    <Compile Include="DayNightCycleManager.cs" />
     <Compile Include="UltimateEyecandyTool.cs" />
     <Compile Include="GUI\UIMainPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

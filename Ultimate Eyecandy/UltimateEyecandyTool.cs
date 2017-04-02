@@ -69,7 +69,7 @@ namespace UltimateEyecandy
                 DebugUtils.Log($"Currently used config File: {FileName}.");
                 //  
                 go.AddComponent<UltimateEyecandyTool>();
-                go.AddComponent<TimeOfDayManager>();
+                go.AddComponent<DayNightCycleManager>();
                 //  
                 isEditor = (mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset) ? true : false;
                 isGameLoaded = true;

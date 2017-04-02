@@ -1,8 +1,6 @@
 ﻿using ColossalFramework;
 using ColossalFramework.IO;
 using System;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 namespace UltimateEyecandy
@@ -18,7 +16,7 @@ namespace UltimateEyecandy
         public float sunIntensity;
     }
 
-    public class TimeOfDayManager : MonoBehaviour, ISimulationManager
+    public class DayNightCycleManager : MonoBehaviour, ISimulationManager
     {
         public Fraction speed;
         private uint tick;

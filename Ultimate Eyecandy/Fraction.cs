@@ -12,10 +12,10 @@ namespace UltimateEyecandy
         public override string ToString()
         {
             if (num == 0)
-                return "Paused";
+                return "paused";
 
             if (num == 1 && den == 1)
-                return "Normal";
+                return "normal";
 
             if (num > den)
                 return num + "x";
