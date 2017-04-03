@@ -125,7 +125,6 @@ namespace UltimateEyecandy.GUI
             _todSlider.eventValueChanged += ValueChanged;
             _todSlider.eventDragStart += timeSlider_eventDragStart;
             _todSlider.eventMouseUp += timeSlider_eventDragEnd;
-            _todSlider.isEnabled = UltimateEyecandyTool.config.enableSimulationControl;
 
             //  Simulation speed:
             var speedContainer = UIUtils.CreateFormElement(this, "center");
@@ -139,7 +138,6 @@ namespace UltimateEyecandy.GUI
             _speedSlider.name = "speedSlider";
             _speedSlider.stepSize = 0.005f;
             _speedSlider.eventValueChanged += ValueChanged;
-            _speedSlider.isEnabled = UltimateEyecandyTool.config.enableSimulationControl;
 
             //  Sun height (Latitude):
             var heightContainer = UIUtils.CreateFormElement(this, "center");
@@ -353,6 +351,7 @@ namespace UltimateEyecandy.GUI
                     //  
                     _speedLabel.text = string.Format($"Day/night cycle speed ({_todManager.speed})");
                     _speedSlider.value = Array.IndexOf(speeds, _todManager.speed);
+                    _speedSlider.isEnabled = true;
                 }
                 else
                 {
@@ -364,7 +363,6 @@ namespace UltimateEyecandy.GUI
                     _speedSlider.isEnabled = false;
                 }
             }
-
             base.Update();
         }
     }

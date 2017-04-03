@@ -30,16 +30,18 @@ namespace UltimateEyecandy
         public static string FileName;
         private const string FileNameOnline = "CSL_UltimateEyecandy.xml";
         private const string FileNameLocal = "CSL_UltimateEyecandy_local.xml";
-        
+
         public static Configuration config;
         //  In-Memory Preset for storing initial settings:
         public static Configuration.Preset initialSettings;
         //  In-Memory Preset for storing current settings:
         public static Configuration.Preset currentSettings;
-        
+
         public static bool isEditor;
         public static bool isGameLoaded;
         public static bool isWinterMap;
+
+        private static DayNightCycleManager dayNightCycleManager;
 
         public static void Reset()
         {
@@ -69,7 +71,6 @@ namespace UltimateEyecandy
                 DebugUtils.Log($"Currently used config File: {FileName}.");
                 //  
                 go.AddComponent<UltimateEyecandyTool>();
-                go.AddComponent<DayNightCycleManager>();
                 //  
                 isEditor = (mode == LoadMode.LoadAsset || mode == LoadMode.NewAsset) ? true : false;
                 isGameLoaded = true;
@@ -81,6 +82,16 @@ namespace UltimateEyecandy
 
                 m_mainpanel = UIView.GetAView().AddUIComponent(typeof(UIMainPanel)) as UIMainPanel;
                 DebugUtils.Log("MainPanel created.");
+                //  Init. Day/Night Cycle Manager:
+                if (GameObject.Find("ZoomButton") != null)
+                {
+                    dayNightCycleManager = new GameObject().AddComponent<DayNightCycleManager>();
+                    //  Zoom Button right-click functionality:
+                    if (config.enableSimulationControl)
+                    {
+                        HookZoomControls();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -209,7 +220,8 @@ namespace UltimateEyecandy
                 }
             }
             //  Create new preset:
-            else {
+            else
+            {
                 var newPreset = new Configuration.Preset()
                 {
                     name = presetName,
@@ -369,6 +381,37 @@ namespace UltimateEyecandy
                 color_tonemapping = true,
                 color_bloom = true
             };
+        }
+
+
+        //  Rightclick on Area Zoom icon to set time - Bind event:
+        public static void HookZoomControls()
+        {
+            UIMultiStateButton zoomButton = GameObject.Find("ZoomButton").GetComponent<UIMultiStateButton>();
+            //  
+            zoomButton.tooltip = "Right click on the Area Zoom button to set the time of day.";
+            zoomButton.eventMouseMove += MouseMoved;
+            zoomButton.eventMouseUp += MouseMoved;
+            zoomButton.backgroundSprites[0].hovered = "";
+            zoomButton.backgroundSprites[1].hovered = "";
+        }
+
+        //  Rightclick on Area Zoom icon to set time - Event handler:
+        static void MouseMoved(UIComponent component, UIMouseEventParameter eventParam)
+        {
+            Vector2 pos;
+            component.GetHitPosition(eventParam.ray, out pos);
+            Vector2 center = new Vector2(30, 30);
+            float angle = Vector2.Angle(new Vector3(0, 30), pos - center);
+            if (pos.x > center.x)
+            {
+                angle = 360.0f - angle;
+            }
+            float time = (angle * 12.0f) / 180.0f;
+            if (eventParam.buttons == UIMouseButton.Right)
+            {
+                dayNightCycleManager.TimeOfDay = time;
+            }
         }
     }
 }
