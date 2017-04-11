@@ -34,6 +34,20 @@ Ultimate Eyecandy allows you to:
 - [url=http://steamcommunity.com/id/boformer/myworkshopfiles/?appid=255710]Boformer[/url], [url=http://steamcommunity.com/id/bloody_penguin/myworkshopfiles/?appid=255710]BloodyPenguin[/url] and [url=http://steamcommunity.com/id/samsamts/myworkshopfiles/?appid=255710]SamsamTS[/url] for making their mods publicly available on Github: I've learned an awful lot about C:SL modding simply by studying their mods and experimenting with their code;
 - [url=http://steamcommunity.com/id/AJ3D/myworkshopfiles/?appid=255710]AJ3D[/url] for helping me to get started and taking my first baby steps in the wonderful world of CSL modding![/quote]
 
+[h1]Compatibility[/h1]
+[quote]
+[b]Unfortunately Ultimate Eyecandy is currently incompatible with Rush Hour.[/b]
+This is because both mods share features that touch the game's simulation and time cycle.
+
+Players who want to keep using this mod and Rush Hour at the same time, can download an earlier version of Eyecandy here: [url=https://1drv.ms/u/s!Au8mFg_E1srMiMELAInuS5McGAhWPQ]Ultimate Eyecandy v1.3.5[/url]. This is the last version before I implemented the simulation-related features, and should have no problems with Rush Hour.
+
+To use it, create a new folder called "Ultimate Eyecandy" in the game's local mod folder. Typically, you can find it in this location: C:\Users\{Your_Windows_Username}\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods
+Then copy the downloaded .dll file to that folder, start the game, and enable the mod in the Content Manager.
+Obviously you will have to unsub from, or disable, the Workshop version first!
+
+I'll continue to try and work out what causes the incompatibility, but for the time being this is as good as it get. My apologies for any inconvenience caused.
+[/quote]
+
 
 [h1]Most recent updates[/h1]
 [quote]
