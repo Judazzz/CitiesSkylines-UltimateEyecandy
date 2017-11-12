@@ -11,11 +11,44 @@ namespace UltimateEyecandy.GUI
         // So if your are using it for your mod consider thanking me (SamsamTS)
         // Extended Public Transport UI's code helped me a lot so thanks a lot AcidFire
 
+        //  Size constants:
+        public static float c_modPanelWidth = 400f;
+        public static float c_modPanelHeight = 625f;
+
+        public static float c_modPanelInnerWidth = 390f;
+        public static float c_modPanelInnerHeight = 555f;
+
+        public static float c_titleBarWidth = 400f;
+        public static float c_titleBarHeight = 36f;
+        public static float c_titleBarLabelWidth = 360f;
+        public static float c_titleBarLabelHeight = 36f;
+        public static float c_titleBarLabelXPos = 15f;
+        public static float c_titleBarCloseButtonXPos = 370f;
+
+        public static float c_tabButtonWidth = 97.25f;
+        public static float c_tabButtonHeight = 28f;
+        public static float c_tabPanelWidth = 390f;
+        public static float c_tabPanelHeight = 555f;
+
+        public static float c_resetButtonWidth = 130f;
+        public static float c_resetButtonHeight = 20f;
+        public static float c_resetButtonPosX = 250f;
+        public static float c_resetButtonPosY = 14f;
+
+        public static float c_searchBoxWidth = 380f;
+        public static float c_searchBoxHeight = 30f;
+
+        public static float c_fastListWidth = 388f;
+        public static float c_fastListHeight = 230f;
+        public static float c_fastListRowHeight = 30f;
+
+        public static float c_spacing = 5;
+
         public static UIButton CreateButton(UIComponent parent)
         {
             UIButton button = parent.AddUIComponent<UIButton>();
 
-            button.size = new Vector2(90f, 30f);
+            button.size = new Vector2(110f, 30f);
             button.playAudioEvents = true;
             button.scaleFactor = 0.75f;
             button.textScale = 0.8f;
@@ -36,6 +69,36 @@ namespace UltimateEyecandy.GUI
             button.pressedTextColor = new Color32(255, 255, 255, 255);
             button.focusedTextColor = new Color32(255, 255, 255, 255);
             button.disabledTextColor = new Color32(128, 128, 128, 255);
+            button.canFocus = false;
+            //  
+            return button;
+        }
+
+        public static UIButton CreateResetButton(UIComponent parent)
+        {
+            UIButton button = parent.AddUIComponent<UIButton>();
+
+            button.name = "resetReplacementButton";
+            button.text = "[ reset selected ]";
+            button.relativePosition = new Vector3(c_resetButtonPosX, c_resetButtonPosY);
+            button.width = c_resetButtonWidth;
+            button.height = c_resetButtonHeight;
+            button.normalBgSprite = null;
+            button.hoveredBgSprite = null;
+            button.pressedBgSprite = null;
+            button.focusedBgSprite = null;
+            button.disabledBgSprite = null;
+
+            button.scaleFactor = 0.75f;
+            button.textScale = 0.85f;
+            button.textPadding = new RectOffset(0, 0, 3, 0);
+            button.textHorizontalAlignment = UIHorizontalAlignment.Center;
+
+            button.textColor = new Color32(255, 100, 100, 255);
+            button.hoveredTextColor = new Color32(187, 187, 187, 255);
+            button.pressedTextColor = new Color32(255, 255, 255, 255);
+            button.focusedTextColor = new Color32(255, 255, 255, 255);
+            button.disabledColor = new Color32(83, 91, 95, 255);
             button.canFocus = false;
             //  
             return button;
@@ -68,7 +131,7 @@ namespace UltimateEyecandy.GUI
             bg.name = "sliderPanel";
             bg.autoLayout = false;
             bg.padding = new RectOffset(0, 0, 10, 0);
-            bg.size = new Vector2(parent.width - (2 * UltimateEyecandyTool.SPACING), 20);
+            bg.size = new Vector2(parent.width - 10, 20);
 
             UISlider slider = bg.AddUIComponent<UISlider>();
             slider.autoSize = false;
@@ -97,14 +160,14 @@ namespace UltimateEyecandy.GUI
         public static UICheckBox CreateCheckBox(UIComponent parent)
         {
             UICheckBox checkBox = parent.AddUIComponent<UICheckBox>();
-            checkBox.width = parent.width - (2 * UltimateEyecandyTool.SPACING);
+            checkBox.width = parent.width - 10;
             checkBox.height = 20f;
-            checkBox.relativePosition = new Vector3(5, 21);
+            checkBox.relativePosition = new Vector3(5, 0);
 
             UISprite sprite = checkBox.AddUIComponent<UISprite>();
             sprite.spriteName = "InfoIconBaseHovered";
             sprite.size = new Vector2(16f, 16f);
-            sprite.relativePosition = new Vector3(229, 0);
+            sprite.relativePosition = new Vector3(355, 0);
 
             checkBox.checkedBoxObject = sprite.AddUIComponent<UISprite>();
             ((UISprite)checkBox.checkedBoxObject).spriteName = "InfoIconBaseFocused";
@@ -113,9 +176,9 @@ namespace UltimateEyecandy.GUI
 
             checkBox.label = checkBox.AddUIComponent<UILabel>();
             checkBox.autoSize = false;
-            checkBox.label.textScale = 0.8f;
+            checkBox.label.textScale = 0.9f;
             checkBox.label.width = parent.width - 22;
-            checkBox.label.relativePosition = new Vector3(0, 3);
+            checkBox.label.relativePosition = Vector2.zero;
 
             return checkBox;
         }
@@ -328,26 +391,29 @@ namespace UltimateEyecandy.GUI
 
             panel.height = 50;
             panel.width = parent.width;
-            panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 0, 15);
+            panel.padding = new RectOffset(5, 5, 0, 15);
+            //panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 0, 15);
             panel.autoLayout = true;
             panel.autoLayoutDirection = LayoutDirection.Vertical;
 
             if (position == "top")
             {
                 panel.height = 65;
-                panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 20, 15);
+                panel.padding = new RectOffset(5, 5, 20, 15);
+                //panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 20, 15);
                 panel.AlignTo(parent, UIAlignAnchor.TopLeft);
-                panel.relativePosition = new Vector3(0, 0);
+                panel.relativePosition = new Vector3(0, 10);
             }
             else if (position == "bottom")
             {
                 panel.height = 40;
                 panel.AlignTo(parent, UIAlignAnchor.BottomLeft);
-                panel.relativePosition = new Vector3(0, 305);
+                panel.relativePosition = new Vector3(0, c_modPanelInnerHeight - 40);
             }
             else
             {
-                panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 0, 0);
+                panel.padding = new RectOffset(5, 5, 0, 0);
+                //panel.padding = new RectOffset((int)UltimateEyecandyTool.SPACING, (int)UltimateEyecandyTool.SPACING, 0, 0);
             }
 
             return panel;

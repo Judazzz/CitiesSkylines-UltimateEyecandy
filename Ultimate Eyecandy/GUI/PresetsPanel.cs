@@ -80,14 +80,15 @@ namespace UltimateEyecandy.GUI
 
             _presetLabel = topContainer.AddUIComponent<UILabel>();
             _presetLabel.text = "Load preset";
-            _presetLabel.textScale = 0.8f;
+            _presetLabel.textScale = 0.9f;
             _presetLabel.padding = new RectOffset(0, 0, 0, 5);
 
             // FastList
             _presetFastlist = UIFastList.Create<UIPresetItem>(topContainer);
             _presetFastlist.backgroundSprite = "UnlockingPanel";
-            _presetFastlist.width = parent.width - (3 * UltimateEyecandyTool.SPACING) - 12;
-            _presetFastlist.height = 125;
+            _presetFastlist.relativePosition = new Vector3(0, 15);
+            _presetFastlist.width = UIUtils.c_fastListWidth;
+            _presetFastlist.height = UIUtils.c_fastListHeight - 20;
             _presetFastlist.canSelect = true;
             _presetFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
 
@@ -95,12 +96,11 @@ namespace UltimateEyecandy.GUI
             var loadDeleteContainer = UIUtils.CreateFormElement(this, "center");
             loadDeleteContainer.height = 40;
             loadDeleteContainer.name = "loadDeleteContainer";
-            loadDeleteContainer.relativePosition = new Vector3(0, 165); // new Vector3(0, 190);
+            loadDeleteContainer.relativePosition = new Vector3(0, 260);
             loadDeleteContainer.autoLayout = false;
             loadDeleteContainer.isVisible = true;
 
             _loadPresetButton = UIUtils.CreateButton(loadDeleteContainer);
-            //_loadPresetButton.width = 100f;
             _loadPresetButton.opacity = 0.25f;
             _loadPresetButton.isEnabled = false;
             _loadPresetButton.relativePosition = new Vector3(5, 10);
@@ -120,10 +120,9 @@ namespace UltimateEyecandy.GUI
             };
 
             _deletePresetButton = UIUtils.CreateButton(loadDeleteContainer);
-            //_deletePresetButton.width = 100f;
             _deletePresetButton.opacity = 0.25f;
             _deletePresetButton.isEnabled = false;
-            _deletePresetButton.relativePosition = new Vector3(160, 10);
+            _deletePresetButton.relativePosition = new Vector3(272, 10);
             _deletePresetButton.name = "deletePresetButton";
             _deletePresetButton.text = "Delete preset";
             _deletePresetButton.tooltip = "Delete Preset selected in list.";
@@ -149,12 +148,11 @@ namespace UltimateEyecandy.GUI
             //  Save/overwrite preset:
             var saveOverwriteContainer = UIUtils.CreateFormElement(this, "center");
             saveOverwriteContainer.height = 40;
-            saveOverwriteContainer.relativePosition = new Vector3(0, 205); // new Vector3(0, 230);
+            saveOverwriteContainer.relativePosition = new Vector3(0, 300);
             saveOverwriteContainer.autoLayout = false;
             saveOverwriteContainer.isVisible = true;
 
             _savePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
-            //_savePresetButton.width = 100f;
             _savePresetButton.relativePosition = new Vector3(5, 10);
             _savePresetButton.name = "savePresetButton";
             _savePresetButton.text = "Save as new";
@@ -175,10 +173,9 @@ namespace UltimateEyecandy.GUI
             };
 
             _overwritePresetButton = UIUtils.CreateButton(saveOverwriteContainer);
-            //_overwritePresetButton.width = 100f;
             _overwritePresetButton.opacity = 0.25f;
             _overwritePresetButton.isEnabled = false;
-            _overwritePresetButton.relativePosition = new Vector3(160, 10);
+            _overwritePresetButton.relativePosition = new Vector3(272, 10);
             _overwritePresetButton.name = "overwritePresetButton";
             _overwritePresetButton.text = "Overwrite";
             _overwritePresetButton.tooltip = "Save current settings as the Preset selected in the list (overwrite Existing Preset).";
@@ -235,7 +232,7 @@ namespace UltimateEyecandy.GUI
                     }
                 }
                 //  
-                _presetFastlist.rowHeight = 26f;
+                _presetFastlist.rowHeight = UIUtils.c_fastListRowHeight;
                 _presetFastlist.DisplayAt(0);
             }
         }

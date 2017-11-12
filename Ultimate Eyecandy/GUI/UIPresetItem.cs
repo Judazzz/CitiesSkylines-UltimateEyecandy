@@ -16,7 +16,6 @@ namespace UltimateEyecandy.GUI
             base.OnSizeChanged();
 
             if (_name == null) return;
-            //_size.relativePosition = new Vector3(width - 35f, 5);
         }
 
         private void SetupControls()
@@ -26,20 +25,13 @@ namespace UltimateEyecandy.GUI
             isVisible = true;
             isInteractive = true;
             width = parent.width;
-            height = 30;
-            height = 24;
+            height = UIUtils.c_fastListRowHeight;
 
             _name = AddUIComponent<UILabel>();
             _name.name = "PresetName";
-            _name.relativePosition = new Vector3(5, 6);
+            _name.relativePosition = new Vector3(5, 9);
             _name.textColor = new Color32(238, 238, 238, 255);
-            _name.textScale = 0.8f;
-
-            //_size = AddUIComponent<UILabel>();
-            //_size.width = 30;
-            //_size.textAlignment = UIHorizontalAlignment.Center;
-            //_size.textColor = new Color32(170, 170, 170, 255);
-            //_size.relativePosition = new Vector3(width - 35f, 5);
+            _name.textScale = 0.85f;
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)

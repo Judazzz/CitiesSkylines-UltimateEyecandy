@@ -21,11 +21,11 @@ namespace UltimateEyecandy
         public static OptionsGameplayPanel optionsGameplayPanel;
 
         //  Size Constants:
-        public static float WIDTH = 270;
-        public static float HEIGHT = 350;
-        public static float SPACING = 5;
-        public static float TITLE_HEIGHT = 36;
-        public static float TABS_HEIGHT = 28;
+        //public static float WIDTH = 270;
+        //public static float HEIGHT = 350;
+        //public static float SPACING = 5;
+        //public static float TITLE_HEIGHT = 36;
+        //public static float TABS_HEIGHT = 28;
 
         public static string FileName;
         private const string FileNameOnline = "CSL_UltimateEyecandy.xml";

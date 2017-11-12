@@ -50,7 +50,10 @@ I'll continue to try and work out what causes the incompatibility, but for the t
 
 
 [h1]Most recent updates[/h1]
-[quote]
+[quote][b]November 12th, 2017 - v1.5.0[/b]
+- Mod panel size increased by 50%;
+- Various minor bug-fixes and optimizations.
+
 [b]April 3rd, 2017 - v1.4.2[/b]
 - Added right-click on Zoom Button feature;
 - Fixed a bug that prevented the Speed slider from working after re-enabling the Day/Night Cycle in the game options.
@@ -58,9 +61,6 @@ I'll continue to try and work out what causes the incompatibility, but for the t
 [b]April 2nd, 2017 - v1.4.1[/b]
 - Added Day/Night Cycle speed slider to the Ambient Panel;
 - Added mod option to disable Time of Day and Day/Night Cycle speed sliders.
-
-[b]April 1st, 2017 - v1.4.0[/b]
-- Added Time of Day slider to the Ambient Panel.
 
 [b]Full update history[/b]
 - [url=http://steamcommunity.com/sharedfiles/filedetails/changelog/672248733]Change log[/url]

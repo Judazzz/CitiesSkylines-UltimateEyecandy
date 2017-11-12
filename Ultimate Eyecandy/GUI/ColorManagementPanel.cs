@@ -75,21 +75,22 @@ namespace UltimateEyecandy.GUI
 
             _lutLabel = topContainer.AddUIComponent<UILabel>();
             _lutLabel.text = "Select LUT";
-            _lutLabel.textScale = 0.8f;
+            _lutLabel.textScale = 0.9f;
             _lutLabel.padding = new RectOffset(0, 0, 0, 5);
 
             // FastList
             _lutFastlist = UIFastList.Create<UILutItem>(topContainer);
             _lutFastlist.backgroundSprite = "UnlockingPanel";
-            _lutFastlist.width = parent.width - (3 * UltimateEyecandyTool.SPACING) - 12;
-            _lutFastlist.height = 125;
+            _lutFastlist.relativePosition = new Vector3(0, 15);
+            _lutFastlist.width = UIUtils.c_fastListWidth;
+            _lutFastlist.height = UIUtils.c_fastListHeight - 20;
             _lutFastlist.canSelect = true;
             _lutFastlist.eventSelectedIndexChanged += OnSelectedItemChanged;
 
             //  Load lut:
             var loadContainer = UIUtils.CreateFormElement(this, "center");
             loadContainer.name = "loadDeleteContainer";
-            loadContainer.relativePosition = new Vector3(0, 165);
+            loadContainer.relativePosition = new Vector3(0, 260);
             loadContainer.autoLayout = false;
             loadContainer.isVisible = true;
 
@@ -125,7 +126,7 @@ namespace UltimateEyecandy.GUI
             //  LUT:
             var lutContainer = UIUtils.CreateFormElement(this, "center");
             lutContainer.name = "lutContainer";
-            lutContainer.relativePosition = new Vector3(0, 220);
+            lutContainer.relativePosition = new Vector3(0, 325);
 
             _enableLutCheckbox = UIUtils.CreateCheckBox(lutContainer);
             _enableLutCheckbox.relativePosition = new Vector3(5, 17);
@@ -139,7 +140,7 @@ namespace UltimateEyecandy.GUI
             //  Tonemapping:
             var tonemappingContainer = UIUtils.CreateFormElement(this, "center");
             tonemappingContainer.name = "tonemappingContainer";
-            tonemappingContainer.relativePosition = new Vector3(0, 240);
+            tonemappingContainer.relativePosition = new Vector3(0, 370);
 
             _enableTonemappingCheckbox = UIUtils.CreateCheckBox(tonemappingContainer);
             _enableTonemappingCheckbox.relativePosition = new Vector3(5, 17);
@@ -153,7 +154,7 @@ namespace UltimateEyecandy.GUI
             //  Bloom:
             var bloomContainer = UIUtils.CreateFormElement(this, "center");
             bloomContainer.name = "bloomContainer";
-            bloomContainer.relativePosition = new Vector3(0, 260);
+            bloomContainer.relativePosition = new Vector3(0, 415);
             bloomContainer.height = 20;
 
             _enableBloomCheckbox = UIUtils.CreateCheckBox(bloomContainer);
@@ -202,7 +203,7 @@ namespace UltimateEyecandy.GUI
                 }
             }
             //  
-            _lutFastlist.rowHeight = 26f;
+            _lutFastlist.rowHeight = UIUtils.c_fastListRowHeight;
             _lutFastlist.DisplayAt(ColorCorrectionManager.instance.lastSelection);
             _lutFastlist.selectedIndex = ColorCorrectionManager.instance.lastSelection;
         }

@@ -59,7 +59,7 @@ namespace UltimateEyecandy.GUI
             //  Enable weather:
             var topContainer = UIUtils.CreateFormElement(this, "top");
             topContainer.name = "enableWeatherCheckboxContainer";
-            topContainer.relativePosition = new Vector3(0, -3);
+            //topContainer.relativePosition = new Vector3(0, -3);
             //topContainer.autoLayout = false;
 
             _enableWeatherCheckbox = UIUtils.CreateCheckBox(topContainer);
@@ -74,11 +74,10 @@ namespace UltimateEyecandy.GUI
             //  Precipitation intensity:
             var precipitationContainer = UIUtils.CreateFormElement(this, "center");
             precipitationContainer.name = "precipitationSliderContainer";
-            precipitationContainer.relativePosition = new Vector3(0, 60);
-            precipitationContainer.relativePosition = new Vector3(0, 57);
+            precipitationContainer.relativePosition = new Vector3(0, 80);
 
             _precipitationLabel = precipitationContainer.AddUIComponent<UILabel>();
-            _precipitationLabel.textScale = 0.8f;
+            _precipitationLabel.textScale = 0.9f;
             _precipitationLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _precipitationSlider = UIUtils.CreateSlider(precipitationContainer, 0, 2.5f);
@@ -104,8 +103,7 @@ namespace UltimateEyecandy.GUI
             //  Precipitation motion blur:
             var rainMotionblurContainer = UIUtils.CreateFormElement(this, "center");
             rainMotionblurContainer.name = "rainMotionblurCheckboxContainer";
-            //rainMotionblurContainer.relativePosition = new Vector3(0, 95);
-            rainMotionblurContainer.relativePosition = new Vector3(0, 89);
+            rainMotionblurContainer.relativePosition = new Vector3(0, 155);
             rainMotionblurContainer.autoLayout = false;
 
             _rainMotionblurCheckbox = UIUtils.CreateCheckBox(rainMotionblurContainer);
@@ -120,12 +118,11 @@ namespace UltimateEyecandy.GUI
             //  Fog intensity:
             var fogContainer = UIUtils.CreateFormElement(this, "center");
             fogContainer.name = "fogIntensitySliderContainer";
-            //fogContainer.relativePosition = (UltimateEyecandy.isWinterMap) ? new Vector3(0, 110) : new Vector3(0, 156);
-            fogContainer.relativePosition = (UltimateEyecandyTool.isWinterMap) ? new Vector3(0, 104) : new Vector3(0, 150);
+            fogContainer.relativePosition = (UltimateEyecandyTool.isWinterMap) ? new Vector3(0, 155) : new Vector3(0, 210);
 
             _fogIntensityLabel = fogContainer.AddUIComponent<UILabel>();
             _fogIntensityLabel.text = "Fog intensity (0)";
-            _fogIntensityLabel.textScale = 0.8f;
+            _fogIntensityLabel.textScale = 0.9f;
             _fogIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
             _fogIntensitySlider = UIUtils.CreateSlider(fogContainer, 0, 1f);
@@ -141,7 +138,7 @@ namespace UltimateEyecandy.GUI
 
             //_wetnessLabel = wetnessContainer.AddUIComponent<UILabel>();
             //_wetnessLabel.text = "Ground wetness (" + WeatherManager.instance.m_groundWetness + ")";
-            //_wetnessLabel.textScale = 0.8f;
+            //_wetnessLabel.textScale = 0.9f;
             //_wetnessLabel.padding = new RectOffset(0, 0, 0, 5);
 
             //_wetnessSlider = UIUtils.CreateSlider(wetnessContainer, 0f, 1f);

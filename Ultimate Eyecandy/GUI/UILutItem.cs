@@ -24,14 +24,13 @@ namespace UltimateEyecandy.GUI
             isVisible = true;
             isInteractive = true;
             width = parent.width;
-            height = 30;
-            height = 24;
+            height = UIUtils.c_fastListRowHeight;
 
             _name = AddUIComponent<UILabel>();
             _name.name = "LutName";
-            _name.relativePosition = new Vector3(5, 6);
+            _name.relativePosition = new Vector3(5, 9);
             _name.textColor = new Color32(238, 238, 238, 255);
-            _name.textScale = 0.8f;
+            _name.textScale = 0.85f;
         }
 
         protected override void OnMouseDown(UIMouseEventParameter p)

@@ -117,7 +117,7 @@ namespace UltimateEyecandy.GUI
             topContainer.name = "heightSliderContainer";
             _todLabel = topContainer.AddUIComponent<UILabel>();
             _todLabel.text = "Time of Day";
-            _todLabel.textScale = 0.8f;
+            _todLabel.textScale = 0.9f;
             _todLabel.padding = new RectOffset(0, 0, 0, 0);
             _todSlider = UIUtils.CreateSlider(topContainer, 0.0f, 24.0f);
             _todSlider.name = "todSlider";
@@ -129,10 +129,11 @@ namespace UltimateEyecandy.GUI
             //  Simulation speed:
             var speedContainer = UIUtils.CreateFormElement(this, "center");
             speedContainer.name = "sizeContainer";
-            speedContainer.relativePosition = new Vector3(0, 65);
+            speedContainer.relativePosition = new Vector3(0, 95);
+            //speedContainer.relativePosition = new Vector3(0, 65);
             _speedLabel = speedContainer.AddUIComponent<UILabel>();
             _speedLabel.text = "Day/night cycle speed";
-            _speedLabel.textScale = 0.8f;
+            _speedLabel.textScale = 0.9f;
             _speedLabel.padding = new RectOffset(0, 0, 0, 0);
             _speedSlider = UIUtils.CreateSlider(speedContainer, 0f, speeds.Length);
             _speedSlider.name = "speedSlider";
@@ -142,11 +143,12 @@ namespace UltimateEyecandy.GUI
             //  Sun height (Latitude):
             var heightContainer = UIUtils.CreateFormElement(this, "center");
             heightContainer.name = "heightContainer";
-            heightContainer.relativePosition = new Vector3(0, 110);
+            heightContainer.relativePosition = new Vector3(0, 160);
+            //heightContainer.relativePosition = new Vector3(0, 110);
             _heightLabel = heightContainer.AddUIComponent<UILabel>();
             //_heightLabel.text = "Sun height (0)";
             _heightLabel.text = "Lattitude (0)";
-            _heightLabel.textScale = 0.8f;
+            _heightLabel.textScale = 0.9f;
             _heightLabel.padding = new RectOffset(0, 0, 0, 0);
             _heightSlider = UIUtils.CreateSlider(heightContainer, -120f, 120f);
             _heightSlider.name = "heightSlider";
@@ -157,11 +159,12 @@ namespace UltimateEyecandy.GUI
             //  Sun rotation (Longitude):
             var rotationContainer = UIUtils.CreateFormElement(this, "center");
             rotationContainer.name = "rotationContainer";
-            rotationContainer.relativePosition = new Vector3(0, 155);
+            rotationContainer.relativePosition = new Vector3(0, 225);
+            //rotationContainer.relativePosition = new Vector3(0, 155);
             _rotationLabel = rotationContainer.AddUIComponent<UILabel>();
             //_rotationLabel.text = "Sun rotation (0)";
             _rotationLabel.text = "Longitude (0)";
-            _rotationLabel.textScale = 0.8f;
+            _rotationLabel.textScale = 0.9f;
             _rotationLabel.padding = new RectOffset(0, 0, 0, 0);
             _rotationSlider = UIUtils.CreateSlider(rotationContainer, -180f, 180f);
             _rotationSlider.name = "rotationSlider";
@@ -172,10 +175,11 @@ namespace UltimateEyecandy.GUI
             //  Global light intensity:
             var intensityContainer = UIUtils.CreateFormElement(this, "center");
             intensityContainer.name = "intensityContainer";
-            intensityContainer.relativePosition = new Vector3(0, 200);
+            intensityContainer.relativePosition = new Vector3(0, 290);
+            //intensityContainer.relativePosition = new Vector3(0, 200);
             _intensityLabel = intensityContainer.AddUIComponent<UILabel>();
             _intensityLabel.text = "Global light intensity (0)";
-            _intensityLabel.textScale = 0.8f;
+            _intensityLabel.textScale = 0.9f;
             _intensityLabel.padding = new RectOffset(0, 0, 0, 0);
             _intensitySlider = UIUtils.CreateSlider(intensityContainer, 0f, 10f);
             _intensitySlider.name = "intensitySlider";
@@ -186,10 +190,11 @@ namespace UltimateEyecandy.GUI
             //  Ambient light intensity:
             var ambientContainer = UIUtils.CreateFormElement(this, "center");
             ambientContainer.name = "ambientContainer";
-            ambientContainer.relativePosition = new Vector3(0, 245);
+            ambientContainer.relativePosition = new Vector3(0, 355);
+            //ambientContainer.relativePosition = new Vector3(0, 245);
             _ambientLabel = ambientContainer.AddUIComponent<UILabel>();
             _ambientLabel.text = "Ambient light intensity (0)";
-            _ambientLabel.textScale = 0.8f;
+            _ambientLabel.textScale = 0.9f;
             _ambientLabel.padding = new RectOffset(0, 0, 0, 0);
             _ambientSlider = UIUtils.CreateSlider(ambientContainer, 0f, 2f);
             _ambientSlider.name = "ambientSlider";
@@ -203,7 +208,7 @@ namespace UltimateEyecandy.GUI
             //sizeContainer.relativePosition = new Vector3(0, 170);
             //_sizeLabel = sizeContainer.AddUIComponent<UILabel>();
             //_sizeLabel.text = "Sun size";
-            //_sizeLabel.textScale = 0.8f;
+            //_sizeLabel.textScale = 0.9f;
             //_sizeLabel.padding = new RectOffset(0, 0, 0, 0);
             //_sizeSlider = UIUtils.CreateSlider(sizeContainer, 0.01f, 10.0f);
             //_sizeSlider.name = "todSlider";
@@ -218,7 +223,7 @@ namespace UltimateEyecandy.GUI
             //fovContainer.relativePosition = new Vector3(0, 220);
             //_fovLabel = fovContainer.AddUIComponent<UILabel>();
             //_fovLabel.text = "Field of View (45)";
-            //_fovLabel.textScale = 0.8f;
+            //_fovLabel.textScale = 0.9f;
             //_fovLabel.padding = new RectOffset(0, 0, 0, 0);
             //_fovSlider = UIUtils.CreateSlider(fovContainer, 10f, 80f);
             //_fovSlider.name = "fovSlider";

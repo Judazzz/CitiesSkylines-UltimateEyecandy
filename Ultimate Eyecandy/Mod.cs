@@ -1,19 +1,16 @@
-﻿using System;
-using ColossalFramework.UI;
+﻿using ColossalFramework.UI;
 using ICities;
+using System;
 
 namespace UltimateEyecandy
 {
     public class Mod : IUserMod
     {
-        public const string version = "1.4.2";
+        public const string version = "1.5.0";
 
         public string Name
         {
-            get
-            {
-                return "Ultimate Eyecandy " + version;
-            }
+            get { return "Ultimate Eyecandy " + version; }
         }
 
         public string Description
