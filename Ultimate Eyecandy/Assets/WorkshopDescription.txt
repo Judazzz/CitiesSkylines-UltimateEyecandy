@@ -51,7 +51,8 @@ I'll continue to try and work out what causes the incompatibility, but for the t
 
 [h1]Most recent updates[/h1]
 [quote][b]December 16th, 2017 - v1.5.2[/b]
-- Allow negative values for Fog slider (at Ronyx69's request).
+- Allow negative values for Fog slider (at Ronyx69's request);
+- Fixed a bug that caused issues when reloading a map when in-game (reloading should be fine now).
 
 [b]December 4th, 2017 - v1.5.1[/b]
 - Fixed a bug that caused the mod to throw errors when shutting down a loaded city.

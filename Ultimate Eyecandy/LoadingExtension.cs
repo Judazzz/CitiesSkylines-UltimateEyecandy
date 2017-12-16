@@ -34,10 +34,10 @@ namespace UltimateEyecandy
 
         public override void OnLevelUnloading()
         {
+            base.OnLevelUnloading();
+            //  
             UltimateEyecandyTool.isGameLoaded = false;
             UltimateEyecandyTool.Reset();
-            //  
-            base.OnLevelUnloading();
         }
     }
 }

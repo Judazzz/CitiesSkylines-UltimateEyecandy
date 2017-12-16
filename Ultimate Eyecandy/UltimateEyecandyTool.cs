@@ -45,21 +45,27 @@ namespace UltimateEyecandy
 
         public static void Reset()
         {
+            //  Hide MainPanel:
+            if (UIMainPanel.instance.isVisible)
+            {
+                UIMainPanel.instance.isVisible = false;
+            }
+
             var go = FindObjectOfType<UltimateEyecandyTool>();
             if (go != null)
             {
                 Destroy(go);
             }
 
-            config = null; // do??
-            initialSettings = null;
-            currentSettings = null;
+            //config = null; // do??
+            //initialSettings = null;
+            //currentSettings = null;
 
-            optionsGameplayPanel = null;
+            //optionsGameplayPanel = null;
 
-            isEditor = false;
-            isGameLoaded = false;
-            isWinterMap = false;
+            //isEditor = false;
+            //isGameLoaded = false;
+            //isWinterMap = false;
         }
 
         public static void Initialize(LoadMode mode)
@@ -97,7 +103,7 @@ namespace UltimateEyecandy
             {
                 if (go != null)
                 {
-                    Destroy(go);
+                    //Destroy(go);
                 }
                 DebugUtils.LogException(e);
             }
