@@ -130,7 +130,6 @@ namespace UltimateEyecandy.GUI
             var speedContainer = UIUtils.CreateFormElement(this, "center");
             speedContainer.name = "sizeContainer";
             speedContainer.relativePosition = new Vector3(0, 95);
-            //speedContainer.relativePosition = new Vector3(0, 65);
             _speedLabel = speedContainer.AddUIComponent<UILabel>();
             _speedLabel.text = "Day/night cycle speed";
             _speedLabel.textScale = 0.9f;
@@ -144,7 +143,6 @@ namespace UltimateEyecandy.GUI
             var heightContainer = UIUtils.CreateFormElement(this, "center");
             heightContainer.name = "heightContainer";
             heightContainer.relativePosition = new Vector3(0, 160);
-            //heightContainer.relativePosition = new Vector3(0, 110);
             _heightLabel = heightContainer.AddUIComponent<UILabel>();
             //_heightLabel.text = "Sun height (0)";
             _heightLabel.text = "Lattitude (0)";
@@ -160,7 +158,6 @@ namespace UltimateEyecandy.GUI
             var rotationContainer = UIUtils.CreateFormElement(this, "center");
             rotationContainer.name = "rotationContainer";
             rotationContainer.relativePosition = new Vector3(0, 225);
-            //rotationContainer.relativePosition = new Vector3(0, 155);
             _rotationLabel = rotationContainer.AddUIComponent<UILabel>();
             //_rotationLabel.text = "Sun rotation (0)";
             _rotationLabel.text = "Longitude (0)";
@@ -176,7 +173,6 @@ namespace UltimateEyecandy.GUI
             var intensityContainer = UIUtils.CreateFormElement(this, "center");
             intensityContainer.name = "intensityContainer";
             intensityContainer.relativePosition = new Vector3(0, 290);
-            //intensityContainer.relativePosition = new Vector3(0, 200);
             _intensityLabel = intensityContainer.AddUIComponent<UILabel>();
             _intensityLabel.text = "Global light intensity (0)";
             _intensityLabel.textScale = 0.9f;
@@ -191,7 +187,6 @@ namespace UltimateEyecandy.GUI
             var ambientContainer = UIUtils.CreateFormElement(this, "center");
             ambientContainer.name = "ambientContainer";
             ambientContainer.relativePosition = new Vector3(0, 355);
-            //ambientContainer.relativePosition = new Vector3(0, 245);
             _ambientLabel = ambientContainer.AddUIComponent<UILabel>();
             _ambientLabel.text = "Ambient light intensity (0)";
             _ambientLabel.textScale = 0.9f;
@@ -247,7 +242,6 @@ namespace UltimateEyecandy.GUI
                 //  
                 _heightSlider.value = (UltimateEyecandyTool.isWinterMap) ? 66f : 35f;
                 _rotationSlider.value = 98f;
-                //_sizeSlider.value = 98f;
                 _intensitySlider.value = 6f;
                 _ambientSlider.value = (UltimateEyecandyTool.isWinterMap) ? 0.4f : 0.71f;
             };
@@ -326,49 +320,51 @@ namespace UltimateEyecandy.GUI
 
         public override void Update()
         {
-            if (!UltimateEyecandyTool.config.enableSimulationControl)
+            if (UltimateEyecandyTool.isGameLoaded)
             {
-                _todSlider.isEnabled = false;
-                _todLabel.text = "Time of Day (disabled)";
-                //  
-                _speedLabel.text = "Day/night cycle speed (disabled)";
-                _speedSlider.value = 0;
-                _speedSlider.isEnabled = false;
-                return;
-            }
-            if (_todManager != null)
-            {
-                if (_todManager.DayNightEnabled)
+                if (!UltimateEyecandyTool.config.enableSimulationControl)
                 {
-                    float tod = _todManager.TimeOfDay;
-                    int hour = (int)Math.Floor(tod);
-                    int minute = (int)Math.Floor((tod - hour) * 60.0f);
-                    _todLabel.text = string.Format("Time of Day (currently: {0,2:00}:{1,2:00})", hour, minute);
-                    _todSlider.isEnabled = true;
-                    //  
-                    if (!pauseUpdates)
-                    {
-                        _todSlider.value = todManager.TimeOfDay;
-                    }
-                    //  
-                    float fade = Math.Abs(_todManager.TimeOfDay - 12.0f) / 12.0f;
-                    ((UISprite)_todSlider.thumbObject).color = Color32.Lerp(daytimeColor, nighttimeColor, fade);
-                    //  
-                    _speedLabel.text = string.Format($"Day/night cycle speed ({_todManager.speed})");
-                    _speedSlider.value = Array.IndexOf(speeds, _todManager.speed);
-                    _speedSlider.isEnabled = true;
-                }
-                else
-                {
-                    _todLabel.text = "Time of Day (disabled)";
                     _todSlider.isEnabled = false;
+                    _todLabel.text = "Time of Day (disabled)";
                     //  
                     _speedLabel.text = "Day/night cycle speed (disabled)";
                     _speedSlider.value = 0;
                     _speedSlider.isEnabled = false;
+                    return;
+                }
+                if (_todManager != null)
+                {
+                    if (_todManager.DayNightEnabled)
+                    {
+                        float tod = _todManager.TimeOfDay;
+                        int hour = (int)Math.Floor(tod);
+                        int minute = (int)Math.Floor((tod - hour) * 60.0f);
+                        _todLabel.text = string.Format("Time of Day (currently: {0,2:00}:{1,2:00})", hour, minute);
+                        _todSlider.isEnabled = true;
+                        //  
+                        if (!pauseUpdates)
+                        {
+                            _todSlider.value = todManager.TimeOfDay;
+                        }
+                        //  
+                        float fade = Math.Abs(_todManager.TimeOfDay - 12.0f) / 12.0f;
+                        ((UISprite)_todSlider.thumbObject).color = Color32.Lerp(daytimeColor, nighttimeColor, fade);
+                        //  
+                        _speedLabel.text = string.Format($"Day/night cycle speed ({_todManager.speed})");
+                        _speedSlider.value = Array.IndexOf(speeds, _todManager.speed);
+                        _speedSlider.isEnabled = true;
+                    }
+                    else
+                    {
+                        _todLabel.text = "Time of Day (disabled)";
+                        _todSlider.isEnabled = false;
+                        //  
+                        _speedLabel.text = "Day/night cycle speed (disabled)";
+                        _speedSlider.value = 0;
+                        _speedSlider.isEnabled = false;
+                    }
                 }
             }
-            base.Update();
         }
     }
 }

@@ -48,7 +48,7 @@ namespace UltimateEyecandy.GUI
         {
             //  Title Bar:
             m_title = AddUIComponent<UIMainTitleBar>();
-            m_title.title = "Ultimate Eyecandy";
+            m_title.title = "Ultimate Eyecandy " + Mod.version;
             //  Tabs:
             panelTabs = AddUIComponent<UITabstrip>();
             panelTabs.size = new Vector2(UIUtils.c_modPanelInnerWidth, UIUtils.c_tabButtonHeight);

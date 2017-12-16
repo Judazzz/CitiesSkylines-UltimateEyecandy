@@ -131,7 +131,7 @@ namespace UltimateEyecandy.GUI
             _enableLutCheckbox = UIUtils.CreateCheckBox(lutContainer);
             _enableLutCheckbox.relativePosition = new Vector3(5, 17);
             _enableLutCheckbox.name = "_enableLutCheckbox";
-            _enableLutCheckbox.tooltip = "Check this box to toggle LUT color correction.";
+            //_enableLutCheckbox.tooltip = "Check this box to toggle LUT color correction.";
             //_enableLutCheckbox.isChecked = GetCameraBehaviour("ColorCorrectionLut");
             _enableLutCheckbox.isChecked = true;
             _enableLutCheckbox.eventCheckChanged += CheckboxChanged;
@@ -145,7 +145,7 @@ namespace UltimateEyecandy.GUI
             _enableTonemappingCheckbox = UIUtils.CreateCheckBox(tonemappingContainer);
             _enableTonemappingCheckbox.relativePosition = new Vector3(5, 17);
             _enableTonemappingCheckbox.name = "_enableTonemappingCheckbox";
-            _enableTonemappingCheckbox.tooltip = "Check this box to toggle tonemapping.";
+            //_enableTonemappingCheckbox.tooltip = "Check this box to toggle tonemapping.";
             //_enableTonemappingCheckbox.isChecked = GetCameraBehaviour("ToneMapping");
             _enableTonemappingCheckbox.isChecked = true;
             _enableTonemappingCheckbox.eventCheckChanged += CheckboxChanged;
@@ -160,7 +160,7 @@ namespace UltimateEyecandy.GUI
             _enableBloomCheckbox = UIUtils.CreateCheckBox(bloomContainer);
             _enableBloomCheckbox.relativePosition = new Vector3(5, 17);
             _enableBloomCheckbox.name = "_enableBloomCheckbox";
-            _enableBloomCheckbox.tooltip = "Check this box to toggle bloom effect.";
+            //_enableBloomCheckbox.tooltip = "Check this box to toggle bloom effect.";
             //_enableBloomCheckbox.isChecked = GetCameraBehaviour("Bloom");
             _enableBloomCheckbox.isChecked = true;
             _enableBloomCheckbox.eventCheckChanged += CheckboxChanged;

@@ -56,7 +56,7 @@ namespace UltimateEyecandy.GUI
             m_name.padding = new RectOffset(6, 6, 6, 6);
             m_name.textColor = new Color32(222, 222, 222, 255);
             m_name.textScale = 0.8f;
-            m_name.tooltip = "Please enter a Preset name";
+            //m_name.tooltip = "Please enter a Preset name";
             m_name.relativePosition = new Vector3(10, name.relativePosition.y + name.height + 5);
 
             m_name.Focus();

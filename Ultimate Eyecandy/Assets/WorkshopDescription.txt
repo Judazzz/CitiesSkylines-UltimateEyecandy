@@ -39,7 +39,7 @@ Ultimate Eyecandy allows you to:
 [b]Unfortunately Ultimate Eyecandy is currently incompatible with Rush Hour.[/b]
 This is because both mods share features that touch the game's simulation and time cycle.
 
-Players who want to keep using this mod and Rush Hour at the same time, can download an earlier version of Eyecandy here: [url=https://1drv.ms/u/s!Au8mFg_E1srMiMELAInuS5McGAhWPQ]Ultimate Eyecandy v1.3.5[/url]. This is the last version before I implemented the simulation-related features, and should have no problems with Rush Hour.
+Players who want to keep using this mod and Rush Hour at the same time, can download an earlier version of Eyecandy here: [url=https://1drv.ms/u/s!Au8mFg_E1srMiMELAInuS5McGAhWPQ]Ultimate Eyecandy v1.3.4[/url]. This is the last version before I implemented the simulation-related features, and should have no problems with Rush Hour.
 
 To use it, create a new folder called "Ultimate Eyecandy" in the game's local mod folder. Typically, you can find it in this location: C:\Users\{Your_Windows_Username}\AppData\Local\Colossal Order\Cities_Skylines\Addons\Mods
 Then copy the downloaded .dll file to that folder, start the game, and enable the mod in the Content Manager.
@@ -50,17 +50,15 @@ I'll continue to try and work out what causes the incompatibility, but for the t
 
 
 [h1]Most recent updates[/h1]
-[quote][b]November 12th, 2017 - v1.5.0[/b]
+[quote][b]December 16th, 2017 - v1.5.2[/b]
+- Allow negative values for Fog slider (at Ronyx69's request).
+
+[b]December 4th, 2017 - v1.5.1[/b]
+- Fixed a bug that caused the mod to throw errors when shutting down a loaded city.
+
+[b]November 12th, 2017 - v1.5.0[/b]
 - Mod panel size increased by 50%;
 - Various minor bug-fixes and optimizations.
-
-[b]April 3rd, 2017 - v1.4.2[/b]
-- Added right-click on Zoom Button feature;
-- Fixed a bug that prevented the Speed slider from working after re-enabling the Day/Night Cycle in the game options.
-
-[b]April 2nd, 2017 - v1.4.1[/b]
-- Added Day/Night Cycle speed slider to the Ambient Panel;
-- Added mod option to disable Time of Day and Day/Night Cycle speed sliders.
 
 [b]Full update history[/b]
 - [url=http://steamcommunity.com/sharedfiles/filedetails/changelog/672248733]Change log[/url]

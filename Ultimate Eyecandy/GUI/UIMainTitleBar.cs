@@ -61,7 +61,7 @@ namespace UltimateEyecandy.GUI
             m_title = AddUIComponent<UILabel>();
             m_title.width = UIUtils.c_titleBarLabelWidth;
             m_title.relativePosition = new Vector3(UIUtils.c_titleBarLabelXPos, 13);
-            m_title.text = Mod.version;
+            m_title.text = "Ultimate Eyecandy " + Mod.version;
             m_title.textScale = 0.9f;
             m_title.isInteractive = false;
 

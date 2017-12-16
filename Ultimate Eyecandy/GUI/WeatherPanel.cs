@@ -65,7 +65,7 @@ namespace UltimateEyecandy.GUI
             _enableWeatherCheckbox = UIUtils.CreateCheckBox(topContainer);
             _enableWeatherCheckbox.relativePosition = new Vector3(5, 17);
             _enableWeatherCheckbox.name = "enableWeatherCheckbox";
-            _enableWeatherCheckbox.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
+            //_enableWeatherCheckbox.tooltip = "Check this box to enable Dynamic Weather. This setting is the same as the Dynamic Weather option in the Gameplay Options panel.";
             _enableWeatherCheckbox.isChecked = UltimateEyecandyTool.optionsGameplayPanel.enableWeather;
             _enableWeatherCheckbox.eventCheckChanged += CheckboxChanged;
 
@@ -83,21 +83,21 @@ namespace UltimateEyecandy.GUI
             _precipitationSlider = UIUtils.CreateSlider(precipitationContainer, 0, 2.5f);
             _precipitationSlider.name = "precipitationSlider";
             _precipitationSlider.stepSize = 0.05f;
-            _precipitationSlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
+            //_precipitationSlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
             _precipitationSlider.eventValueChanged += SliderChanged;
             //  Winter map?
             if (UltimateEyecandyTool.isWinterMap)
             {
                 //  Snow intensity:
                 _precipitationLabel.text = "Snowfall intensity (0)";
-                _precipitationSlider.tooltip = "Move this slider to the right to increase Snow Intensity.\nDynamic Weather will be enabled if necessary.";
+                //_precipitationSlider.tooltip = "Move this slider to the right to increase Snow Intensity.\nDynamic Weather will be enabled if necessary.";
             }
             //  Non-winter map:
             else
             {
                 //  Rain intensity:
                 _precipitationLabel.text = "Rain intensity (0)";
-                _precipitationSlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
+                //_precipitationSlider.tooltip = "Move this slider to the right to increase Rain Intensity.\nDynamic Weather will be enabled if necessary.";
             }
 
             //  Precipitation motion blur:
@@ -108,7 +108,7 @@ namespace UltimateEyecandy.GUI
 
             _rainMotionblurCheckbox = UIUtils.CreateCheckBox(rainMotionblurContainer);
             _rainMotionblurCheckbox.name = "rainMotionblurCheckbox";
-            _rainMotionblurCheckbox.tooltip = "Check this box to enable the Rain Motion Blur Effect. This setting is mainly visible when the game is paused.";
+            //_rainMotionblurCheckbox.tooltip = "Check this box to enable the Rain Motion Blur Effect. This setting is mainly visible when the game is paused.";
             _rainMotionblurCheckbox.isChecked = true;
             _rainMotionblurCheckbox.eventCheckChanged += CheckboxChanged;
             _rainMotionblurCheckbox.label.text = "Rain motion blur";
@@ -125,10 +125,10 @@ namespace UltimateEyecandy.GUI
             _fogIntensityLabel.textScale = 0.9f;
             _fogIntensityLabel.padding = new RectOffset(0, 0, 0, 5);
 
-            _fogIntensitySlider = UIUtils.CreateSlider(fogContainer, 0, 1f);
+            _fogIntensitySlider = UIUtils.CreateSlider(fogContainer, -0.485f, 1f);
             _fogIntensitySlider.name = "fogIntensitySlider";
-            _fogIntensitySlider.stepSize = 0.02f;
-            _fogIntensitySlider.tooltip = "Move this slider to the right to increase Fog Density.\nDynamic Weather will be enabled if necessary.";
+            _fogIntensitySlider.stepSize = 0.01f;
+            //_fogIntensitySlider.tooltip = "Move this slider to the right to increase Fog Density.\nDynamic Weather will be enabled if necessary.";
             _fogIntensitySlider.eventValueChanged += SliderChanged;
 
             //  Ground Wetness:
